@@ -3,7 +3,7 @@ export const SITE = {
   author: "Janak Shrestha",
   profile: "https://www.janakkumarshrestha0.com.np/",
   desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
-  title: "AstroPaper",
+  title: "Janak Kr. Shrestha",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerIndex: 4,
