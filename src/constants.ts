@@ -6,6 +6,7 @@ import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
 import IconTelegram from "@/assets/icons/IconTelegram.svg";
 import IconPinterest from "@/assets/icons/IconPinterest.svg";
+import IconRss from "@/assets/icons/IconRss.svg";
 import { SITE } from "@/config";
 
 export const SOCIALS = [
@@ -23,15 +24,21 @@ export const SOCIALS = [
   },
   {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/username/",
+    href: "https://www.linkedin.com/in/janakkss/",
     linkTitle: `${SITE.title} on LinkedIn`,
     icon: IconLinkedin,
   },
   {
     name: "Mail",
-    href: "mailto:yourmail@gmail.com",
+    href: "mailto:janak0ff@gmail.com",
     linkTitle: `Send an email to ${SITE.title}`,
     icon: IconMail,
+  }, 
+  {
+    name: "RSS Feed",
+    href: "../rss.xml",
+    linkTitle: "RSS Feed",
+    icon: IconRss,
   },
 ] as const;
 

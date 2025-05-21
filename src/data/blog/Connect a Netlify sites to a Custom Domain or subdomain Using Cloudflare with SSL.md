@@ -1,6 +1,7 @@
 ---
 title: How to Connect a Netlify sites to a Custom Domain or subdomain Using Cloudflare with SSL Certificate
 pubDatetime: 2025-05-21
+featured: true
 tags:
   - Step-by-Step Guide
   - Netlify
