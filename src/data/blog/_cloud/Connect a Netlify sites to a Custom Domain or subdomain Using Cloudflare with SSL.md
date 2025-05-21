@@ -6,6 +6,7 @@ tags:
   - Step-by-Step Guide
   - Netlify
   - Domain Configure
+  - Hands on Lab
 description: Connect Custom Domain\subdomain via Cloudflare,  Point DNS from Cloudflare to Netlify, Verify Domain Ownership with Netlify via Cloudflare, Ensure SSL (HTTPS) Works
 ---
 

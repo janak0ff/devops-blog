@@ -6,6 +6,7 @@ tags:
   - Step-by-Step Guide
   - ngrok
   - local app to cloud
+  - Hands on Lab
 description: Make your locally hosted any app to internet by using ngrok
 ---
 

@@ -6,6 +6,7 @@ tags:
   - Setup Guide
   - cloudflare
   - local app to cloud
+  - Hands on Lab
 description: You’ll expose your local site (like your localhost site) directly through your own domain using cloudflared, without needing ngrok at all.
 ---
 
@@ -30,7 +31,7 @@ https://your-subdomain.yourdomain.com
 e.g.
 
 ```
-https://sub.domain.com.np
+https://local.janakkumarshrestha0.com.np
 ```
 
 ---
@@ -75,7 +76,7 @@ This opens a browser. Log in to your Cloudflare account and authorize.
 cloudflared tunnel create mytunnel
 ```
 
-This will generate a `credentials-file` and `tunnel ID` inside `/home/your_username/.cloudflared/`.
+This will generate a `credentials-file` and `tunnel ID` inside `/home/YOUR_USERNAME/.cloudflared/`.
 
 ---
 
@@ -95,7 +96,7 @@ tunnel: YOUR_TUNNEL_ID
 credentials-file: /home/YOUR_USERNAME/.cloudflared/YOUR_TUNNEL_ID.json
 
 ingress:
-  - hostname: sub.domain.com.np
+  - hostname: local.janakkumarshrestha0.com.np
     service: http://localhost:3000
   - service: http_status:404
 ```
@@ -104,14 +105,15 @@ Replace:
 
 - `YOUR_TUNNEL_ID` with your actual tunnel ID
 - `YOUR_USERNAME` with your Linux username
-- `sub.domain.com.np` with the custom subdomain you want
+- `service` with your running any application on http://localhost:PORR_NO
+- `local.janakkumarshrestha0.com.np` with the custom subdomain you want
 
 ---
 
 #### 6. **Route DNS through the tunnel**
 
 ```bash
-cloudflared tunnel route dns mytunnel sub.domain.com.np
+cloudflared tunnel route dns mytunnel local.janakkumarshrestha0.com.np
 ```
 
 Cloudflare will automatically add the correct DNS record (`CNAME`).
@@ -129,7 +131,7 @@ cloudflared tunnel run mytunnel
 ### ✅ DONE! Your local site is now live at:
 
 ```
-https://sub.domain.com.np
+https://local.janakkumarshrestha0.com.np
 ```
 
 ---
