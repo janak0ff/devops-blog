@@ -4,7 +4,7 @@ pubDatetime: 2025-05-20
 tags:
   - Linux Intro
   - Introduction
-description: An Operating System (OS) manages hardware and software. Unix inspired Linux, which is open-source, secure, multi-user, multitasking, and portable. Today, Linux powers servers, supercomputers, PCs, and mobile devices.
+description: What is an (OS)?  What is Unix? What is Linux? Historical Development of Linux. Current Use Cases of Unix and Linux.
 ---
 
 ### **Introduction to Linux and Unix**
