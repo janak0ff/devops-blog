@@ -1,5 +1,6 @@
 ---
 title: Detailed Notes on Linux Distributions
+pubDatetime: 2025-05-20
 tags:
   - Linux Distributions
 description: A Linux distribution is a complete OS built around the Linux kernel, including package managers, tools, and a GUI. Distros differ in user interface, tools, support, and update cycles. Popular distros serve various needs, from stability to cutting-edge use.

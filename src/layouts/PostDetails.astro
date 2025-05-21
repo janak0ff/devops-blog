@@ -98,14 +98,14 @@ const nextPost =
       {title}
     </h1>
     <div class="flex items-center gap-4">
-      <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" class="my-2" />
+      <Datetime {pubDatetime} {modDatetime} size="lg" class="my-2" />
       <EditPost class="max-sm:hidden" {hideEditPost} {post} />
     </div>
     <article id="article" class="mx-auto prose mt-8 max-w-3xl">
       <Content />
     </article>
 
-    <hr class="my-8 border-dashed" />
+    <hr class="my-8 border-dotted" />
 
     <EditPost class="sm:hidden" {hideEditPost} {post} />
 
@@ -127,7 +127,7 @@ const nextPost =
       </button>
     </div>
 
-    <hr class="my-6 border-dashed" />
+    <hr class="my-6 border-dotted" />
 
     <!-- Previous/Next Post Buttons -->
     <div data-pagefind-ignore class="grid grid-cols-1 gap-6 sm:grid-cols-2">
