@@ -1,5 +1,4 @@
 ---
-pubDatetime: 2025-05-20
 title: Introduction to Linux and Unix
 tags:
   - Linux Intro

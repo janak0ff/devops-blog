@@ -1,13 +1,13 @@
 export const SITE = {
-  website: "https://astro-paper.pages.dev/", // replace this with your deployed domain
-  author: "Janak Shrestha",
+  website: "https://blog.janakkumarshrestha0.com.np/", // replace this with your deployed domain
+  author: "Janak Kr. Shrestha",
   profile: "https://www.janakkumarshrestha0.com.np/",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
+  desc: "A minimal, responsive and SEO-friendly blog dedicated to DevOps enthusiasts, sharing insights, tutorials, and best practices on automation, CI/CD, containerization, cloud computing, and infrastructure as code. Stay updated with real-world examples, tools, and workflows to streamline development and operations. Perfect for beginners and pros aiming to master modern DevOps culture and technologies.",
   title: "Janak Kr. Shrestha",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
-  postPerIndex: 4,
-  postPerPage: 4,
+  postPerIndex: 6,
+  postPerPage: 8,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
   showArchives: true,
   showBackButton: true, // show back button in post detail

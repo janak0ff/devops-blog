@@ -1,5 +1,4 @@
 ---
-pubDatetime: 2025-05-20
 title: Detailed Notes on Linux Distributions
 tags:
   - Linux Distributions

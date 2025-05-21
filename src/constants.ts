@@ -11,13 +11,13 @@ import { SITE } from "@/config";
 export const SOCIALS = [
   {
     name: "Github",
-    href: "https://github.com/satnaing/astro-paper",
+    href: "https://github.com/janak0ff",
     linkTitle: ` ${SITE.title} on Github`,
     icon: IconGitHub,
   },
   {
     name: "X",
-    href: "https://x.com/username",
+    href: "https://x.com/devjanak0ff",
     linkTitle: `${SITE.title} on X`,
     icon: IconBrandX,
   },
