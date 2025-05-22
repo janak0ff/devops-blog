@@ -5,7 +5,7 @@ tags:
   - Containers and Containerization
   - Docker
 
-description: About container concepts, features, use cases, and benefits. Building on your new knowledge of containers, you’ll learn what Docker does and discover why Docker is a winner with developers. You’ll learn what Docker is, become acquainted with Docker processes, and explore Docker’s underlying technology. How developers and organizations can benefit from using Docker and see which situations are challenging for using Docker. Next, learn how to build a container image using a Dockerfile, how to create a running container using that image, become familiar with the Docker command line interface (CLI), and explore frequently used Docker commands.  Docker objects, Dockerfile commands, container image naming, and learn how Docker uses networks, storage, and plugins. Then, assimilate this knowledge when you see Docker architecture components in action and explore containerization using Docker. You’ll pull an image from a Docker Hub registry. Run an image as a container using Docker, build and tag an image using a Dockerfile, and push that image to a registry. 
+description: About container concepts, features, use cases, and benefits. Building on your new knowledge of containers, you’ll learn what Docker does and discover why Docker is a winner with developers. You’ll learn what Docker is, become acquainted with Docker processes, and explore Docker’s underlying technology. How developers and organizations can benefit from using Docker and see which situations are challenging for using Docker. Next, learn how to build a container image using a Dockerfile, how to create a running container using that image, become familiar with the Docker command line interface (CLI), and explore frequently used Docker commands.  Docker objects, Dockerfile commands, container image naming, and learn how Docker uses networks, storage, and plugins. Then, assimilate this knowledge when you see Docker architecture components in action and explore containerization using Docker. You’ll pull an image from a Docker Hub registry. Run an image as a container using Docker, build and tag an image using a Dockerfile, and push that image to a registry.
 ---
 
 # **Introduction to Containers**
@@ -13,6 +13,7 @@ description: About container concepts, features, use cases, and benefits. Buildi
 ---
 
 ## **1. Traditional Computing Challenges in Software Development**
+
 Traditional computing environments pose several issues that hinder efficient software development and deployment:
 
 - **Lack of Application Isolation**: Applications running on physical servers can interfere with each other due to shared resources.
@@ -29,6 +30,7 @@ Traditional computing environments pose several issues that hinder efficient sof
 Containers are **lightweight, isolated, portable units** of software that encapsulate an application along with its runtime dependencies (libraries, binaries, system tools, and configuration files). They allow developers to build, ship, and run applications consistently across different computing environments.
 
 ### **Key Characteristics of Containers**
+
 - **Lightweight**: Containers share the host OS kernel and do not require a full OS per instance.
 - **Isolated**: Each container runs in its own user space, preventing interference between apps.
 - **Portable**: Can run on any platform supporting the container engine (cloud, desktop, on-prem).
@@ -38,9 +40,11 @@ Containers are **lightweight, isolated, portable units** of software that encaps
 ---
 
 ## **3. Container Engine Functionality**
+
 A **container engine** virtualizes the operating system and manages the lifecycle of containers. It ensures that all required components (code, runtime, libraries) are bundled together and executed in isolation.
 
 Examples:
+
 - Docker
 - Podman
 - LXC
@@ -50,17 +54,18 @@ Examples:
 
 ## **4. Benefits of Containerization**
 
-| Benefit | Description |
-|--------|-------------|
-| **Faster Deployment** | Automate builds and deployments for rapid release cycles. |
-| **Improved Resource Utilization** | Multiple containers can run on a single host, maximizing CPU and memory usage. |
-| **Portability** | Run consistently across Windows, Linux, Mac, cloud providers, etc. |
-| **Support for Modern Architectures** | Ideal for microservices, CI/CD pipelines, and cloud-native applications. |
-| **Environment Consistency** | Eliminates discrepancies between dev, test, staging, and production environments. |
+| Benefit                              | Description                                                                       |
+| ------------------------------------ | --------------------------------------------------------------------------------- |
+| **Faster Deployment**                | Automate builds and deployments for rapid release cycles.                         |
+| **Improved Resource Utilization**    | Multiple containers can run on a single host, maximizing CPU and memory usage.    |
+| **Portability**                      | Run consistently across Windows, Linux, Mac, cloud providers, etc.                |
+| **Support for Modern Architectures** | Ideal for microservices, CI/CD pipelines, and cloud-native applications.          |
+| **Environment Consistency**          | Eliminates discrepancies between dev, test, staging, and production environments. |
 
 ---
 
 ## **5. Container Use Cases**
+
 - Microservices architecture
 - Continuous Integration / Continuous Delivery (CI/CD)
 - Hybrid and multi-cloud deployments
@@ -70,6 +75,7 @@ Examples:
 ---
 
 ## **6. Container Challenges**
+
 Despite their benefits, containers also introduce challenges:
 
 - **Security Risks**: Vulnerabilities in the host OS can affect all containers.
@@ -81,30 +87,31 @@ Despite their benefits, containers also introduce challenges:
 
 ## **7. Popular Container Vendors & Tools**
 
-| Vendor | Features |
-|--------|----------|
-| **Docker** | Most popular container platform; easy-to-use CLI and ecosystem support. |
-| **Podman** | Daemon-less, more secure alternative to Docker; integrates well with systemd. |
-| **LXC / LXD** | Full system containers ideal for data-intensive applications and long-running processes. |
-| **Vagrant** | Focuses on development environments; offers high levels of isolation using VMs or containers. |
+| Vendor        | Features                                                                                      |
+| ------------- | --------------------------------------------------------------------------------------------- |
+| **Docker**    | Most popular container platform; easy-to-use CLI and ecosystem support.                       |
+| **Podman**    | Daemon-less, more secure alternative to Docker; integrates well with systemd.                 |
+| **LXC / LXD** | Full system containers ideal for data-intensive applications and long-running processes.      |
+| **Vagrant**   | Focuses on development environments; offers high levels of isolation using VMs or containers. |
 
 ---
 
-## **8. Containers vs Virtual Machines (VMs)** *(Advanced Note)*
+## **8. Containers vs Virtual Machines (VMs)** _(Advanced Note)_
 
-| Feature | **Containers** | **Virtual Machines** |
-|--------|----------------|----------------------|
-| **OS Dependency** | Share host OS kernel | Run full guest OS |
-| **Startup Time** | Milliseconds | Seconds |
-| **Resource Usage** | Lightweight | Heavyweight |
-| **Isolation Level** | Process-level | Kernel-level |
-| **Use Case** | Microservices, CI/CD | Legacy apps, full OS environments |
+| Feature             | **Containers**       | **Virtual Machines**              |
+| ------------------- | -------------------- | --------------------------------- |
+| **OS Dependency**   | Share host OS kernel | Run full guest OS                 |
+| **Startup Time**    | Milliseconds         | Seconds                           |
+| **Resource Usage**  | Lightweight          | Heavyweight                       |
+| **Isolation Level** | Process-level        | Kernel-level                      |
+| **Use Case**        | Microservices, CI/CD | Legacy apps, full OS environments |
 
 ---
 
 ## **9. Role in Cloud-Native Development**
 
 Containers are foundational to **cloud-native development**, enabling:
+
 - Modularity (via microservices)
 - Resilience and scalability
 - Automated deployment via orchestration tools
@@ -123,6 +130,7 @@ As organizations move toward **DevOps maturity**, embracing containerization—a
 ---
 
 ## **Further Reading & Tools**
+
 - **Docker Hub**: [https://hub.docker.com](https://hub.docker.com)
 - **Kubernetes**: Orchestration for managing containerized applications at scale.
 - **Helm Charts**: Package managers for Kubernetes deployments.
@@ -139,6 +147,7 @@ As organizations move toward **DevOps maturity**, embracing containerization—a
 **Docker** is an open-source platform introduced in 2013 that enables developers to develop, ship, and run applications inside **containers** — lightweight, isolated, and portable environments.
 
 ### **Key Features of Docker**
+
 - Built using the **Go (Golang)** programming language.
 - Leverages **Linux kernel features** such as namespaces and cgroups for container isolation and resource control.
 - Provides a consistent environment across development, testing, staging, and production.
@@ -148,15 +157,17 @@ As organizations move toward **DevOps maturity**, embracing containerization—a
 ## **2. Docker Architecture Overview**
 
 ### **Components of Docker Engine**
-| Component | Description |
-|----------|-------------|
-| **Docker Daemon (`dockerd`)** | Background process managing images, containers, networks, and storage. |
-| **Docker Client (`docker` CLI)** | Interface used by users or scripts to interact with the daemon. |
-| **REST API** | Enables interaction between clients and daemons via HTTP endpoints. |
+
+| Component                        | Description                                                            |
+| -------------------------------- | ---------------------------------------------------------------------- |
+| **Docker Daemon (`dockerd`)**    | Background process managing images, containers, networks, and storage. |
+| **Docker Client (`docker` CLI)** | Interface used by users or scripts to interact with the daemon.        |
+| **REST API**                     | Enables interaction between clients and daemons via HTTP endpoints.    |
 
 ### **Underlying Technologies**
+
 - **Namespaces**: Isolate processes, networking, user IDs, etc., within each container.
-    - `pid`, `net`, `mnt`, `uts`, `ipc`, `user` namespaces
+  - `pid`, `net`, `mnt`, `uts`, `ipc`, `user` namespaces
 - **Control Groups (cgroups)**: Limit and monitor resource usage (CPU, memory, disk I/O).
 - **Union File Systems (UnionFS)**: Layers filesystems to build efficient image layers and copy-on-write behavior.
 
@@ -176,28 +187,28 @@ As organizations move toward **DevOps maturity**, embracing containerization—a
 
 ## **4. Docker Ecosystem & Tools**
 
-| Tool | Description |
-|------|-------------|
-| **Docker CLI** | Command-line interface to manage Docker objects. |
-| **Docker Compose** | Define and run multi-container Docker apps using a YAML file. |
-| **Docker Swarm** | Native clustering and orchestration tool for Docker. |
-| **Docker Hub / Registry** | Centralized repository for Docker images. |
-| **Plugins & Extensions** | Support for volume drivers, network plugins, logging drivers, etc. |
-| **Prometheus** | Monitoring integration for container metrics. |
+| Tool                      | Description                                                        |
+| ------------------------- | ------------------------------------------------------------------ |
+| **Docker CLI**            | Command-line interface to manage Docker objects.                   |
+| **Docker Compose**        | Define and run multi-container Docker apps using a YAML file.      |
+| **Docker Swarm**          | Native clustering and orchestration tool for Docker.               |
+| **Docker Hub / Registry** | Centralized repository for Docker images.                          |
+| **Plugins & Extensions**  | Support for volume drivers, network plugins, logging drivers, etc. |
+| **Prometheus**            | Monitoring integration for container metrics.                      |
 
 ---
 
 ## **5. Benefits of Docker Containers**
 
-| Benefit | Description |
-|--------|-------------|
-| **Consistent Environments** | "It works on my machine" problem eliminated. |
-| **Fast Deployment** | Containers start in seconds due to shared OS kernel. |
-| **Lightweight Images** | Use copy-on-write and layering to keep size minimal. |
-| **Improved CI/CD Pipeline** | Integrates seamlessly with automation tools. |
-| **Version Control** | Supports tagging, rollback, and versioned deployments. |
-| **Portability** | Run on any system supporting Docker—local, cloud, hybrid. |
-| **Modular Development** | Ideal for microservices-based architecture. |
+| Benefit                     | Description                                               |
+| --------------------------- | --------------------------------------------------------- |
+| **Consistent Environments** | "It works on my machine" problem eliminated.              |
+| **Fast Deployment**         | Containers start in seconds due to shared OS kernel.      |
+| **Lightweight Images**      | Use copy-on-write and layering to keep size minimal.      |
+| **Improved CI/CD Pipeline** | Integrates seamlessly with automation tools.              |
+| **Version Control**         | Supports tagging, rollback, and versioned deployments.    |
+| **Portability**             | Run on any system supporting Docker—local, cloud, hybrid. |
+| **Modular Development**     | Ideal for microservices-based architecture.               |
 
 ---
 
@@ -214,20 +225,21 @@ Docker supports modern **DevOps methodologies**, including:
 
 ## **7. Challenges of Docker Containers**
 
-| Challenge | Description |
-|----------|-------------|
-| **Security Concerns** | Shared OS kernel can expose vulnerabilities; requires hardening and least privilege policies. |
-| **Stateful Applications** | Docker is better suited for stateless apps; persistent data needs external volumes or StatefulSets in Kubernetes. |
-| **Performance Overhead** | Not ideal for high-performance computing (HPC) or GPU-intensive tasks. |
-| **Monolithic Applications** | Harder to containerize and scale monoliths compared to microservices. |
-| **GUI-Based Applications** | Docker is not optimized for rich GUI apps like desktop software. |
-| **Container Sprawl** | Managing many containers at scale becomes complex without orchestration tools. |
+| Challenge                   | Description                                                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Security Concerns**       | Shared OS kernel can expose vulnerabilities; requires hardening and least privilege policies.                     |
+| **Stateful Applications**   | Docker is better suited for stateless apps; persistent data needs external volumes or StatefulSets in Kubernetes. |
+| **Performance Overhead**    | Not ideal for high-performance computing (HPC) or GPU-intensive tasks.                                            |
+| **Monolithic Applications** | Harder to containerize and scale monoliths compared to microservices.                                             |
+| **GUI-Based Applications**  | Docker is not optimized for rich GUI apps like desktop software.                                                  |
+| **Container Sprawl**        | Managing many containers at scale becomes complex without orchestration tools.                                    |
 
 ---
 
 ## **8. When NOT to Use Docker**
 
 Avoid Docker if your application:
+
 - Requires **high performance** or **low-latency execution**.
 - Depends heavily on **native hardware access**.
 - Is a **monolithic legacy app** difficult to modularize.
@@ -238,13 +250,13 @@ Avoid Docker if your application:
 
 ## **9. Real-World Use Cases**
 
-| Use Case | Description |
-|---------|-------------|
-| **Microservices Architecture** | Each service runs in its own container, independently scalable. |
-| **CI/CD Automation** | Standardized test/build/deploy pipelines using Docker images. |
-| **Hybrid Cloud Deployments** | Consistent environments across on-premises and cloud platforms. |
-| **Local Development Environments** | Replicate production setup locally using Docker Compose. |
-| **Service Mesh Integration** | Combine with Istio or Linkerd for advanced networking and observability. |
+| Use Case                           | Description                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| **Microservices Architecture**     | Each service runs in its own container, independently scalable.          |
+| **CI/CD Automation**               | Standardized test/build/deploy pipelines using Docker images.            |
+| **Hybrid Cloud Deployments**       | Consistent environments across on-premises and cloud platforms.          |
+| **Local Development Environments** | Replicate production setup locally using Docker Compose.                 |
+| **Service Mesh Integration**       | Combine with Istio or Linkerd for advanced networking and observability. |
 
 ---
 
@@ -286,33 +298,37 @@ The process of building and running containers follows a structured lifecycle:
 A **Dockerfile** is a text document that contains all the commands a user could call on the command line to assemble an image.
 
 ### **Sample Dockerfile**
+
 ```Dockerfile
 FROM ubuntu:latest
 CMD ["echo", "Hello World"]
 ```
 
 ### **Key Dockerfile Instructions**
-| Instruction | Purpose |
-|------------|---------|
-| `FROM` | Specifies the base image (e.g., Ubuntu, Alpine). |
-| `RUN` | Executes commands during the build phase (e.g., installing packages). |
-| `CMD` | Default command executed when running the container. |
-| `ENTRYPOINT` | Configures a container to run as an executable. |
-| `COPY` / `ADD` | Copies files/directories into the image. |
-| `WORKDIR` | Sets the working directory for subsequent instructions. |
-| `EXPOSE` | Documents which ports the container listens on. |
-| `ENV` | Sets environment variables. |
+
+| Instruction    | Purpose                                                               |
+| -------------- | --------------------------------------------------------------------- |
+| `FROM`         | Specifies the base image (e.g., Ubuntu, Alpine).                      |
+| `RUN`          | Executes commands during the build phase (e.g., installing packages). |
+| `CMD`          | Default command executed when running the container.                  |
+| `ENTRYPOINT`   | Configures a container to run as an executable.                       |
+| `COPY` / `ADD` | Copies files/directories into the image.                              |
+| `WORKDIR`      | Sets the working directory for subsequent instructions.               |
+| `EXPOSE`       | Documents which ports the container listens on.                       |
+| `ENV`          | Sets environment variables.                                           |
 
 ---
 
 ## **3. Building a Docker Image**
 
 ### **Command Syntax**
+
 ```bash
 docker build [OPTIONS] PATH
 ```
 
 ### **Example Command**
+
 ```bash
 docker build -t my-app:v1 .
 ```
@@ -321,16 +337,20 @@ docker build -t my-app:v1 .
 - `.` → Build context (current directory).
 
 ### **What Happens During Build?**
+
 1. Docker reads the Dockerfile.
 2. Each instruction creates a new **layer** in the image.
 3. Layers are cached for faster rebuilds.
 4. Final output: A tagged image ready to be run or pushed to a registry.
 
 ### **Verify Image Creation**
+
 ```bash
 docker images
 ```
+
 This lists all local images including:
+
 - Repository name
 - Tag
 - Image ID
@@ -342,16 +362,19 @@ This lists all local images including:
 ## **4. Running a Container**
 
 ### **Command Syntax**
+
 ```bash
 docker run [OPTIONS] IMAGE[:TAG]
 ```
 
 ### **Example Command**
+
 ```bash
 docker run my-app:v1
 ```
 
 This:
+
 1. Creates a new container instance from the image.
 2. Runs the default command (`CMD` in Dockerfile).
 3. Outputs: `Hello World`
@@ -362,25 +385,26 @@ This:
 
 ### **Common Docker CLI Commands**
 
-| Command | Description |
-|--------|-------------|
-| `docker build` | Builds an image from a Dockerfile. |
-| `docker run` | Runs a new container from an image. |
-| `docker ps` | Lists running containers (`-a` shows stopped ones). |
-| `docker stop <container>` | Gracefully stops a running container. |
-| `docker rm <container>` | Removes a stopped container. |
-| `docker images` | Lists all available images. |
-| `docker rmi <image>` | Removes an image. |
-| `docker pull <image>` | Pulls an image from a registry. |
-| `docker push <image>` | Pushes a locally tagged image to a registry. |
-| `docker inspect` | Shows detailed info about a container/image. |
-| `docker logs <container>` | Displays logs from a running/stopped container. |
+| Command                   | Description                                         |
+| ------------------------- | --------------------------------------------------- |
+| `docker build`            | Builds an image from a Dockerfile.                  |
+| `docker run`              | Runs a new container from an image.                 |
+| `docker ps`               | Lists running containers (`-a` shows stopped ones). |
+| `docker stop <container>` | Gracefully stops a running container.               |
+| `docker rm <container>`   | Removes a stopped container.                        |
+| `docker images`           | Lists all available images.                         |
+| `docker rmi <image>`      | Removes an image.                                   |
+| `docker pull <image>`     | Pulls an image from a registry.                     |
+| `docker push <image>`     | Pushes a locally tagged image to a registry.        |
+| `docker inspect`          | Shows detailed info about a container/image.        |
+| `docker logs <container>` | Displays logs from a running/stopped container.     |
 
 ---
 
 ## **6. Advanced Tips for Building Efficient Images**
 
 ### **Best Practices**
+
 - Use **multi-stage builds** to reduce final image size.
 - Prefer `COPY` over `ADD` unless you need archive extraction.
 - Combine `RUN` commands to minimize layers.
@@ -388,6 +412,7 @@ This:
 - Always tag images meaningfully (`<app-name>:<version>` or `<commit-hash>`).
 
 ### **Multi-Stage Build Example**
+
 ```Dockerfile
 # Stage 1: Build
 FROM golang:1.20 AS builder
@@ -406,6 +431,7 @@ CMD ["/myapp"]
 ## **7. Real-World Workflow Example**
 
 ### **Step-by-step CI/CD Integration**
+
 1. Developer commits code to Git.
 2. CI pipeline triggers `docker build`.
 3. Tests are run inside the container.
@@ -416,19 +442,19 @@ CMD ["/myapp"]
 
 ## **8. Troubleshooting Containers**
 
-- **Check running containers**:  
+- **Check running containers**:
   ```bash
   docker ps
   ```
-- **Inspect container details**:  
+- **Inspect container details**:
   ```bash
   docker inspect <container_id>
   ```
-- **View logs**:  
+- **View logs**:
   ```bash
   docker logs <container_id>
   ```
-- **Enter a running container**:  
+- **Enter a running container**:
   ```bash
   docker exec -it <container_id> sh
   ```
@@ -437,13 +463,13 @@ CMD ["/myapp"]
 
 ## **9. Summary**
 
-| Topic | Key Points |
-|------|------------|
-| **Dockerfile** | Blueprint defining how to build an image. |
-| **Image** | Immutable template built from Dockerfile. |
-| **Container** | Running instance of an image. |
-| **Commands** | `build`, `run`, `images`, `ps`, `pull`, `push` |
-| **Use Case** | Automate application packaging, testing, and deployment. |
+| Topic              | Key Points                                                  |
+| ------------------ | ----------------------------------------------------------- |
+| **Dockerfile**     | Blueprint defining how to build an image.                   |
+| **Image**          | Immutable template built from Dockerfile.                   |
+| **Container**      | Running instance of an image.                               |
+| **Commands**       | `build`, `run`, `images`, `ps`, `pull`, `push`              |
+| **Use Case**       | Automate application packaging, testing, and deployment.    |
 | **Best Practices** | Multi-stage builds, layer optimization, meaningful tagging. |
 
 ---
@@ -456,14 +482,14 @@ CMD ["/myapp"]
 
 Docker uses several core objects to manage and run applications in containers. These include:
 
-| Object | Description |
-|--------|-------------|
-| **Dockerfile** | A text file containing instructions for building an image. |
-| **Image** | A read-only template with instructions for creating a container. |
-| **Container** | A runnable instance of an image. |
-| **Network** | Enables communication between containers and the outside world. |
-| **Volume / Bind Mount** | Manages persistent or shared data between containers and host. |
-| **Plugin** | Extends Docker functionality (e.g., networking, storage drivers). |
+| Object                  | Description                                                       |
+| ----------------------- | ----------------------------------------------------------------- |
+| **Dockerfile**          | A text file containing instructions for building an image.        |
+| **Image**               | A read-only template with instructions for creating a container.  |
+| **Container**           | A runnable instance of an image.                                  |
+| **Network**             | Enables communication between containers and the outside world.   |
+| **Volume / Bind Mount** | Manages persistent or shared data between containers and host.    |
+| **Plugin**              | Extends Docker functionality (e.g., networking, storage drivers). |
 
 ---
 
@@ -472,17 +498,18 @@ Docker uses several core objects to manage and run applications in containers. T
 A **Dockerfile** is a blueprint used to build a Docker image.
 
 ### **Essential Dockerfile Instructions**
-| Instruction | Purpose |
-|------------|---------|
-| `FROM` | Specifies the base image (must be the first instruction). |
-| `RUN` | Executes commands during image build (e.g., installing packages). |
-| `CMD` | Sets the default command to run when the container starts (only the last `CMD` is effective). |
-| `ENTRYPOINT` | Configures the container to run as an executable. |
-| `COPY` | Copies files from the host into the image. |
-| `ADD` | Similar to `COPY`, but supports remote URLs and automatic unpacking of archives. |
-| `WORKDIR` | Sets the working directory for subsequent instructions. |
-| `EXPOSE` | Documents which ports the container listens on (does not publish them). |
-| `ENV` | Sets environment variables inside the image/container. |
+
+| Instruction  | Purpose                                                                                       |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| `FROM`       | Specifies the base image (must be the first instruction).                                     |
+| `RUN`        | Executes commands during image build (e.g., installing packages).                             |
+| `CMD`        | Sets the default command to run when the container starts (only the last `CMD` is effective). |
+| `ENTRYPOINT` | Configures the container to run as an executable.                                             |
+| `COPY`       | Copies files from the host into the image.                                                    |
+| `ADD`        | Similar to `COPY`, but supports remote URLs and automatic unpacking of archives.              |
+| `WORKDIR`    | Sets the working directory for subsequent instructions.                                       |
+| `EXPOSE`     | Documents which ports the container listens on (does not publish them).                       |
+| `ENV`        | Sets environment variables inside the image/container.                                        |
 
 > ⚠️ **Best Practice**: Use `.dockerignore` to exclude unnecessary files from the build context.
 
@@ -491,33 +518,37 @@ A **Dockerfile** is a blueprint used to build a Docker image.
 ## **3. Docker Images: Read-Only Templates**
 
 An **image** is a static, read-only snapshot that includes:
+
 - Application code
 - Runtime dependencies
 - Libraries and binaries
 - Configuration files
 
 ### **Image Layers**
+
 - Each instruction in the Dockerfile creates a new **layer**.
 - Layers are cached — only changed layers rebuild, improving efficiency.
 - Multiple images can share common layers, saving disk space and network bandwidth.
 
 ### **Image Naming Convention**
 
-Format:  
+Format:
+
 ```
 [<registry-host>:<port>/]<repository>:<tag>
 ```
 
 #### **Example:**
+
 ```
 docker.io/ubuntu:18.04
 ```
 
-| Part | Description |
-|------|-------------|
+| Part        | Description                                 |
+| ----------- | ------------------------------------------- |
 | `docker.io` | Hostname of the registry (e.g., Docker Hub) |
-| `ubuntu` | Repository name (group of related images) |
-| `18.04` | Tag indicating version or variant |
+| `ubuntu`    | Repository name (group of related images)   |
+| `18.04`     | Tag indicating version or variant           |
 
 > 📌 If the registry is omitted (e.g., `nginx:latest`), Docker defaults to **Docker Hub (`docker.io`)**.
 
@@ -528,18 +559,20 @@ docker.io/ubuntu:18.04
 A **container** is a live, running instance of a Docker image.
 
 ### **Key Features of Containers**
+
 - **Writable Layer**: On top of the read-only image layers, allowing runtime changes.
 - **Isolation**: Containers are isolated from each other and the host OS.
 - **Portability**: Can be moved across environments without configuration changes.
 
 ### **Common Container Operations**
-| Command | Description |
-|--------|-------------|
-| `docker run` | Creates and starts a container. |
-| `docker stop` | Gracefully stops a running container. |
-| `docker start` | Starts a stopped container. |
-| `docker rm` | Removes a container. |
-| `docker exec` | Runs a command inside a running container. |
+
+| Command        | Description                                |
+| -------------- | ------------------------------------------ |
+| `docker run`   | Creates and starts a container.            |
+| `docker stop`  | Gracefully stops a running container.      |
+| `docker start` | Starts a stopped container.                |
+| `docker rm`    | Removes a container.                       |
+| `docker exec`  | Runs a command inside a running container. |
 
 ---
 
@@ -548,14 +581,16 @@ A **container** is a live, running instance of a Docker image.
 Docker provides virtual networks to allow containers to communicate securely.
 
 ### **Types of Docker Networks**
-| Network Type | Description |
-|--------------|-------------|
-| **Bridge (Default)** | Default network where containers connect unless otherwise specified. |
-| **Host** | Uses the host's network stack directly (less isolation). |
-| **Overlay** | Enables multi-host networking (used with Docker Swarm or Kubernetes). |
-| **None** | Disables all networking for a container. |
+
+| Network Type         | Description                                                           |
+| -------------------- | --------------------------------------------------------------------- |
+| **Bridge (Default)** | Default network where containers connect unless otherwise specified.  |
+| **Host**             | Uses the host's network stack directly (less isolation).              |
+| **Overlay**          | Enables multi-host networking (used with Docker Swarm or Kubernetes). |
+| **None**             | Disables all networking for a container.                              |
 
 ### **Managing Networks**
+
 ```bash
 docker network create my-network
 docker network ls
@@ -563,6 +598,7 @@ docker network inspect my-network
 ```
 
 You can attach a container to one or more networks at runtime:
+
 ```bash
 docker run --network=my-network my-app
 ```
@@ -574,13 +610,15 @@ docker run --network=my-network my-app
 By default, data inside a container is **ephemeral** — it’s lost when the container is removed.
 
 ### **Persistent Data Options**
-| Option | Description |
-|--------|-------------|
-| **Volumes** | Managed by Docker; best for persistent data (e.g., databases). |
-| **Bind Mounts** | Mounts a file or directory from the host machine into the container. |
-| **tmpfs Mounts** | Stores data in memory only (not persisted to disk). |
+
+| Option           | Description                                                          |
+| ---------------- | -------------------------------------------------------------------- |
+| **Volumes**      | Managed by Docker; best for persistent data (e.g., databases).       |
+| **Bind Mounts**  | Mounts a file or directory from the host machine into the container. |
+| **tmpfs Mounts** | Stores data in memory only (not persisted to disk).                  |
 
 ### **Using Volumes**
+
 ```bash
 docker volume create my-data
 docker run -v my-data:/app/data my-app
@@ -595,12 +633,13 @@ This mounts the volume `my-data` into `/app/data` inside the container.
 Plugins extend Docker’s capabilities beyond its core features.
 
 ### **Popular Plugin Types**
-| Plugin Type | Example Use Case |
-|------------|------------------|
-| **Storage Plugins** | Connect to external storage like AWS EBS, NFS, etc. |
-| **Network Plugins** | Enable custom networks using tools like Weave or Calico. |
-| **Authorization Plugins** | Enforce access control policies. |
-| **Logging Plugins** | Send logs to external systems like Fluentd or Datadog. |
+
+| Plugin Type               | Example Use Case                                         |
+| ------------------------- | -------------------------------------------------------- |
+| **Storage Plugins**       | Connect to external storage like AWS EBS, NFS, etc.      |
+| **Network Plugins**       | Enable custom networks using tools like Weave or Calico. |
+| **Authorization Plugins** | Enforce access control policies.                         |
+| **Logging Plugins**       | Send logs to external systems like Fluentd or Datadog.   |
 
 Plugins are usually managed via the Docker CLI or API and can be installed dynamically.
 
@@ -608,14 +647,14 @@ Plugins are usually managed via the Docker CLI or API and can be installed dynam
 
 ## **8. Summary of Docker Objects**
 
-| Object | Function |
-|--------|----------|
-| **Dockerfile** | Blueprint for building an image. |
-| **Image** | Immutable, read-only template built from a Dockerfile. |
-| **Container** | Running instance of an image with a writable layer. |
-| **Network** | Isolates and manages container communication. |
-| **Volume / Mount** | Persists data beyond container lifecycle. |
-| **Plugin** | Extends Docker functionality (storage, logging, networking, etc.). |
+| Object             | Function                                                           |
+| ------------------ | ------------------------------------------------------------------ |
+| **Dockerfile**     | Blueprint for building an image.                                   |
+| **Image**          | Immutable, read-only template built from a Dockerfile.             |
+| **Container**      | Running instance of an image with a writable layer.                |
+| **Network**        | Isolates and manages container communication.                      |
+| **Volume / Mount** | Persists data beyond container lifecycle.                          |
+| **Plugin**         | Extends Docker functionality (storage, logging, networking, etc.). |
 
 ---
 
@@ -639,11 +678,12 @@ Plugins are usually managed via the Docker CLI or API and can be installed dynam
 Docker follows a **client-server architecture**, enabling developers to build, run, and manage containers across various environments.
 
 ### **Core Components of Docker Architecture**
-| Component | Description |
-|----------|-------------|
-| **Docker Client** | Interface used by users or applications (CLI, REST API) to send commands to the Docker daemon. |
+
+| Component                | Description                                                                                                                        |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Docker Client**        | Interface used by users or applications (CLI, REST API) to send commands to the Docker daemon.                                     |
 | **Docker Host (Server)** | Contains the **Docker Daemon (`dockerd`)**, which processes client requests and manages containers, images, networks, and storage. |
-| **Docker Registry** | Centralized service where container images are stored and distributed (e.g., Docker Hub, private registries). |
+| **Docker Registry**      | Centralized service where container images are stored and distributed (e.g., Docker Hub, private registries).                      |
 
 ---
 
@@ -652,6 +692,7 @@ Docker follows a **client-server architecture**, enabling developers to build, r
 The **Docker Client** is the primary interface for interacting with Docker.
 
 ### **Key Features**
+
 - Accepts user input via:
   - **Command Line Interface (CLI)** – e.g., `docker run`, `docker build`
   - **REST API** – used by tools like CI/CD pipelines or GUI apps
@@ -661,6 +702,7 @@ The **Docker Client** is the primary interface for interacting with Docker.
   - **Remote Docker Daemon** (over network)
 
 > 🛠 Example CLI Command:
+
 ```bash
 docker run hello-world
 ```
@@ -672,6 +714,7 @@ docker run hello-world
 The **Docker Host** is where containers actually run. It runs the **Docker Daemon (`dockerd`)**.
 
 ### **Main Responsibilities of Docker Daemon**
+
 - Listens for API requests from clients.
 - Manages Docker objects such as:
   - **Images**
@@ -682,12 +725,13 @@ The **Docker Host** is where containers actually run. It runs the **Docker Daemo
 - Handles low-level operations like building, running, and distributing containers.
 
 ### **Key Technologies Used by Docker Daemon**
-| Technology | Purpose |
-|-----------|---------|
-| **Namespaces** | Provides isolation for processes, networking, mounts, etc. |
-| **Control Groups (cgroups)** | Limits and monitors resource usage (CPU, memory, disk I/O). |
-| **Union File Systems (UnionFS)** | Enables layered image builds and copy-on-write functionality. |
-| **Storage Drivers** | Manages how layers are stacked and stored (e.g., `overlay2`, `aufs`). |
+
+| Technology                       | Purpose                                                               |
+| -------------------------------- | --------------------------------------------------------------------- |
+| **Namespaces**                   | Provides isolation for processes, networking, mounts, etc.            |
+| **Control Groups (cgroups)**     | Limits and monitors resource usage (CPU, memory, disk I/O).           |
+| **Union File Systems (UnionFS)** | Enables layered image builds and copy-on-write functionality.         |
+| **Storage Drivers**              | Manages how layers are stacked and stored (e.g., `overlay2`, `aufs`). |
 
 ---
 
@@ -696,18 +740,21 @@ The **Docker Host** is where containers actually run. It runs the **Docker Daemo
 A **registry** is a centralized location where Docker images are stored and shared.
 
 ### **Types of Registries**
-| Type | Description |
-|------|-------------|
-| **Public Registry** | E.g., [Docker Hub](https://hub.docker.com), accessible to everyone. |
+
+| Type                 | Description                                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **Public Registry**  | E.g., [Docker Hub](https://hub.docker.com), accessible to everyone.                                                            |
 | **Private Registry** | Secured registry hosted internally or by third-party cloud providers (e.g., AWS ECR, Azure ACR, IBM Cloud Container Registry). |
 
 ### **Image Lifecycle in the Registry**
+
 1. **Build**: Developer creates an image using `docker build`.
 2. **Tag**: Assign a name and version using `docker tag`.
 3. **Push**: Upload image to registry using `docker push`.
 4. **Pull**: Retrieve image from registry using `docker pull`.
 
 > 📦 Example:
+
 ```bash
 docker build -t my-app:v1 .
 docker tag my-app:v1 registry.example.com/myteam/my-app:v1
@@ -721,20 +768,25 @@ docker push registry.example.com/myteam/my-app:v1
 Here's a step-by-step breakdown of how Docker builds and runs a container:
 
 ### **Step 1: Build Image**
+
 - Use a **Dockerfile** to define image structure.
 - Run `docker build` to create a new image.
 
 ### **Step 2: Tag & Push Image**
+
 - Tag the image with a name and optional version.
 - Push it to a local or remote registry using `docker push`.
 
 ### **Step 3: Pull Image on Target Machine**
+
 - If the image doesn't exist locally, use `docker pull` to fetch it from the registry.
 
 ### **Step 4: Run Container**
+
 - Execute `docker run <image-name>` to start a container from the image.
 
 ### **Visual Workflow**
+
 ```
 [Developer Machine]
      ↓ (docker build)
@@ -752,16 +804,19 @@ Here's a step-by-step breakdown of how Docker builds and runs a container:
 ## **6. Communication Between Docker Components**
 
 ### **Client ↔ Daemon**
+
 - Communication happens via:
   - Local Unix socket (default)
   - TCP over network (for remote hosts)
 - Uses **Docker CLI** or **Docker SDKs/APIs**.
 
 ### **Daemon ↔ Registry**
+
 - Pulls and pushes images from/to public or private registries.
 - Authenticates when accessing secured registries.
 
 ### **Daemon ↔ Daemon (Swarm Mode)**
+
 - In Docker Swarm or Kubernetes environments, daemons communicate with each other to manage services and orchestrate containers.
 
 ---
@@ -770,28 +825,28 @@ Here's a step-by-step breakdown of how Docker builds and runs a container:
 
 The Docker host manages several types of objects:
 
-| Object | Description |
-|--------|-------------|
-| **Images** | Templates used to create containers. |
-| **Containers** | Running instances of images. |
-| **Networks** | Virtual networks for container communication. |
-| **Volumes** | Persistent storage for data. |
-| **Plugins** | Extend Docker’s capabilities (networking, logging, storage). |
+| Object         | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| **Images**     | Templates used to create containers.                         |
+| **Containers** | Running instances of images.                                 |
+| **Networks**   | Virtual networks for container communication.                |
+| **Volumes**    | Persistent storage for data.                                 |
+| **Plugins**    | Extend Docker’s capabilities (networking, logging, storage). |
 
 ---
 
 ## **8. Summary Table**
 
-| Component | Function |
-|----------|----------|
-| **Docker Client** | Interface for sending commands (CLI or API). |
-| **Docker Daemon (`dockerd`)** | Processes commands and manages containers. |
-| **Docker Registry** | Stores and distributes container images. |
-| **Containerization Process** | Build → Tag → Push → Pull → Run |
-| **Underlying Tech** | Namespaces, cgroups, UnionFS, Storage Drivers |
-| **Networking** | Supports bridge, host, overlay, none |
-| **Persistent Storage** | Volumes, bind mounts, tmpfs mounts |
-| **Extensibility** | Plugins for storage, logging, networking |
+| Component                     | Function                                      |
+| ----------------------------- | --------------------------------------------- |
+| **Docker Client**             | Interface for sending commands (CLI or API).  |
+| **Docker Daemon (`dockerd`)** | Processes commands and manages containers.    |
+| **Docker Registry**           | Stores and distributes container images.      |
+| **Containerization Process**  | Build → Tag → Push → Pull → Run               |
+| **Underlying Tech**           | Namespaces, cgroups, UnionFS, Storage Drivers |
+| **Networking**                | Supports bridge, host, overlay, none          |
+| **Persistent Storage**        | Volumes, bind mounts, tmpfs mounts            |
+| **Extensibility**             | Plugins for storage, logging, networking      |
 
 ---
 
@@ -804,7 +859,6 @@ The Docker host manages several types of objects:
 - Monitor and log containers using centralized systems (e.g., Prometheus + Grafana, ELK stack).
 
 ---
-
 
 # **Review of Docker Concepts and Understanding a Dockerfile**
 
@@ -820,14 +874,14 @@ This guide will walk you through essential Docker concepts and how to understand
 
 ## 🧱 **Key Docker Concepts**
 
-| Term | Description |
-|------|-------------|
-| **Dockerfile** | A text file containing instructions to build a Docker image. |
-| **Image** | A read-only template used to create containers. Built from a Dockerfile. |
-| **Container** | A running instance of an image. Isolated and lightweight. |
-| **Registry** | A storage system for Docker images (e.g., Docker Hub, AWS ECR). |
-| **Local Machine** | Where you build and test your Docker images before pushing to a registry. |
-| **Volume / Bind Mount** | Used to persist data beyond the container's lifecycle. |
+| Term                    | Description                                                               |
+| ----------------------- | ------------------------------------------------------------------------- |
+| **Dockerfile**          | A text file containing instructions to build a Docker image.              |
+| **Image**               | A read-only template used to create containers. Built from a Dockerfile.  |
+| **Container**           | A running instance of an image. Isolated and lightweight.                 |
+| **Registry**            | A storage system for Docker images (e.g., Docker Hub, AWS ECR).           |
+| **Local Machine**       | Where you build and test your Docker images before pushing to a registry. |
+| **Volume / Bind Mount** | Used to persist data beyond the container's lifecycle.                    |
 
 ---
 
@@ -882,42 +936,42 @@ USER node
 
 ## 📋 **Breakdown of Dockerfile Instructions**
 
-| Instruction | Purpose | Example |
-|------------|---------|---------|
-| `FROM` | Sets the base image. Must be the first line. | `FROM node:14` |
-| `ENV` | Sets environment variables inside the container. | `ENV PORT=3000` |
-| `WORKDIR` | Sets the working directory for subsequent commands. | `WORKDIR /app` |
-| `COPY` | Copies files from host to image. | `COPY package*.json ./` |
-| `RUN` | Executes commands during image build. | `RUN npm install --production` |
-| `ADD` | Similar to COPY but supports URLs and archive extraction. | `ADD public/index.html /app/` |
-| `EXPOSE` | Documents which ports the container listens on. | `EXPOSE $PORT` |
-| `CMD` | Default command executed when container runs. Only one takes effect. | `CMD ["node", "app.js"]` |
-| `LABEL` | Adds metadata like version or maintainer info. | `LABEL maintainer="John Doe"` |
-| `HEALTHCHECK` | Checks if the container is healthy at runtime. | `HEALTHCHECK CMD curl ...` |
-| `USER` | Switches to a non-root user for security. | `USER node` |
+| Instruction   | Purpose                                                              | Example                        |
+| ------------- | -------------------------------------------------------------------- | ------------------------------ |
+| `FROM`        | Sets the base image. Must be the first line.                         | `FROM node:14`                 |
+| `ENV`         | Sets environment variables inside the container.                     | `ENV PORT=3000`                |
+| `WORKDIR`     | Sets the working directory for subsequent commands.                  | `WORKDIR /app`                 |
+| `COPY`        | Copies files from host to image.                                     | `COPY package*.json ./`        |
+| `RUN`         | Executes commands during image build.                                | `RUN npm install --production` |
+| `ADD`         | Similar to COPY but supports URLs and archive extraction.            | `ADD public/index.html /app/`  |
+| `EXPOSE`      | Documents which ports the container listens on.                      | `EXPOSE $PORT`                 |
+| `CMD`         | Default command executed when container runs. Only one takes effect. | `CMD ["node", "app.js"]`       |
+| `LABEL`       | Adds metadata like version or maintainer info.                       | `LABEL maintainer="John Doe"`  |
+| `HEALTHCHECK` | Checks if the container is healthy at runtime.                       | `HEALTHCHECK CMD curl ...`     |
+| `USER`        | Switches to a non-root user for security.                            | `USER node`                    |
 
 ---
 
 ## 🔁 **Docker Build & Run Process Flow**
 
 1. **Write Dockerfile**: Define all steps needed to build the image.
-2. **Build Image**:  
+2. **Build Image**:
    ```bash
    docker build -t my-node-app:1.0 .
    ```
-3. **Tag Image**: Optionally tag it for a specific registry.  
+3. **Tag Image**: Optionally tag it for a specific registry.
    ```bash
    docker tag my-node-app:1.0 registry.example.com/myteam/my-node-app:1.0
    ```
-4. **Push to Registry**: Share with others or deploy elsewhere.  
+4. **Push to Registry**: Share with others or deploy elsewhere.
    ```bash
    docker push registry.example.com/myteam/my-node-app:1.0
    ```
-5. **Pull Image**: On another machine/environment.  
+5. **Pull Image**: On another machine/environment.
    ```bash
    docker pull registry.example.com/myteam/my-node-app:1.0
    ```
-6. **Run Container**:  
+6. **Run Container**:
    ```bash
    docker run -p 3000:3000 registry.example.com/myteam/my-node-app:1.0
    ```
@@ -938,14 +992,490 @@ USER node
 
 ## 📦 **Summary**
 
-| Concept | Description |
+| Concept             | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| **Dockerfile**      | Blueprint for building Docker images.                            |
+| **Image**           | Read-only snapshot built from Dockerfile.                        |
+| **Container**       | Running instance of an image.                                    |
+| **Registry**        | Centralized location to store and share images.                  |
+| **Docker Commands** | `build`, `run`, `push`, `pull`, `images`, `ps`, etc.             |
+| **Security**        | Always use a non-root user and keep images minimal.              |
+| **Extensibility**   | Use labels, health checks, and plugins to enhance functionality. |
+
+---
+
+## **Pull an image from Docker Hub and run it as a container**
+
+---
+
+## 🧰 Prerequisites
+
+- You have **Docker installed** on your machine.
+  - Check with: `docker --version`
+  - If not installed, follow the official Docker installation guide for your OS: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+  ```
+  sudo apt install docker.io -y
+  ```
+
+
+
+---
+
+## ✅ Step-by-Step Guide
+
+### 🔹 Step 1: Open Terminal (or Command Prompt)
+
+Open your terminal or command prompt. This is where you’ll run all Docker commands.
+
+---
+
+### 🔹 Step 2: Pull an Image from Docker Hub
+
+Use the `docker pull` command:
+
+```bash
+docker pull hello-world
+```
+
+#### 💡 Explanation:
+
+- `docker`: The main Docker CLI command.
+- `pull`: Tells Docker to download an image from Docker Hub.
+- `hello-world`: The name of the image to pull.
+
+> This pulls the official `hello-world` image, which is small and used for testing Docker installations.
+
+---
+
+### 🔹 Step 3: List Images on Your Machine
+
+After pulling the image, check if it was successfully downloaded:
+
+```bash
+docker images
+```
+
+#### 💡 Output will look like this:
+
+```
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+hello-world   latest    d1165f22117a   2 months ago   13.3kB
+```
+
+#### 💡 Explanation:
+
+- `REPOSITORY`: Name of the image (`hello-world`)
+- `TAG`: Version tag (default is `latest`)
+- `IMAGE ID`: Unique identifier for the image
+- `SIZE`: Size of the image
+
+---
+
+### 🔹 Step 4: Run the Image as a Container
+
+Now, run the image using the `docker run` command:
+
+```bash
+docker run hello-world
+```
+
+#### 💡 Explanation:
+
+- `run`: Tells Docker to create and start a new container from the specified image.
+- `hello-world`: The image to use for creating the container.
+
+#### 💡 What Happens?
+
+- Docker checks if the image exists locally.
+- If yes (which it does), it starts a new container from that image.
+- The container runs the default command defined in the image (in this case, prints a welcome message).
+
+You should see output like:
+
+```
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...
+```
+
+---
+
+### 🔹 Step 5: List Running Containers
+
+To see containers currently running:
+
+```bash
+docker ps
+```
+
+But since `hello-world` exits immediately after printing the message, it won't show up here.
+
+#### To see **all containers**, including stopped ones:
+
+```bash
+docker ps -a
+```
+
+#### 💡 Output will look like:
+
+```
+CONTAINER ID   IMAGE         COMMAND    ...   STATUS                     NAMES
+abc123xyz      hello-world   "/hello"   ...   Exited (0) 10 seconds ago   youthful_banach
+```
+
+---
+
+### 🔹 Optional: Remove the Container
+
+If you want to clean up:
+
+```bash
+docker rm abc123xyz
+```
+
+Replace `abc123xyz` with your actual container ID or name.
+
+---
+
+### 🔹 Optional: Remove the Image
+
+To remove the image from your system:
+
+```bash
+docker rmi hello-world
+```
+
+---
+
+## 📌 Summary of Commands
+
+| Command                 | Description                                   |
+| ----------------------- | --------------------------------------------- |
+| `docker pull <image>`   | Downloads an image from Docker Hub            |
+| `docker images`         | Lists all images on your system               |
+| `docker run <image>`    | Runs an image as a container                  |
+| `docker ps`             | Lists running containers                      |
+| `docker ps -a`          | Lists all containers (including stopped ones) |
+| `docker rm <container>` | Removes a specific container                  |
+| `docker rmi <image>`    | Removes a specific image                      |
+
+---
+
+## 🎯 Example with Another Image (nginx Web Server)
+
+Let’s try something more practical — running a real web server:
+
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+#### 💡 Explanation:
+
+- `-d`: Run container in **detached mode** (in background)
+- `-p 8080:80`: Map port 8080 (your computer) to port 80 (inside the container)
+- `nginx`: Official NGINX image
+
+Now open your browser and go to:  
+👉 [http://localhost:8080](http://localhost:8080)  
+You should see the NGINX welcome page!
+
+---
+
+### You're encountering this error:
+
+```
+Bind for 0.0.0.0:8080 failed: port is already allocated
+```
+
+### 🔍 What does this mean?
+
+This error occurs because **port `8080` on your machine is already being used by another process**, so Docker can't bind to it.
+
+---
+
+## ✅ Step-by-Step Fix
+
+### 🪛 Step 1: Find the Process Using Port 8080
+
+Run this command in your terminal:
+
+```bash
+lsof -i :8080
+```
+
+Or if you don't have `lsof`, use:
+
+```bash
+sudo netstat -tulpn | grep :8080
+```
+
+#### Example Output:
+```
+COMMAND   PID   USER    FD   TYPE DEVICE SIZE/OFF NODE NAME
+node    12345   user   20u  IPv6 123456      0t0  TCP *:8080 (LISTEN)
+```
+
+Here, the process with **PID 12345** is using port 8080.
+
+---
+
+### 🚫 Step 2: Stop the Conflicting Process
+
+Use the `kill` command with the PID from above:
+
+```bash
+sudo kill -9 12345
+```
+
+> Replace `12345` with the actual PID you found.
+
+⚠️ Be careful not to kill important system processes. Make sure you know what the process is before killing it.
+
+---
+
+### ▶️ Step 3: Try Running the Docker Command Again
+
+Now try starting NGINX again:
+
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+It should now work and return a container ID like:
+
+```
+a14767df4f989392399558bee003840abe43350569edbe2c121ca304a683f1af
+```
+
+You can verify it's running with:
+
+```bash
+docker ps
+```
+
+And visit [http://localhost:8080](http://localhost:8080) in your browser.
+
+---
+
+## 🔄 Alternative: Use a Different Host Port
+
+If you don’t want to stop the existing service using port 8080, you can map NGINX to a different port on your host — for example, `8000`:
+
+```bash
+docker run -d -p 8000:80 nginx
+```
+
+Then open:
+
+👉 [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🧹 Optional: Clean Up Unused Containers/Ports
+
+To avoid future conflicts, clean up unused containers:
+
+```bash
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+```
+
+> ⚠️ This will remove all running/stopped containers! Only do this if you’re okay with that.
+
+---
+
+## 📌 Summary
+
+| Problem                            | Solution                                  |
+|-----------------------------------|-------------------------------------------|
+| Port 8080 is already in use       | Kill the conflicting process or use another port |
+| Can't find which process is using it | Use `lsof -i :8080` or `netstat`         |
+| Don’t want to kill the process    | Run NGINX on a different port: `-p 8000:80` |
+
+---
+
+
+## 🙌 Final Tip
+
+Once you're comfortable with these basics, explore Docker Hub ([https://hub.docker.com](https://hub.docker.com)) to find thousands of pre-built images for apps like MySQL, Redis, Python apps, etc.
+
+---
+
+
+## Build an image using a Dockerfile
+
+---
+
+## 📁 Step 1: Create a Project Directory
+
+Open your terminal and create a new folder for your project:
+
+```bash
+mkdir my-docker-app
+cd my-docker-app
+```
+
+This will be the working directory where you’ll create your `Dockerfile` and application files.
+
+---
+
+## 📄 Step 2: Create a Simple Application
+
+For this example, we'll create a very simple **Python web app** using Flask.
+
+### 🔹 Create a file named `app.py`:
+
+```bash
+touch app.py
+```
+
+Now open `app.py` in a text editor and paste the following code:
+
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "Hello from Docker!"
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
+```
+
+This is a basic Flask app that responds with `"Hello from Docker!"` when accessed via a browser.
+
+---
+
+### 🔹 Create a `requirements.txt` file:
+
+```bash
+echo "flask" > requirements.txt
+```
+
+This tells Docker which Python packages to install.
+
+---
+
+## 🐳 Step 3: Create a Dockerfile
+
+A `Dockerfile` is a script containing instructions to build a Docker image.
+
+Create the Dockerfile:
+
+```bash
+touch Dockerfile
+```
+
+Open it in your editor and add the following content:
+
+```Dockerfile
+# Use an official Python runtime as the base image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 5000 available to the outside world
+EXPOSE 5000
+
+# Define environment variable (optional)
+ENV NAME="Docker"
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
+```
+
+---
+
+## 🏗️ Step 4: Build the Docker Image
+
+From inside your project directory (`my-docker-app`), run:
+
+```bash
+docker build -t my-flask-app .
+```
+
+#### 💡 Explanation:
+- `docker build`: Command to build an image.
+- `-t my-flask-app`: Tags the image with a name (`my-flask-app`).
+- `.`: Tells Docker to use the current directory as the build context (where it looks for files like `Dockerfile`, `app.py`, etc.).
+
+You’ll see output showing each step being executed — downloading Python, installing Flask, copying files, etc.
+
+---
+
+## ▶️ Step 5: Run the Container
+
+Once the image is built, run it as a container:
+
+```bash
+docker run -d -p 5000:5000 my-flask-app
+```
+
+#### 💡 Explanation:
+- `-d`: Run the container in **detached mode** (in background).
+- `-p 5000:5000`: Map port `5000` on your host to port `5000` in the container.
+- `my-flask-app`: The image to run.
+
+---
+
+## 🌍 Step 6: Test the App
+
+Open your browser and go to:
+
+👉 [http://localhost:5000](http://localhost:5000)
+
+You should see:
+
+```
+Hello from Docker!
+```
+
+🎉 You've successfully built a Docker image and run a web app inside a container!
+
+---
+
+## 🗑️ Optional: Clean Up
+
+To stop and remove the container:
+
+```bash
+docker stop <container_id>
+docker rm <container_id>
+```
+
+Use `docker ps` to find the container ID.
+
+---
+
+## 📋 Summary of Key Commands
+
+| Command | Description |
 |--------|-------------|
-| **Dockerfile** | Blueprint for building Docker images. |
-| **Image** | Read-only snapshot built from Dockerfile. |
-| **Container** | Running instance of an image. |
-| **Registry** | Centralized location to store and share images. |
-| **Docker Commands** | `build`, `run`, `push`, `pull`, `images`, `ps`, etc. |
-| **Security** | Always use a non-root user and keep images minimal. |
-| **Extensibility** | Use labels, health checks, and plugins to enhance functionality. |
+| `docker build -t <image-name> .` | Builds a Docker image using the Dockerfile in current directory |
+| `docker run -d -p <host-port>:<container-port> <image>` | Runs a container from the image |
+| `FROM <base-image>` | Base image to start from (e.g., Python, Ubuntu) |
+| `WORKDIR /path` | Sets the working directory inside the container |
+| `COPY . /app` | Copies files from local machine to container |
+| `RUN <command>` | Runs a shell command during image build |
+| `EXPOSE <port>` | Documents which port the container listens on |
+| `CMD ["cmd", "arg1"]` | Default command to run when container starts |
+
+---
+
+## ✅ Bonus Tip: Best Practices
+
+- Always use `.dockerignore` to exclude unnecessary files (like `__pycache__`, `.git`, `venv`, etc.)
+- Keep images small by using minimal base images (e.g., `alpine`, `slim`)
+- Avoid installing unnecessary dependencies
+- Use multi-stage builds for more complex apps (advanced topic)
 
 ---
