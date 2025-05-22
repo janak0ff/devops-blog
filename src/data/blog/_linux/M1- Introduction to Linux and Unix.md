@@ -1,5 +1,5 @@
 ---
-title: Module 1 - Introduction to Linux
+title: Linux-M1 - Introduction to Linux
 pubDatetime: 2025-05-20
 tags:
   - Linux Introduction
@@ -743,6 +743,307 @@ Runs a Python script named `myprogram.py` located in the current directory.
 | Move to specific path              | `cd /home/me/Documents` |
 | List contents of current directory | `ls`                    |
 | Run a Python script                | `python myprogram.py`   |
+
+---
+
+# **Browsing Directories with the Linux Terminal**
+
+---
+
+## **Learning Objectives**
+
+By the end of this guide, you will be able to:
+
+✅ Understand what a **Linux terminal** is and how it works  
+✅ Use the `pwd` command to display your **current working directory**  
+✅ Use the `ls` command to **list contents of a directory**
+
+---
+
+## **1. What Is the Linux Terminal?**
+
+The **Linux terminal**, also known as:
+
+- Command line
+- Shell prompt
+- Command prompt
+
+It is a **text-based interface** used to interact with the operating system by typing commands.
+
+### **Understanding the Prompt**
+
+You may see something like:
+
+```
+/home/project $
+```
+
+- `/home/project` – This is the **current working directory**
+- `$` – The **command prompt**, where you type commands
+
+> On some systems, you might see `#` instead of `$`. A `#` indicates you're logged in as a **superuser (root)**.
+
+---
+
+## **2. `pwd` – Print Working Directory**
+
+### **Purpose**
+
+Shows the **full path** of the directory you are currently in.
+
+### **Usage**
+
+```bash
+pwd
+```
+
+### **Example Output**
+
+```
+/home/project
+```
+
+This means you are in the `project` subdirectory inside the `home` directory.
+
+---
+
+## **3. `ls` – List Directory Contents**
+
+### **Purpose**
+
+Displays files and directories in the current location or specified location.
+
+### **Basic Usage**
+
+```bash
+ls
+```
+
+If the current directory is empty, the command returns **no output** — not even a blank line.
+
+### **List Contents of a Specific Directory**
+
+You can specify a directory path:
+
+```bash
+ls /home
+```
+
+### **Example Output**
+
+```
+project  theia
+```
+
+This shows that the `/home` directory contains two **subdirectories**: `project` and `theia`.
+
+---
+
+## **4. Understanding Filesystem Paths**
+
+Linux uses a **tree-like structure** for organizing files and directories.
+
+### **Root Directory**
+
+- Represented by `/` (called "slash")
+- The topmost directory in the filesystem
+
+### **Subdirectories**
+
+- Folders within other folders
+- Example: `/home/project` means:
+  - `project` is a subdirectory inside `home`
+  - `home` is a subdirectory inside the root (`/`)
+
+### **Path Examples**
+
+| Path            | Description                                |
+| --------------- | ------------------------------------------ |
+| `/`             | Root directory                             |
+| `/home`         | Home directory (contains user directories) |
+| `/home/project` | User-specific directory for projects       |
+
+---
+
+## **5. Summary of Commands**
+
+| Command    | Description                                     | Example                 |
+| ---------- | ----------------------------------------------- | ----------------------- |
+| `pwd`      | Print Working Directory – show current location | `pwd` → `/home/project` |
+| `ls`       | List contents of current directory              | `ls`                    |
+| `ls <dir>` | List contents of a specific directory           | `ls /home`              |
+
+---
+
+## **6. Final Notes**
+
+- The **terminal** allows you to interact with your Linux system using text commands.
+- Use `pwd` to always know where you are in the file system.
+- Use `ls` to explore what’s inside a directory.
+- You can navigate through the Linux file system using paths and commands like `cd`, which you'll learn more about in future lessons.
+
+---
+
+# **Linux Terminal Tips: Tab Completion & Command History**
+
+---
+
+## **Learning Objectives**
+
+By the end of this guide, you will be able to:
+
+✅ Use **Tab Completion** to speed up command typing  
+✅ Use **Command History** to reuse or edit previous commands
+
+These two features help make working in the Linux terminal **faster**, **more efficient**, and **less error-prone**.
+
+---
+
+## **1. Tab Completion – Speed Up Typing Commands**
+
+### **What is Tab Completion?**
+
+A time-saving feature that **auto-fills** partially typed commands, file names, or paths when you press the **Tab key**.
+
+> Works for:
+
+- Commands
+- File names
+- Directory paths
+
+### **How It Works**
+
+- Type part of a name and press **Tab**
+- The shell tries to complete it automatically
+- If multiple matches exist, pressing Tab again may show suggestions or do nothing until more characters are entered
+
+### **Examples**
+
+#### **Example 1: Navigate to `Pictures`**
+
+```bash
+cd P<TAB>
+```
+
+Becomes:
+
+```bash
+cd Pictures/
+```
+
+Because `Pictures` is the only directory starting with "P".
+
+#### **Example 2: Ambiguous Match (Do → Documents vs Downloads)**
+
+```bash
+cd Do<TAB>
+```
+
+No auto-complete because both `Documents` and `Downloads` start with "Do".
+
+#### **Example 3: Specific Match (Doc → Documents)**
+
+```bash
+cd Doc<TAB>
+```
+
+Becomes:
+
+```bash
+cd Documents/
+```
+
+Only one match found.
+
+#### **Example 4: Long Path Completion**
+
+Inside `~/Documents`:
+
+```bash
+cd py<TAB>
+```
+
+If there's only one folder named `python-examples`, it becomes:
+
+```bash
+cd python-examples/
+```
+
+You can keep pressing **Tab** to go deeper into nested directories if they're unambiguous.
+
+---
+
+## **2. Command History – Reuse Previous Commands**
+
+### **What is Command History?**
+
+Linux keeps a **record of all commands** you've entered during your session.
+
+You can navigate this list using:
+
+- **↑ (Up Arrow)** – Go back through older commands
+- **↓ (Down Arrow)** – Move forward toward newer commands
+
+This lets you **reuse or modify previous commands** without retyping them.
+
+### **How to Use It**
+
+#### **Scenario: You ran these commands**
+
+```bash
+cd ~/Documents/python-examples
+python3 myprogram.py
+cd /
+```
+
+Now, at the prompt:
+
+```bash
+/ $
+```
+
+#### **Step 1: Press ↑ once**
+
+Repeats the last command:
+
+```bash
+cd /
+```
+
+#### **Step 2: Press ↑ again**
+
+Repeats:
+
+```bash
+python3 myprogram.py
+```
+
+#### **Step 3: Press ↑ again**
+
+Repeats:
+
+```bash
+cd ~/Documents/python-examples
+```
+
+> Tip: If you go too far back, use the **↓ arrow** to move forward through history.
+
+---
+
+## **3. Summary Table**
+
+| Feature             | Description                                  | Example                                           |
+| ------------------- | -------------------------------------------- | ------------------------------------------------- |
+| **Tab Completion**  | Auto-completes commands, filenames, or paths | Type `cd Doc<TAB>` → completes to `cd Documents/` |
+| **Command History** | Recalls previously used commands             | Use ↑ and ↓ arrows to scroll through commands     |
+
+---
+
+## **4. Final Tips**
+
+- Use **Tab Completion** to avoid typos and save time.
+- Use **Command History** to repeat or tweak earlier actions.
+- Combine both features to work faster and smarter in the terminal.
 
 ---
 

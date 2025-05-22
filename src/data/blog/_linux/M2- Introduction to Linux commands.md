@@ -1,9 +1,10 @@
 ---
-title: Module 2 - Introduction to Linux Commands
+title: Linux-M2 - Introduction to Linux Commands
 pubDatetime: 2025-05-20
 tags:
   - Linux Introduction
   - Introduction
+  - Common Linux Shell Commands
 description: Learn how to use common Linux commands. what a shell and shell commands are, and how to use commands to do various tasks in Linux. How to use informational commands to find relevant information about your system, navigation commands to navigate files and directories, and management commands to create, delete, copy, and move files and directories. Learn to sort and view files in useful ways and extract specific lines and fields from your files. Use networking commands to examine your network configuration and evaluate, identify, and retrieve data from URLs. Cover file archiving and compression commands.
 ---
 
