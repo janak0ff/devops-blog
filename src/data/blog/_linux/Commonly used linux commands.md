@@ -1,17 +1,17 @@
 ---
-title: Cumulative Cheat Sheet of Linux Commands and Shell Scripting
+title: Linux Command Line and Shell Scripting Cheat Sheet for Beginners and Practitioner
 pubDatetime: 2025-05-22
+featured: true
 tags:
   - cheatsheet
-description: Introduction to Linux Commands -   Informational, Navigational, & Management Commands | Working with Text Files, Networking & Archiving Commands | Introduction to Shell Scripting | 
+description: Introduction to Linux Commands -   Informational, Navigational, & Management Commands | Working with Text Files, Networking & Archiving Commands | Introduction to Shell Scripting 
 
 ---
 
-# 📄 **Cumulative Cheat Sheet: Introduction to Linux Commands and Shell Scripting**
+# 📄 **Cheat Sheet: Introduction to Linux Commands and Shell Scripting**
 
 This cheat sheet provides a quick reference for the most commonly used Linux commands and shell scripting concepts covered in this course.
 
----
 
 ## Introduction to Linux
 
@@ -22,6 +22,9 @@ This cheat sheet provides a quick reference for the most commonly used Linux com
 | Change Directory    | cd [DIRECTORY]                      | Change current directory             | cd /home/user/documents         |
 | Super user do       | sudo [COMMAND]                      | Run command with superuser privileges | sudo apt update              |
 | Text Editor         | nano [FILE]                         | Open file with Nano text editor      | nano myfile.txt                 |
+| Terminal Clear      | clear                               | Clear terminal screen                | clear                           |
+| History             | history                             | Show command history                 | history                         |
+| Execute Previous    | !!                                  | Run last command again               | !!                              |
 
 ## Introduction to Linux Commands
 
@@ -35,62 +38,75 @@ This cheat sheet provides a quick reference for the most commonly used Linux com
 | Manual Pages        | man [COMMAND]                      | Display manual page for a command    | man ls                          |
 | Curl                | curl [OPTIONS] [URL]               | Transfer data from or to server      | curl https://some_website.com   |
 | Date                | date [OPTIONS]                     | Display current date and time        | date                            |
-| Find                | find [DIRECTORY] [OPTIONS]         | Find files and directories at specified path | find /home/user -name '*.txt' |
+| Cal                 | cal                                | Display calendar                     | cal                             |
+| Find                | find [DIRECTORY] [OPTIONS]         | Find files and directories at path   | find /home/user -name '*.txt'   |
+| Locate              | locate [FILENAME]                  | Quickly find files in indexed db     | locate bashrc                   |
 | Make Directory      | mkdir [DIRECTORY]                  | Create new directory                 | mkdir myfolder                  |
 | Remove Directory    | rmdir [DIRECTORY]                  | Remove empty directory               | rmdir myfolder                  |
-| Process Status      | ps [OPTIONS]                       | Display process status information   | ps -ef                          |
-| Table of Processes  | top                                | Display live system resource usage   | top                             |
+| Process Status      | ps [OPTIONS]                       | Display process status               | ps -ef                          |
+| Table of Processes  | top                                | Live system resource usage           | top                             |
 | Disk Usage          | df [OPTIONS] [FILESYSTEM]          | Display disk space usage             | df -h                           |
-| Create Empty File   | touch [FILE]                       | Create new file or update timestamp  | touch myfile.txt                |
-| Copy                | cp [OPTIONS] [SOURCE] [DESTINATION]| Copy files or directories from source to destination | cp myfile.txt /home/user/documents |
-| Move                | mv [OPTIONS] [SOURCE] [DESTINATION]| Move or rename files and directories | mv myfile.txt /home/user/documents |
-| Remove              | rm [OPTIONS] [FILE/DIRECTORY]      | Remove files                         | rm my_scratch_file.txt          |
-| Remove nonempty directory | rm -r path_to_temp_directory |                                      |                                 |
-| Remove empty directory | rmdir [OPTIONS] [DIRECTORY]     | Remove empty directory               | rmdir path_to_my_directory      |
-| Change Mode         | chmod [OPTIONS] [MODE] [FILE]      | Change file or directory permissions | chmod u+x myfile.txt            |
+| Create Empty File   | touch [FILE]                       | Create file or update timestamp      | touch myfile.txt                |
+| Copy                | cp [SOURCE] [DESTINATION]          | Copy files/directories               | cp file.txt /tmp                |
+| Move                | mv [SOURCE] [DESTINATION]          | Move/rename files/directories        | mv file.txt /tmp                |
+| Remove              | rm [OPTIONS] [FILE/DIR]            | Remove files/directories             | rm -r temp_folder               |
+| Change Mode         | chmod [MODE] [FILE]                | Change permissions                   | chmod u+x script.sh             |
+| Change Owner        | chown [USER]:[GROUP] [FILE]        | Change file owner/group              | chown root:root config.cfg      |
+| Kill Process        | kill [PID]                         | Terminate a process                  | kill 1234                       |
+| Background Process  | command &                          | Run process in background            | sleep 10 &                      |
+| Bring Foreground    | fg                                 | Bring background job to foreground   | fg                              |
 
 ## Working with Text Files, Networking & Archiving Commands
 
 | Command             | Syntax                             | Description                          | Example                         |
 |---------------------|-------------------------------------|--------------------------------------|---------------------------------|
-| Concatenate         | cat [FILE]                         | Display the contents of a file       | cat myfile.txt                  |
-|                     | cat file1 file2                    | Concatenate and display contents of multiple files |                           |
-| More                | more [FILE]                        | Display file one screen at a time    | more myfile.txt                 |
-| Head                | head [OPTIONS] [FILE]              | Display first N lines of file        | head -5 myfile.txt              |
-| Tail                | tail [OPTIONS] [FILE]              | Display last N lines of file         | tail -5 myfile.txt              |
-| Echo                | echo [ARGUMENTS]                   | Display arguments in console         | echo Hello, World!              |
-| Sort                | sort [OPTIONS] [FILE]              | Alphanumerically sort file contents  | sort file.txt                   |
-| Unique              | uniq [OPTIONS] [FILE]              | Report or remove consecutively repeated lines in file | uniq file.txt           |
-| Word Count          | wc [OPTIONS] [FILE]                | Print the number of lines, words, and characters in a file | wc file.txt           |
-| Grep                | grep [OPTIONS] PATTERN [FILE]      | Search for a specified pattern in a file | grep "hello" file.txt        |
-| Paste               | paste [OPTIONS] [FILE1] [FILE2]    | Merge lines of files side by side    | paste file1.txt file2.txt       |
-| Cut                 | cut [OPTIONS] [FILE]               | Remove sections from each line of a file | cut -d":" -f1 /etc/passwd  |
-| Tar                 | tar [OPTIONS] [FILE]               | Archive files together into a single file | tar -czvf archive.tar.gz /directory |
-| Zip                 | zip [OPTIONS] [FILE]               | Compress files into a zip archive    | zip archive.zip file1.txt file2.txt |
-| Unzip               | unzip [OPTIONS] [FILE]             | Uncompress files from a zip archive  | unzip archive.zip               |
-| Hostname            | hostname                           | Print the name of the current host system | hostname                  |
-| Ping                | ping [OPTIONS] HOSTNAME/IP         | Send ICMP ECHO_REQUEST packets to a network host | ping google.com          |
-| ip                  | ip [INTERFACE]                     | Display or configure network interface parameters | ip addr                  |
-| IP                  | ip [OPTIONS]                       | Show or manipulate routing, devices, policy routing, and tunnels | ip addr           |
-| Curl                | curl [OPTIONS] URL                 | Transfer data from or to a server    | curl https://some_website.com   |
-| Wget                | wget [OPTIONS] URL                 | Download files from the web          | wget https://some_website.com/some_file.txt |
+| Concatenate         | cat [FILE]                         | Show file contents                   | cat file.txt                    |
+| More                | more [FILE]                        | Display file one screen at time      | more file.txt                   |
+| Less                | less [FILE]                        | Enhanced paginator                   | less largefile.log              |
+| Head                | head -n [N] [FILE]                 | First N lines of file                | head -5 file.txt                |
+| Tail                | tail -n [N] [FILE]                 | Last N lines of file                 | tail -5 file.txt                |
+| Tail Follow         | tail -f [FILE]                     | Follow file changes live             | tail -f /var/log/syslog         |
+| Echo                | echo [STRING]                      | Print message to console             | echo "Hello"                    |
+| Sort                | sort [FILE]                        | Sort file lines                      | sort file.txt                   |
+| Unique              | uniq [FILE]                        | Remove duplicate adjacent lines      | uniq sorted.txt                 |
+| Word Count          | wc [OPTIONS] [FILE]                | Count lines/words/chars              | wc -l file.txt                  |
+| Grep                | grep "PATTERN" [FILE]              | Search pattern in file               | grep "error" logfile.log        |
+| Paste               | paste file1 file2                  | Merge files side-by-side             | paste file1.txt file2.txt       |
+| Cut                 | cut -d':' -f1 [FILE]               | Remove sections of lines             | cut -d':' -f1 /etc/passwd       |
+| Tar                 | tar -czvf [ARCHIVE] [DIR]          | Compress directory as tar.gz         | tar -czvf archive.tar.gz dir/   |
+| Untar               | tar -xzvf [ARCHIVE]                | Extract tar.gz archive               | tar -xzvf archive.tar.gz        |
+| Zip                 | zip [ARCHIVE.zip] [FILES]          | Create zip archive                   | zip backup.zip file1 file2      |
+| Unzip               | unzip [ARCHIVE.zip]                | Extract zip archive                  | unzip backup.zip                |
+| Hostname            | hostname                           | Print system hostname                | hostname                        |
+| Ping                | ping [HOST]                        | Check host connectivity              | ping google.com                 |
+| IP Addressing       | ip addr                            | Display IP addresses                 | ip addr                         |
+| Curl                | curl [URL]                         | Download data                        | curl https://example.com        |
+| Wget                | wget [URL]                         | Download file                        | wget https://example.com/file   |
+| Nslookup            | nslookup [DOMAIN]                  | Query DNS                            | nslookup google.com             |
+| Netstat             | netstat -tuln                      | Show open ports                      | netstat -tuln                   |
 
 ## Introduction to Shell Scripting
 
 | Command             | Syntax                             | Description                          | Example                         |
 |---------------------|-------------------------------------|--------------------------------------|---------------------------------|
-| Shebang             | #!/bin/[shell]                     | First line of shell script           | #!/bin/bash                     |
-| Pipe                | filter1 \| filter2                  | Chain any number of filters          | ls \| sort -r                   |
-| Locate executable   | which [EXECUTABLE]                 | Display location of bash executable  | which bash                      |
-| Bash                | bash [SCRIPT]                      | Interpret and run script using Bash shell | bash script.txt            |
-| Set                 | set [OPTION]                       | List all shell variables             | set                             |
-| Define variable     | [VARIABLE_NAME]=[VALUE]            | Define shell variable by name and assign value | name="John"              |
-| Read                | read [VARIABLE]                    | Read from standard input and store result in variable | read name               |
-| Env                 | env                                | Print all environment variables and their values | env                         |
-| Export              | export [VARIABLE]                  | Extend scope of local variable to all child processes | export name             |
-| Crontab             | crontab [OPTIONS]                  | Open crontab default editor          | crontab -e                      |
-|                     | crontab -l                         | List all cron jobs                   |                                 |
-| Schedule tasks to run at specified times using cron daemon | m h dom mon dow command           |                                 |
-|                     | 15 18 * * 0 date >> sundays.txt    | Append date/time to file every Sunday at 6:15 pm |                          |
-|                     | 0 3 * * 1 tar -cvf my_backup_path\\my_archive.tar.gz $HOME\\ | Back up home directory every Monday at 3:00 am |         |
-|                     | 1 0 1 * * ./My_Script.sh           | Run shell script first minute of first day of each month |                          |
+| Shebang             | #!/bin/bash                        | Declare shell interpreter            | #!/bin/bash                     |
+| Pipe                | command1 \| command2                | Send output to next command          | ls \| grep ".sh"                |
+| Redirect Out        | command > file                     | Redirect stdout                      | echo "Hello" > hello.txt        |
+| Append Out          | command >> file                    | Append stdout                        | echo "Again" >> hello.txt       |
+| Redirect Error      | command 2> error.txt               | Redirect stderr                      | ls x 2> err.txt                 |
+| Redirect Both       | command > out.txt 2>&1             | Redirect both stdout and stderr      | ./script.sh > all.log 2>&1      |
+| Which               | which bash                         | Path of executable                   | which bash                      |
+| Bash                | bash script.sh                     | Run Bash script                      | bash script.sh                  |
+| Set Variables       | VAR=value                          | Assign variable                      | name="Janak"                    |
+| Read                | read VAR                           | Read input                           | read name                       |
+| Export              | export VAR                         | Export variable                      | export name                     |
+| Test condition      | test condition                     | Evaluate condition                   | test -f file.txt                |
+| If statement        | if [ condition ]; then ... fi      | Conditional execution                | if [ -f file ]; then echo yes; fi |
+| Loops (for)         | for var in list; do ... done       | Loop through list                    | for i in 1 2 3; do echo $i; done |
+| Loops (while)       | while [ cond ]; do ... done        | Repeat while condition true          | while true; do echo Hi; done    |
+| Crontab Editor      | crontab -e                         | Open cron editor                     | crontab -e                      |
+| List Cron Jobs      | crontab -l                         | List user cron jobs                  | crontab -l                      |
+
+
+---
+
