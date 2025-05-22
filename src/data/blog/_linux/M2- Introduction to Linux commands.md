@@ -2706,3 +2706,3382 @@ Even though you have **execute** (`x`) permission on `tmp_dir`, which allows you
 Great job working through these permission exercises! You're building strong skills in managing **file access control**, **user permissions**, and **directory behavior** in Linux.
 
 ---
+
+# **Viewing File Content in Linux**
+
+---
+
+## **1. Introduction**
+
+✅ Displaying full or partial contents of a file  
+✅ Navigating large files page-by-page  
+✅ Counting lines, words, and characters
+
+These tools are especially useful when working with log files, scripts, configuration files, and other text-based data.
+
+---
+
+## **2. Commands to View File Contents**
+
+### **A. `cat` – Concatenate and Print Entire File**
+
+- **Purpose**: Print the entire contents of a file to the terminal.
+- **Syntax**:
+
+  ```bash
+  cat <filename>
+  ```
+
+- **Example**:
+  ```bash
+  cat numbers.txt
+  ```
+
+> Outputs all lines from the file `numbers.txt`, from line 0 to 99 in this example.
+
+- **Use Cases**:
+  - Small files that fit on one screen.
+  - Combining multiple files into one (e.g., `cat file1 file2 > combined.txt`)
+
+> ⚠️ Not ideal for long files — output may scroll off-screen quickly.
+
+---
+
+### **B. `more` – View File One Page at a Time**
+
+- **Purpose**: Scroll through a file page by page.
+- **Syntax**:
+
+  ```bash
+  more <filename>
+  ```
+
+- **Example**:
+
+  ```bash
+  more numbers.txt
+  ```
+
+- **Navigation Keys**:
+  - Press **Spacebar** to go to the next page.
+  - Press **Enter** to scroll one line at a time.
+  - Press **q** to quit and return to the command prompt.
+
+> Ideal for reading long files without overwhelming the terminal.
+
+---
+
+### **C. `head` – View First Few Lines of a File**
+
+- **Purpose**: Show the beginning portion of a file.
+- **Syntax**:
+
+  ```bash
+  head <filename>
+  ```
+
+- **Default Behavior**:
+
+  - Displays **first 10 lines** of the file.
+
+- **Example**:
+
+  ```bash
+  head numbers.txt
+  ```
+
+  > Shows lines 0–9
+
+- **Custom Line Count**:
+  ```bash
+  head -n 3 numbers.txt
+  ```
+  > Shows first 3 lines: 0, 1, 2
+
+> Useful for checking headers, logs, or sample data quickly.
+
+---
+
+### **D. `tail` – View Last Few Lines of a File**
+
+- **Purpose**: Show the end portion of a file.
+- **Syntax**:
+
+  ```bash
+  tail <filename>
+  ```
+
+- **Default Behavior**:
+
+  - Displays **last 10 lines** of the file.
+
+- **Example**:
+
+  ```bash
+  tail numbers.txt
+  ```
+
+  > Shows lines 90–99
+
+- **Custom Line Count**:
+
+  ```bash
+  tail -n 3 numbers.txt
+  ```
+
+  > Shows last 3 lines: 97, 98, 99
+
+- **Real-world Use**:
+  - Monitoring log files in real-time using:
+    ```bash
+    tail -f /var/log/syslog
+    ```
+
+---
+
+## **3. Command to Analyze File Content: `wc`**
+
+### **A. `wc` – Word Count**
+
+- **Purpose**: Count **lines**, **words**, and **bytes (characters)** in a file.
+- **Syntax**:
+
+  ```bash
+  wc <filename>
+  ```
+
+- **Example**:
+  ```bash
+  wc pets.txt
+  ```
+
+> Output:
+
+```
+7 7 28 pets.txt
+```
+
+- **Meaning**:
+  - **7 lines**
+  - **7 words**
+  - **28 characters** (including newline characters)
+
+> The character count is higher than expected because `wc` counts **newline characters** (`\n`) as well.
+
+---
+
+### **B. Options for Specific Counts**
+
+| Option | Description                                | Example                          |
+| ------ | ------------------------------------------ | -------------------------------- |
+| `-l`   | Count only lines                           | `wc -l pets.txt` → `7 pets.txt`  |
+| `-w`   | Count only words                           | `wc -w pets.txt` → `7 pets.txt`  |
+| `-c`   | Count only characters (including newlines) | `wc -c pets.txt` → `28 pets.txt` |
+
+> These options let you extract specific metrics without extra parsing.
+
+---
+
+## **4. Summary Table**
+
+| Command     | Purpose                   | Example                 | Output Sample          |
+| ----------- | ------------------------- | ----------------------- | ---------------------- |
+| `cat`       | View entire file          | `cat numbers.txt`       | All lines from 0 to 99 |
+| `more`      | View file page-by-page    | `more numbers.txt`      | Scrollable output      |
+| `head`      | View first 10 lines       | `head numbers.txt`      | Lines 0–9              |
+| `head -n X` | View first X lines        | `head -n 3 numbers.txt` | Lines 0–2              |
+| `tail`      | View last 10 lines        | `tail numbers.txt`      | Lines 90–99            |
+| `tail -n X` | View last X lines         | `tail -n 3 numbers.txt` | Lines 97–99            |
+| `wc`        | Count lines, words, chars | `wc pets.txt`           | `7 7 28 pets.txt`      |
+| `wc -l`     | Count only lines          | `wc -l pets.txt`        | `7 pets.txt`           |
+| `wc -w`     | Count only words          | `wc -w pets.txt`        | `7 pets.txt`           |
+| `wc -c`     | Count only characters     | `wc -c pets.txt`        | `28 pets.txt`          |
+
+---
+
+## **5. Final Tips**
+
+- Use `cat` for small files or quick inspection.
+- Use `more` for navigating larger files interactively.
+- Use `head` and `tail` to inspect the start or end of a file efficiently.
+- Use `wc` to get statistical information about your file’s content.
+- Combine these commands with pipes (`|`) for advanced analysis:
+  ```bash
+  cat pets.txt | wc -l
+  ```
+
+---
+
+# **Useful Commands for Wrangling Text Files in Linux**
+
+---
+
+## **1. Introduction**
+
+✅ Sorting lines alphabetically  
+✅ Removing duplicates  
+✅ Searching for patterns  
+✅ Extracting parts of lines  
+✅ Merging lines from multiple files
+
+These tools are essential for working with log files, CSV data, configuration files, and more.
+
+---
+
+## **2. Sorting File Content: `sort` Command**
+
+### **Purpose**
+
+Sort the lines of a file **alphabetically or numerically**.
+
+### **Basic Syntax**
+
+```bash
+sort <filename>
+```
+
+### **Examples**
+
+- Sort file alphabetically:
+
+  ```bash
+  sort pets.txt
+  ```
+
+  Output:
+
+  ```
+  cat
+  cat
+  cat
+  cat
+  cat
+  dog
+  dog
+  ```
+
+- Sort in reverse order:
+  ```bash
+  sort -r pets.txt
+  ```
+  Output:
+  ```
+  dog
+  dog
+  cat
+  cat
+  cat
+  cat
+  cat
+  ```
+
+> Tip: Use `sort -n` for numeric sorting if your file contains numbers.
+
+---
+
+## **3. Removing Duplicate Lines: `uniq` Command**
+
+### **Purpose**
+
+Filter out **consecutive duplicate lines** in a file.
+
+### **Basic Syntax**
+
+```bash
+uniq <filename>
+```
+
+### **Example**
+
+Given this content in `pets.txt`:
+
+```
+cat
+dog
+dog
+cat
+```
+
+Running:
+
+```bash
+uniq pets.txt
+```
+
+Output:
+
+```
+cat
+dog
+cat
+```
+
+> Note: `uniq` only removes **duplicates that appear one after another**. To remove all duplicates regardless of position, first use `sort`, then `uniq`:
+
+```bash
+sort pets.txt | uniq
+```
+
+---
+
+## **4. Searching for Patterns: `grep` Command**
+
+### **Purpose**
+
+Search for lines containing a specific **pattern** (e.g., word, phrase, regular expression).
+
+### **Basic Syntax**
+
+```bash
+grep "pattern" <filename>
+```
+
+### **Examples**
+
+- Search for lines containing "ch":
+
+  ```bash
+  grep "ch" people.txt
+  ```
+
+  Output:
+
+  ```
+  Dennis Ritchie
+  Erwin Schrodinger
+  ```
+
+- Case-insensitive search:
+
+  ```bash
+  grep -i "ch" people.txt
+  ```
+
+  Output:
+
+  ```
+  Charles Babbage
+  Dennis Ritchie
+  Erwin Schrodinger
+  ```
+
+> `grep` supports regular expressions for advanced searches:
+
+```bash
+grep "^C" people.txt   # Find names starting with 'C'
+```
+
+---
+
+## **5. Extracting Parts of Lines: `cut` Command**
+
+### **Purpose**
+
+Extract specific **characters or fields** from each line of a file.
+
+### **Basic Syntax**
+
+```bash
+cut [options] <filename>
+```
+
+### **A. Character-Based Extraction**
+
+- Extract characters 2 through 9:
+
+  ```bash
+  cut -c2-9 people.txt
+  ```
+
+  Example Input:
+
+  ```
+  Alan Turing
+  Charles Babbage
+  ```
+
+  Output:
+
+  ```
+  lan Turin
+  harles B
+  ```
+
+### **B. Field-Based Extraction**
+
+Use `-d` to define a delimiter and `-f` to select a field.
+
+- Extract last names (second field) from a space-separated file:
+
+  ```bash
+  cut -d' ' -f2 people.txt
+  ```
+
+  Output:
+
+  ```
+  Turing
+  Babbage
+  ```
+
+> You can also extract multiple fields:
+
+```bash
+cut -d',' -f1,3 csvfile.csv
+```
+
+---
+
+## **6. Merging Lines from Multiple Files: `paste` Command**
+
+### **Purpose**
+
+Combine lines from multiple files **side by side**, similar to columns in a table.
+
+### **Basic Syntax**
+
+```bash
+paste <file1> <file2> <file3>
+```
+
+### **Example**
+
+You have three files:
+
+- `first.txt`:
+
+  ```
+  Alan
+  Charles
+  Dennis
+  ```
+
+- `last.txt`:
+
+  ```
+  Turing
+  Babbage
+  Ritchie
+  ```
+
+- `yob.txt`:
+  ```
+  1912
+  1791
+  1941
+  ```
+
+Run:
+
+```bash
+paste first.txt last.txt yob.txt
+```
+
+Output:
+
+```
+Alan    Turing    1912
+Charles Babbage   1791
+Dennis  Ritchie   1941
+```
+
+> By default, `paste` uses **tab** as the delimiter.
+
+### **Custom Delimiter**
+
+To use a comma instead:
+
+```bash
+paste -d',' first.txt last.txt yob.txt
+```
+
+Output:
+
+```
+Alan,Turing,1912
+Charles,Babbage,1791
+Dennis,Ritchie,1941
+```
+
+---
+
+## **7. Summary Table**
+
+| Command          | Purpose                                       | Example                                  |
+| ---------------- | --------------------------------------------- | ---------------------------------------- |
+| `sort`           | Sort lines alphabetically/numerically         | `sort pets.txt`                          |
+| `sort -r`        | Reverse sort                                  | `sort -r pets.txt`                       |
+| `uniq`           | Remove consecutive duplicate lines            | `uniq pets.txt`                          |
+| `grep "pattern"` | Print lines matching a pattern                | `grep "ch" people.txt`                   |
+| `grep -i`        | Case-insensitive search                       | `grep -i "ch" people.txt`                |
+| `cut -cX-Y`      | Extract characters from X to Y                | `cut -c2-9 people.txt`                   |
+| `cut -d' ' -f2`  | Extract second field using space as delimiter | `cut -d' ' -f2 people.txt`               |
+| `paste`          | Merge lines from multiple files               | `paste first.txt last.txt yob.txt`       |
+| `paste -d','`    | Merge with custom delimiter                   | `paste -d',' first.txt last.txt yob.txt` |
+
+---
+
+## **8. Final Tips**
+
+- Combine commands using pipes (`|`) for powerful workflows:
+  ```bash
+  sort pets.txt | uniq
+  ```
+- Use `grep` with wildcards or regex for flexible searching.
+- `cut` is great for parsing structured text like CSV or logs.
+- `paste` helps you create reports or combine related datasets.
+
+---
+
+# 📄 Exercise 1 - Viewing File Contents with `cat`, `more`, and `less`
+
+In this exercise, you learned how to **view and navigate file contents** in the terminal using three essential Linux commands:
+
+- `cat` – for quick viewing and concatenation
+- `more` – for basic scrolling through a file
+- `less` – for advanced navigation (forward and backward)
+
+These tools are especially useful when working with shell scripts, logs, configuration files, and other text-based data.
+
+---
+
+## 🔧 Step-by-Step Breakdown
+
+### 🏁 Start by navigating to your home directory:
+
+```bash
+cd ~
+```
+
+### 🔍 Check what files exist:
+
+```bash
+ls
+```
+
+You should see a file named `entrypoint.sh`. `.sh` is the extension used for **shell scripts**, which are executable text files that contain Bash commands.
+
+---
+
+## ✅ 1.1 View File Content with `cat`
+
+### Command:
+
+```bash
+cat entrypoint.sh
+```
+
+### What It Does:
+
+- Displays the **entire contents** of the file at once
+- Stops at the end and returns to the command prompt
+
+> ⚠️ If the file is longer than your terminal window, you’ll only see the last part — it scrolls past too quickly to read everything.
+
+### 💡 Use Cases:
+
+- Quick inspection of small files
+- Concatenating multiple files:
+  ```bash
+  cat file1.txt file2.txt > combined.txt
+  ```
+
+---
+
+## ✅ 1.2 View File Content with `more`
+
+### Command:
+
+```bash
+more entrypoint.sh
+```
+
+### What It Does:
+
+- Shows one screen of text at a time
+- Press **Spacebar** to go to the next page
+- Type **q** to quit
+
+### 🔍 Useful Info:
+
+The first line:
+
+```bash
+#!/bin/bash
+```
+
+is called a **shebang** — it tells the system to use `/bin/bash` to interpret the script.
+
+> 📌 You’ll learn more about writing shell scripts later in the course.
+
+### 💡 Use Cases:
+
+- Reading medium-sized files
+- Viewing logs or configuration files from the command line
+
+---
+
+## ✅ 1.3 Scroll Through File Content with `less`
+
+### Command:
+
+```bash
+less entrypoint.sh
+```
+
+### What It Does:
+
+- Displays one screen of content
+- Allows **scrolling forward and backward**
+  - **↑ / ↓** keys: scroll line by line
+  - **Page Up / Page Down**: scroll page by page
+- Press **q** to exit
+
+### 🆕 Why `less` Is Better Than `more`:
+
+- You can move **up and down**, not just down
+- You can search inside the file with `/search_term`
+- It doesn’t automatically quit at the end
+
+---
+
+## 📋 Summary Table
+
+| Command | Scrolling Direction   | Interactive | Exits Automatically | Best For                  |
+| ------- | --------------------- | ----------- | ------------------- | ------------------------- |
+| `cat`   | All at once           | No          | Yes                 | Small files, scripting    |
+| `more`  | Forward only          | Limited     | Yes                 | Paging through files      |
+| `less`  | Both forward/backward | Full        | No                  | Detailed inspection, logs |
+
+---
+
+## 🧠 Tips & Tricks
+
+- Combine with pipes to view output:
+  ```bash
+  ls -l /etc | less
+  ```
+- Search inside `less`:
+  - Type `/pattern` then press Enter
+  - Press `n` to find next match
+- Exit early: always press `q` to quit
+
+---
+
+Great job completing this exercise! You now know how to choose the best tool depending on the size and complexity of the file you're viewing.
+
+---
+
+# 📄 Exercise 2 - Viewing Text File Contents
+
+## Using `head` and `tail` to View File Content
+
+In this exercise, you learned how to **inspect specific parts of a text file** using two powerful Linux commands:
+
+- `head` – to view the **beginning** of a file
+- `tail` – to view the **end** of a file
+
+These tools are especially useful for:
+
+- Reading large log files
+- Monitoring real-time updates (with `tail -f`)
+- Extracting headers or footers from data files
+
+---
+
+## 🧾 Step-by-Step Instructions
+
+### 🔧 Download and Navigate to Your Project Directory:
+
+```bash
+cd /home/project
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Bash%20Scripting/usdoi.txt
+```
+
+Verify the file was downloaded:
+
+```bash
+ls
+```
+
+You should see `usdoi.txt` listed.
+
+---
+
+## ✅ 2.1 Display the First N Lines with `head`
+
+### Show the first 10 lines (default):
+
+```bash
+head usdoi.txt
+```
+
+This is helpful when viewing large documents like logs or configuration files where the most important info may be at the top.
+
+### Show only the first 3 lines:
+
+```bash
+head -3 usdoi.txt
+```
+
+Example output:
+
+```
+When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another...
+```
+
+> 💡 Use `head` to quickly preview files without opening the entire contents.
+
+---
+
+## ✅ 2.2 Display the Last N Lines with `tail`
+
+### Show the last 10 lines (default):
+
+```bash
+tail usdoi.txt
+```
+
+Useful for checking the end of logs or files where recent changes are appended.
+
+### Show only the last 2 lines:
+
+```bash
+tail -2 usdoi.txt
+```
+
+Example output:
+
+```
+...and that government of the people, by the people, for the people shall not perish from the earth.
+```
+
+> 🚀 Pro Tip: Use `tail -f` to follow a log file in real time:
+
+```bash
+tail -f /var/log/syslog
+```
+
+---
+
+## 📋 Summary Table
+
+| Command   | Description                            | Example                   |
+| --------- | -------------------------------------- | ------------------------- |
+| `head`    | Displays the first 10 lines of a file  | `head filename`           |
+| `head -N` | Displays the first N lines             | `head -3 filename`        |
+| `tail`    | Displays the last 10 lines of a file   | `tail filename`           |
+| `tail -N` | Displays the last N lines              | `tail -2 filename`        |
+| `tail -f` | Follows the end of a file in real time | `tail -f /var/log/syslog` |
+
+---
+
+## 🧠 Why These Commands Matter
+
+- **Efficiency**: Avoid opening huge files just to check the start or end.
+- **Monitoring**: Track live updates in log files using `tail -f`.
+- **Automation**: Use in scripts to extract key information from files.
+
+---
+
+## Great work! You now know how to **quickly inspect large text files**, which is essential for system administration, scripting, and data analysis.
+
+---
+
+# 📊 Exercise 3 - Getting Basic Text File Stats with `wc`
+
+In this exercise, you learned how to use the **`wc`** (word count) command to get basic statistics about a text file — including the number of **lines**, **words**, and **characters**.
+
+This is especially useful when:
+
+- You're analyzing large text files
+- You need to verify file contents before processing
+- You're writing scripts that depend on file size or structure
+
+---
+
+## 🔧 Step-by-Step Breakdown
+
+### Start by navigating to your project directory and using `wc`:
+
+```bash
+cd /home/project
+wc usdoi.txt
+```
+
+### Example Output:
+
+```
+     21     268    1654 usdoi.txt
+```
+
+The output shows:
+
+1. Number of **lines**
+2. Number of **words**
+3. Number of **characters**
+4. File name
+
+---
+
+## ✅ View Specific Stats
+
+### 🔢 Count Lines Only:
+
+```bash
+wc -l usdoi.txt
+```
+
+Useful for checking how many entries are in a list or log file.
+
+---
+
+### 📝 Count Words Only:
+
+```bash
+wc -w usdoi.txt
+```
+
+Great for content analysis or verifying document length.
+
+---
+
+### 🔤 Count Characters Only:
+
+```bash
+wc -c usdoi.txt
+```
+
+Tells you the total byte size of the file — useful for storage and transmission planning.
+
+> 💡 Note: `wc -c` counts bytes, not just visible characters — so whitespace and punctuation are included.
+
+---
+
+## 📋 Summary Table
+
+| Command          | Output                       |
+| ---------------- | ---------------------------- |
+| `wc filename`    | Lines, words, characters     |
+| `wc -l filename` | Number of lines              |
+| `wc -w filename` | Number of words              |
+| `wc -c filename` | Number of bytes (characters) |
+
+---
+
+## 🧠 Why `wc` Is Useful
+
+- **Automation**: Use in scripts to validate input data size
+- **Analysis**: Get quick stats without opening the file
+- **Debugging**: Check if a file has expected content structure
+
+---
+
+## You're doing great! With these tools, you can now **analyze text files efficiently** and extract meaningful insights from their content.
+
+# 🧹 Exercise 4 - Basic Text Wrangling: Sorting Lines and Dropping Duplicates
+
+In this exercise, you learned how to **clean up and organize text data** using two powerful Linux utilities:
+
+- `sort` – to **alphabetically or numerically sort lines**
+- `uniq` – to **remove consecutive duplicate lines**
+
+These tools are essential for:
+
+- Data cleaning
+- Log file analysis
+- Preparing input for scripts
+- Removing redundant output
+
+---
+
+## 🔧 Step-by-Step Breakdown
+
+### ✅ 4.1 Sort Lines Alphanumerically with `sort`
+
+#### Display the lines of `usdoi.txt` sorted alphanumerically:
+
+```bash
+sort usdoi.txt
+```
+
+This command rearranges all the lines in alphabetical order (A–Z), making it easier to scan or analyze content.
+
+#### Sort in reverse order (Z–A):
+
+```bash
+sort -r usdoi.txt
+```
+
+> 💡 This is useful when you want to see the "end" of an alphabetized list first — like viewing the latest entries in a log.
+
+---
+
+### ✅ 4.2 Remove Consecutive Duplicate Lines with `uniq`
+
+#### First, download a new file:
+
+```bash
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-LX0117EN-SkillsNetwork/labs/module%201/zoo.txt
+```
+
+#### View the contents:
+
+```bash
+cat zoo.txt
+```
+
+You’ll notice some repeated animal names, especially `zebra`.
+
+#### Remove **consecutive duplicates**:
+
+```bash
+uniq zoo.txt
+```
+
+This removes only lines that appear **one after another**, so:
+
+```
+zebra
+zebra
+lion
+tiger
+zebra
+```
+
+Becomes:
+
+```
+zebra
+lion
+tiger
+zebra
+```
+
+Only the **first two zebras** are removed as duplicates — the last one stays because it's not directly after another zebra.
+
+---
+
+## 📋 Summary Table
+
+| Command            | Description                            |
+| ------------------ | -------------------------------------- | -------------------------------------------- |
+| `sort filename`    | Sort lines alphabetically              |
+| `sort -r filename` | Sort lines in reverse order            |
+| `uniq filename`    | Remove **consecutive** duplicate lines |
+| `sort file         | uniq`                                  | Sort then remove all duplicates (if grouped) |
+
+---
+
+## 🧠 Pro Tips
+
+- To remove **all duplicate lines** regardless of order:
+
+  ```bash
+  sort zoo.txt | uniq
+  ```
+
+- Count how many times each line appears:
+
+  ```bash
+  sort zoo.txt | uniq -c
+  ```
+
+- Show only lines that appear **more than once**:
+
+  ```bash
+  sort zoo.txt | uniq -d
+  ```
+
+- Show only lines that appear **exactly once**:
+  ```bash
+  sort zoo.txt | uniq -u
+  ```
+
+---
+
+## 🛠️ Real-World Use Cases
+
+| Task                              | Command                      |
+| --------------------------------- | ---------------------------- | ------------------------ | -------- | -------- | ----------- |
+| Clean up a messy list of emails   | `sort emails.txt             | uniq > clean_emails.txt` |
+| Count unique IP addresses in logs | `cut -d' ' -f1 access.log    | sort                     | uniq -c` |
+| Find most frequently visited URLs | `awk '{print $7}' access.log | sort                     | uniq -c  | sort -nr | head -n 10` |
+
+---
+
+## Great job mastering these basic but powerful text processing tools! You're now equipped to **organize**, **clean**, and **analyze** textual data efficiently in Linux.
+
+# 🧩 Exercise 5 - Basic Text Wrangling: Extracting Lines and Fields
+
+In this exercise, you learned how to **filter lines** using patterns with `grep` and **extract specific parts of text** using the `cut` command.
+
+These tools are essential for:
+
+- Searching through logs
+- Filtering data
+- Processing structured files like CSVs
+- Automating repetitive tasks in scripts
+
+---
+
+## 🔍 Step-by-Step Breakdown
+
+### ✅ 5.1 Extract Lines Matching a Pattern with `grep`
+
+#### Print all lines containing the word "people":
+
+```bash
+grep people usdoi.txt
+```
+
+This shows only the lines where the word `people` appears.
+
+#### Print matching lines along with line numbers:
+
+```bash
+grep -n people usdoi.txt
+```
+
+#### Count how many lines contain the pattern:
+
+```bash
+grep -c people usdoi.txt
+```
+
+#### Ignore case (match both "People" and "people"):
+
+```bash
+grep -i people usdoi.txt
+```
+
+#### Show lines that **do not** contain the pattern:
+
+```bash
+grep -v login /etc/passwd
+```
+
+Useful for filtering out system-generated accounts from `/etc/passwd`.
+
+#### Match only whole words:
+
+```bash
+grep -w people usdoi.txt
+```
+
+Prevents partial matches like `peoples` or `unpeople`.
+
+---
+
+### ✅ 5.2 Extract Fields from Lines Using `cut`
+
+#### View first two characters of each line in `zoo.txt`:
+
+```bash
+cut -c -2 zoo.txt
+```
+
+#### View text starting from the second character:
+
+```bash
+cut -c 2- zoo.txt
+```
+
+> These options extract by **character position**, useful for fixed-width formats.
+
+---
+
+### 📥 Work with Delimited Files (e.g., CSV)
+
+#### Download and view the file:
+
+```bash
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-LX0117EN-SkillsNetwork/labs/v4_new_content/labs/names_and_numbers.csv
+cat names_and_numbers.csv
+```
+
+Sample content:
+
+```
+Name,Phone
+Alice,555-1234
+Bob,555-5678
+Charlie,555-9012
+```
+
+#### Extract just the phone numbers (second field):
+
+```bash
+cut -d "," -f2 names_and_numbers.csv
+```
+
+- `-d ","` tells `cut` to split on commas
+- `-f2` tells it to return the second field
+
+Output:
+
+```
+Phone
+555-1234
+555-5678
+555-9012
+```
+
+You can also extract multiple fields:
+
+```bash
+cut -d "," -f1,3 names_and_numbers.csv
+```
+
+Returns fields 1 and 3 — useful when skipping unnecessary columns.
+
+---
+
+## 📋 Summary Table
+
+| Task                           | Command                                |
+| ------------------------------ | -------------------------------------- |
+| Find lines containing a word   | `grep pattern file`                    |
+| Show line numbers              | `grep -n pattern file`                 |
+| Count matches                  | `grep -c pattern file`                 |
+| Case-insensitive search        | `grep -i pattern file`                 |
+| Invert match (not containing)  | `grep -v pattern file`                 |
+| Match whole word only          | `grep -w pattern file`                 |
+| Extract characters by position | `cut -c START-END file`                |
+| Extract fields by delimiter    | `cut -d "DELIM" -f FIELD_NUMBERS file` |
+
+---
+
+## 🧠 Why These Tools Matter
+
+| Tool   | Use Case                                                       |
+| ------ | -------------------------------------------------------------- |
+| `grep` | Search, filter, and count patterns in text                     |
+| `cut`  | Extract specific parts of text based on position or delimiters |
+
+They're often used together in pipelines:
+
+```bash
+grep "New York" contacts.csv | cut -d "," -f2
+```
+
+This finds all entries for New York and extracts their phone numbers.
+
+---
+
+# 🧩 Exercise 6 - Basic Text Wrangling: Merging Lines as Fields
+
+In this exercise, you learned how to use the **`paste`** command to **merge lines from multiple files side-by-side**, like combining columns in a spreadsheet.
+
+This is especially useful when:
+
+- You're working with related data stored in separate files
+- You want to align rows for analysis or reporting
+- You need to build structured output from flat files
+
+---
+
+## 🔧 Step-by-Step Breakdown
+
+### ✅ Download an additional file:
+
+```bash
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-LX0117EN-SkillsNetwork/labs/module%201/zoo_ages.txt
+```
+
+You already have `zoo.txt`, which contains animal names. Now `zoo_ages.txt` has corresponding age data.
+
+### ✅ Merge both files line-by-line using `paste`:
+
+```bash
+paste zoo.txt zoo_ages.txt
+```
+
+By default, `paste` uses a **Tab (`\t`)** character to separate merged fields.
+
+Example Output:
+
+```
+lion	5
+tiger	4
+zebra	6
+elephant	10
+```
+
+This makes it easy to combine related data into a single view.
+
+---
+
+### ✅ Change the Delimiter to Comma (`,`) for CSV-like Output:
+
+```bash
+paste -d "," zoo.txt zoo_ages.txt
+```
+
+Now the output looks like:
+
+```
+lion,5
+tiger,4
+zebra,6
+elephant,10
+```
+
+> 💡 This is useful for creating CSV files or preparing data for scripts and databases.
+
+You can also use other delimiters like space, colon, or semicolon:
+
+```bash
+paste -d " " zoo.txt zoo_ages.txt   # Space
+paste -d ":" zoo.txt zoo_ages.txt  # Colon
+```
+
+---
+
+## 📋 Summary Table
+
+| Command                                 | Description                                      |
+| --------------------------------------- | ------------------------------------------------ |
+| `paste file1 file2`                     | Merge two files line-by-line using Tab delimiter |
+| `paste -d "," file1 file2`              | Merge using comma as delimiter                   |
+| `paste -s file.txt`                     | Paste all lines of a file into one line          |
+| `paste -d ":" file1 file2 > merged.csv` | Save merged output to a new file                 |
+
+---
+
+## 🧠 Why `paste` Is Useful
+
+| Use Case                            | Example                                        |
+| ----------------------------------- | ---------------------------------------------- |
+| Combine logs from different sources | `paste access.log user_agents.log`             |
+| Build CSV files from parallel data  | `paste -d "," names.csv ages.csv > people.csv` |
+| Align configuration values          | Match hostnames with IPs                       |
+| Create input for scripts            | Generate formatted input for another tool      |
+
+---
+
+## 🛠️ Try It Out – Real-World Examples
+
+#### Combine Names and Ages into One File:
+
+```bash
+paste -d "," zoo.txt zoo_ages.txt > animals.csv
+```
+
+Creates a new file `animals.csv` that's ready for import into Excel or a database.
+
+#### Merge Multiple Files:
+
+```bash
+paste names.txt emails.txt phones.txt
+```
+
+Merges three files — one per column — ideal for building contact lists.
+
+---
+
+# 🛠️ **Practice Exercises – Text Processing in Linux**
+
+These hands-on exercises help reinforce your knowledge of **file inspection**, **searching**, and **text manipulation** using essential Linux commands like `wc`, `grep`, `head`, `tail`, `cut`, and more.
+
+---
+
+## 🔧 Before You Begin
+
+Make sure you're in your home directory:
+
+```bash
+cd ~
+pwd
+```
+
+---
+
+## 📝 Practice Exercise Solutions
+
+### 1. **Display the number of lines in `/etc/passwd`**
+
+#### ✅ Solution:
+
+```bash
+wc -l /etc/passwd
+```
+
+This shows how many user accounts exist on the system (each line in `/etc/passwd` represents a user).
+
+---
+
+### 2. **Display lines containing "not installed" in `/var/log/bootstrap.log`**
+
+#### ✅ Solution:
+
+```bash
+grep "not installed" /var/log/bootstrap.log
+```
+
+This helps identify packages or services that failed to install during system boot.
+
+---
+
+### 3. **Find websites with "org" in them from `top-sites.txt`**
+
+#### First, download the file:
+
+```bash
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Bash%20Scripting/top-sites.txt
+```
+
+#### ✅ Use `grep` to search for "org":
+
+```bash
+grep "org" top-sites.txt
+```
+
+This lists all URLs or domains that include "org".
+
+#### 🔄 Alternative solution using case-insensitive match:
+
+```bash
+grep -i "org" top-sites.txt
+```
+
+Useful if you want to catch both "org" and "ORG", etc.
+
+---
+
+### 4. **Print the first 7 lines of `top-sites.txt`**
+
+#### ✅ Solution:
+
+```bash
+head -7 top-sites.txt
+```
+
+This gives a quick preview of the top sites list.
+
+---
+
+### 5. **Print the last 7 lines of `top-sites.txt`**
+
+#### ✅ Solution:
+
+```bash
+tail -7 top-sites.txt
+```
+
+Handy when you're interested in newer entries at the end of a list or log file.
+
+---
+
+### 6. **Print the first three characters of each line from `top-sites.txt`**
+
+#### ✅ Solution:
+
+```bash
+cut -c -3 top-sites.txt
+```
+
+This extracts only the first 3 characters from every line — useful for fixed-width data or codes.
+
+---
+
+### 7. **Extract and view only the names from `names_and_numbers.csv`**
+
+Assuming the file already exists:
+
+```bash
+cat names_and_numbers.csv
+```
+
+#### ✅ Solution:
+
+```bash
+cut -d "," -f1 names_and_numbers.csv
+```
+
+- `-d ","` tells `cut` to use comma as the delimiter
+- `-f1` selects the **first field** — which is the name column
+
+You can also skip the header if needed:
+
+```bash
+tail -n +2 names_and_numbers.csv | cut -d "," -f1
+```
+
+---
+
+## 📋 Summary Table: Commands Used
+
+| Task                      | Command                                    |
+| ------------------------- | ------------------------------------------ |
+| Count lines in a file     | `wc -l filename`                           |
+| Search for text in a file | `grep "pattern" filename`                  |
+| Print first N lines       | `head -N filename`                         |
+| Print last N lines        | `tail -N filename`                         |
+| Extract character range   | `cut -c START-END filename`                |
+| Extract by delimiter      | `cut -d "DELIM" -f FIELD_NUMBERS filename` |
+
+---
+
+## 🧠 Why These Skills Matter
+
+You now have the tools to:
+
+- **Analyze logs**
+- **Filter and extract data**
+- **Process CSVs and structured files**
+- **Build automation pipelines** using command-line tools
+
+These are foundational skills for scripting, system administration, and data analysis in Linux.
+
+---
+
+## **Exercise 7 – Combining Commands with Pipes and Redirection**
+
+In this exercise, you’ll learn how to:
+
+- Combine multiple Linux commands using **pipes (`|`)**
+- Redirect command output to files using `>` and `>>`
+- Use input redirection with `<`
+- Build powerful **command pipelines** that process data step-by-step
+
+These skills are essential for:
+
+- Automating repetitive tasks
+- Processing logs or large datasets
+- Writing shell scripts
+- Becoming a more efficient Linux user
+
+---
+
+## 🔧 What is Piping?
+
+The **pipe operator (`|`)** takes the **output of one command** and feeds it as **input to another**.
+
+This lets you chain together small tools to build complex operations.
+
+### Example:
+
+```bash
+ls -l | grep "Jan" | wc -l
+```
+
+This pipeline:
+
+1. Lists all files (`ls -l`)
+2. Filters only those modified in January (`grep "Jan"`)
+3. Counts them (`wc -l`)
+
+---
+
+## 📥 Input and Output Redirection
+
+You can also control where input comes from and where output goes using:
+
+| Operator | Purpose                                | Example                        |
+| -------- | -------------------------------------- | ------------------------------ |
+| `>`      | Redirect output to a file (overwrites) | `ls > files.txt`               |
+| `>>`     | Append output to a file                | `echo "New line" >> files.txt` |
+| `<`      | Redirect input from a file             | `sort < names.txt`             |
+
+### Example:
+
+```bash
+grep "error" /var/log/syslog > errors.txt
+```
+
+Saves all lines containing "error" from the system log into a new file.
+
+---
+
+## 💡 Hands-On Practice
+
+Let’s go through some guided examples.
+
+### ✅ 1. Chain `grep`, `sort`, and `uniq` to Analyze Log Data
+
+#### Find unique IP addresses in an access log:
+
+```bash
+grep "Failed password" /var/log/auth.log | awk '{print $9}' | sort | uniq
+```
+
+- `grep`: filters for failed login attempts
+- `awk`: extracts the IP address field
+- `sort`: prepares for deduplication
+- `uniq`: removes duplicates
+
+> You'll learn about `awk` soon — it's a powerful text processing tool.
+
+---
+
+### ✅ 2. Save Command Output to a File
+
+#### Save your list of running processes to a file:
+
+```bash
+ps -e > process_list.txt
+```
+
+Now view it:
+
+```bash
+cat process_list.txt
+```
+
+---
+
+### ✅ 3. Count Words in a File Using a Pipeline
+
+#### Count how many times each word appears in `usdoi.txt`:
+
+```bash
+tr ' ' '\n' < usdoi.txt | sort | uniq -c | sort -nr
+```
+
+What this does:
+
+- `tr ' ' '\n'`: replaces spaces with newlines (puts each word on its own line)
+- `sort`: sorts words alphabetically
+- `uniq -c`: counts occurrences
+- `sort -nr`: sorts numerically in reverse order
+
+---
+
+### ✅ 4. View Command Output One Page at a Time
+
+Sometimes output fills your screen. Use `less` to page through it:
+
+```bash
+history | less
+```
+
+Use ↑ ↓ keys to scroll, and press `q` to quit.
+
+---
+
+## 📋 Summary Table: Pipes & Redirection
+
+| Task                           | Command               |
+| ------------------------------ | --------------------- | --------- |
+| Pipe output to another command | `command1             | command2` |
+| Redirect output to a file      | `command > file.txt`  |
+| Append output to a file        | `command >> file.txt` |
+| Read input from a file         | `command < file.txt`  |
+
+---
+
+## 🧠 Why This Matters
+
+With pipes and redirection, you can:
+
+- **Automate workflows** with simple, reusable components
+- **Process large amounts of data** efficiently
+- **Build custom scripts** that do exactly what you need
+
+---
+
+### 🎉 **Summary – Great Job Completing the Lab!**
+
+You've just gained hands-on experience with some of the most essential **Linux text processing and file inspection tools**. These skills are fundamental for working efficiently in a Linux environment — whether you're managing logs, analyzing data, or writing shell scripts.
+
+---
+
+## 🔍 What You Learned
+
+Here's a quick recap of the core commands and skills you practiced:
+
+| Skill                                     | Command(s) Used       |
+| ----------------------------------------- | --------------------- |
+| **Viewing file contents**                 | `cat`, `more`, `less` |
+| **Inspecting start/end of files**         | `head`, `tail`        |
+| **Count lines, words, characters**        | `wc`                  |
+| **Sort and deduplicate lines**            | `sort`, `uniq`        |
+| **Search for patterns in files**          | `grep`                |
+| **Extract specific fields or characters** | `cut`                 |
+| **Merge files line-by-line**              | `paste`               |
+
+---
+
+## 💡 Why This Matters
+
+These tools form the foundation of **text-based data manipulation** in Linux:
+
+- They allow you to **quickly inspect and analyze** large files
+- You can **filter**, **format**, and **combine** data using simple yet powerful utilities
+- Together, they enable **pipeline-style scripting** (e.g., `grep | sort | uniq`) — a key part of Linux automation
+
+---
+
+## 🧠 Pro Tip: Combine Commands with Pipes!
+
+Now that you know these individual tools, try combining them using the **pipe (`|`)** operator:
+
+```bash
+grep "error" /var/log/syslog | wc -l
+```
+
+> Counts how many error messages are in the system log.
+
+Or:
+
+```bash
+cat top-sites.txt | tail -10 | grep "org" | sort
+```
+
+> Gets the last 10 sites, filters for "org", and sorts alphabetically.
+
+---
+
+# **Networking Commands in Linux**
+
+---
+
+## **1. Introduction**
+
+This video introduces essential **Linux networking commands** that help you:
+
+✅ View your network configuration  
+✅ Test connectivity to remote servers  
+✅ Retrieve data from URLs
+
+These tools are invaluable for troubleshooting, automation, and interacting with web services.
+
+---
+
+## **2. `hostname` – Get or Set the Host Name**
+
+### **Purpose**
+
+Displays or sets the **hostname** of the machine — a unique identifier used on the network.
+
+### **Basic Usage**
+
+```bash
+hostname
+```
+
+> Output:
+
+```
+my-linux-machine.local
+```
+
+- `.local` indicates your system uses **zeroconf/local domains** (e.g., Bonjour).
+
+### **Options**
+
+| Option        | Description                                 |
+| ------------- | ------------------------------------------- |
+| `hostname -s` | Show short hostname (without domain suffix) |
+| `hostname -i` | Show IP address associated with the host    |
+
+---
+
+## **3. `ifconfig` – Interface Configuration**
+
+### **Purpose**
+
+Displays or configures **network interfaces** such as Ethernet (`eth0`) or Wi-Fi (`wlan0`).
+
+> ⚠️ Note: `ifconfig` is deprecated in many modern Linux distros; use `ip addr` instead.
+
+### **Basic Usage**
+
+```bash
+ifconfig
+```
+
+> Shows detailed information about all active interfaces including:
+
+- **IP Address** (`inet`)
+- **MAC Address** (`ether`)
+- **Packets received/transmitted**
+- **Error/dropped packet counts**
+
+### **Example**
+
+```bash
+ifconfig eth0
+```
+
+> Shows details only for the Ethernet interface named `eth0`.
+
+---
+
+## **4. `ping` – Test Network Connectivity**
+
+### **Purpose**
+
+Tests whether a **host or IP address is reachable** by sending ICMP echo requests.
+
+### **Basic Syntax**
+
+```bash
+ping <hostname_or_ip>
+```
+
+### **Example**
+
+```bash
+ping google.com
+```
+
+> Output:
+
+```
+PING google.com (142.251.41.78): 56 data bytes
+64 bytes from 142.251.41.78: icmp_seq=0 ttl=119 time=10.4 ms
+...
+```
+
+### **Useful Options**
+
+| Option              | Description                                 |
+| ------------------- | ------------------------------------------- |
+| `ping -c <count>`   | Send a specific number of packets then stop |
+| `ping -i <seconds>` | Interval between packets (in seconds)       |
+
+> Example:
+
+```bash
+ping -c 5 google.com
+```
+
+> Returns 5 ping results and summary statistics:
+
+- Number of packets transmitted and received
+- Packet loss percentage
+- Round-trip times (min/avg/max/stddev)
+
+---
+
+## **5. `curl` – Transfer Data from or to a URL**
+
+### **Purpose**
+
+A powerful command-line tool for transferring data using various protocols like HTTP, HTTPS, FTP, etc.
+
+### **Basic Syntax**
+
+```bash
+curl <url>
+```
+
+### **Examples**
+
+- Download HTML content from Google:
+
+  ```bash
+  curl http://www.google.com
+  ```
+
+- Save output to a file:
+  ```bash
+  curl -o google.html http://www.google.com
+  ```
+
+### **Common Uses**
+
+- Testing API endpoints
+- Downloading files/scripts
+- Sending HTTP requests with custom headers/data
+
+---
+
+## **6. `wget` – Retrieve Files from Web URLs**
+
+### **Purpose**
+
+Downloads files from the web recursively and supports resuming broken downloads.
+
+### **Basic Syntax**
+
+```bash
+wget <url>
+```
+
+### **Example**
+
+Download a test file from W3.org:
+
+```bash
+wget https://www.w3.org/TR/2002/REC-xml-20021104/ISO-Latin-1-encoding.txt
+```
+
+### **Output Includes**
+
+- Resolving host
+- Connecting to server
+- Sending HTTP request
+- Saving file locally (with original name by default)
+
+### **Useful Options**
+
+| Option          | Description                          |
+| --------------- | ------------------------------------ |
+| `-O <filename>` | Specify custom output filename       |
+| `-r`            | Recursive download (mirror websites) |
+| `-c`            | Resume broken download               |
+
+> Example:
+
+```bash
+wget -O iso.txt https://www.w3.org/TR/2002/REC-xml-20021104/ISO-Latin-1-encoding.txt
+```
+
+---
+
+## **7. Summary Table of Networking Commands**
+
+| Command                               | Purpose                        | Example                                    |
+| ------------------------------------- | ------------------------------ | ------------------------------------------ |
+| `hostname`                            | Display or set hostname        | `hostname` → `my-linux-machine.local`      |
+| `hostname -s`                         | Show short hostname            | `hostname -s` → `my-linux-machine`         |
+| `hostname -i`                         | Show IP address                | `hostname -i` → `192.168.1.100`            |
+| `ifconfig`                            | Show network interface info    | `ifconfig` or `ifconfig eth0`              |
+| `ping`                                | Test connectivity to a host    | `ping google.com`                          |
+| `ping -c 5 google.com`                | Ping 5 times and exit          | `ping -c 5 google.com`                     |
+| `curl`                                | Transfer data from or to a URL | `curl http://example.com`                  |
+| `curl -o file.txt http://example.com` | Save output to a file          | Saves content to `file.txt`                |
+| `wget`                                | Download files from a URL      | `wget http://example.com/file.txt`         |
+| `wget -O custom_name.txt url`         | Download and rename file       | `wget -O data.txt http://example.com/data` |
+
+---
+
+## **8. Final Tips**
+
+- Use `hostname` and `ifconfig` to quickly check your **machine's identity and network status**.
+- Use `ping` to **test connection stability** to a website or IP address.
+- Use `curl` for quick **data transfer** and testing APIs.
+- Use `wget` for **downloading files**, especially when working offline or scripting.
+
+---
+
+## **9. Bonus: Modern Alternative to `ifconfig` – `ip` Command**
+
+While `ifconfig` is widely known, it's being replaced by the more powerful `ip` command suite:
+
+| Task                       | `ip` Equivalent            |
+| -------------------------- | -------------------------- |
+| Show IP addresses          | `ip addr show` or `ip a`   |
+| Show routing table         | `ip route show` or `ip r`  |
+| Bring up/down an interface | `sudo ip link set eth0 up` |
+
+---
+
+# 🌐 A Brief Introduction to Networking – Summary & Highlights
+
+Great job reading through this foundational networking guide! This optional but valuable reading introduced you to **core concepts in computer networking**, helping you understand how computers communicate, share resources, and connect across networks like the Internet.
+
+---
+
+## 🎯 Learning Objectives Recap
+
+After completing this reading, you are now able to:
+
+✅ **Describe** computer networks, network resources, and network nodes  
+✅ **Explain** the roles of **hosts**, **clients**, and **servers**  
+✅ **Understand** what **packets** and **pings** are  
+✅ **Differentiate between URLs and IP addresses**
+
+---
+
+## 🧩 Key Concepts Explained
+
+### 🔹 Computer Networks
+
+- A **computer network** is a collection of interconnected devices that can communicate and share resources.
+- Examples:
+  - **LAN (Local Area Network)** – small, localized network (e.g., home or office)
+  - **WAN (Wide Area Network)** – covers large geographical areas (e.g., the internet)
+  - **The Internet** – a global network of networks
+
+> 💡 The internet is essentially a **network of computer networks**.
+
+---
+
+### 🔁 Hosts, Clients, and Servers
+
+| Term       | Description                                                                       |
+| ---------- | --------------------------------------------------------------------------------- |
+| **Host**   | Any device on a network with an IP address. Can act as a **server** or **client** |
+| **Client** | Requests services or data from a server                                           |
+| **Server** | Provides services or data to clients (e.g., web servers, email servers)           |
+
+> 💡 Many devices can switch roles — acting as both client and server when needed.
+
+---
+
+### 📦 Packets and Pings
+
+#### What Is a Network Packet?
+
+- A packet is a **formatted unit of data** sent over a network.
+- Contains:
+  - **Control information**: source, destination, routing info
+  - **Payload**: actual data being transmitted
+
+#### What Is `ping`?
+
+- A utility used to test connectivity between two hosts
+- Works by sending an **"echo request"** packet and waiting for a response
+- Helps diagnose connection issues (e.g., "Can I reach Google's servers?")
+
+Example command:
+
+```bash
+ping google.com
+```
+
+---
+
+### 🌍 URLs and IP Addresses
+
+#### What Is an IP Address?
+
+- Stands for **Internet Protocol Address**
+- A unique identifier assigned to each device connected to a network
+- Used to **locate and communicate** with other devices
+- Example IPv4 address: `192.168.1.1`
+- Example IPv6 address: `2001:0db8:85a3::8a2e:0370:7334`
+
+> 💡 When you use `ping`, it uses **IP addresses** to send and receive packets.
+
+---
+
+#### What Is a URL?
+
+- Stands for **Uniform Resource Locator**
+- Also known as a **web address**
+- Identifies the location of a resource on the internet and how to access it
+
+#### URL Format:
+
+```
+protocol://hostname/path
+```
+
+Example:
+
+```
+https://en.wikipedia.org/wiki/URL
+```
+
+Breakdown:
+
+- **Protocol**: `https` – method to retrieve the resource
+- **Hostname**: `en.wikipedia.org` – server where the resource lives
+- **Path**: `/wiki/URL` – specific file/resource on the server
+
+> 📌 URLs make it easier for humans to access resources without needing to remember complex IP addresses.
+
+---
+
+## 🧠 Why These Concepts Matter
+
+Understanding these basics helps you:
+
+- Troubleshoot network issues using commands like `ping`
+- Understand how computers communicate over the internet
+- Work more effectively with web-based tools and services
+- Prepare for deeper learning about Linux networking commands
+
+---
+
+## ✅ Summary Table
+
+| Concept              | Description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| **Computer Network** | Interconnected computers sharing resources                                 |
+| **Network Resource** | Anything identifiable and accessible via a network (e.g., files, printers) |
+| **Network Node**     | Any device participating in the network (computers, routers, etc.)         |
+| **Host**             | A device that can be a client or server                                    |
+| **Client**           | Requests data or services from a server                                    |
+| **Server**           | Provides data or services to clients                                       |
+| **Packet**           | Unit of data containing control info + payload                             |
+| **Ping**             | Tests network connectivity by sending echo requests                        |
+| **IP Address**       | Unique identifier for a device on a network                                |
+| **URL**              | Human-readable address pointing to a web resource                          |
+
+---
+
+# 🧾 Exercise 1 – View Configuration Info About Your Network
+
+In this exercise, you learned how to **view your system's network configuration**, including:
+
+- Hostname
+- IP address
+- Network interface details using `hostname` and `ip`
+
+This is essential for understanding how your machine connects to the network and communicates with other systems.
+
+---
+
+## 🔍 Overview of What You Learned
+
+| Task                                              | Command             |
+| ------------------------------------------------- | ------------------- |
+| View system hostname                              | `hostname`          |
+| View system IP address                            | `hostname -i`       |
+| Show all network interfaces                       | `ip a` or `ip addr` |
+| Show info about a specific interface (e.g., eth0) | `ip addr show eth0` |
+
+---
+
+## ✅ Step-by-Step Breakdown
+
+### 🔹 1.1 Display Your System’s Hostname and IP Address
+
+#### View the current **hostname**:
+
+```bash
+hostname
+```
+
+Example output:
+
+```
+theia-2c65847f
+```
+
+The **hostname** helps identify your machine on a network — especially useful in server environments.
+
+#### View the system's **IP address**:
+
+```bash
+hostname -i
+```
+
+Example output:
+
+```
+172.17.0.2
+```
+
+> 💡 This shows the **IPv4 address** associated with your host.
+
+---
+
+### 🔹 1.2 Display Network Interface Configuration
+
+Before running the `ip` command, you installed the `iproute2` package:
+
+#### Update and install:
+
+```bash
+sudo apt update
+sudo apt install iproute2
+```
+
+Now you can use the powerful `ip` command.
+
+#### Show all network interfaces:
+
+```bash
+ip a
+```
+
+or
+
+```bash
+ip addr
+```
+
+This displays information like:
+
+- Interface name (`lo`, `eth0`, etc.)
+- IP addresses (`inet`, `inet6`)
+- MAC address (`link/ether`)
+- Status (`UP`, `DOWN`)
+
+Example output line:
+
+```
+inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
+```
+
+Here, `172.17.0.2` is your **IPv4 address**.
+
+#### Show configuration for a specific interface (like `eth0`):
+
+```bash
+ip addr show eth0
+```
+
+> 📌 `eth0` is typically the **primary Ethernet interface** used to connect to the network.
+
+You'll see:
+
+- The device status (`UP`)
+- Its IPv4 and IPv6 addresses
+- Broadcast and subnet mask info
+
+---
+
+## 📋 Summary Table: Useful Commands
+
+| Purpose                              | Command             |
+| ------------------------------------ | ------------------- |
+| View system hostname                 | `hostname`          |
+| View system IP address               | `hostname -i`       |
+| List all network interfaces          | `ip a` or `ip addr` |
+| View specific interface (e.g., eth0) | `ip addr show eth0` |
+
+---
+
+## 🧠 Why These Tools Matter
+
+Understanding your **network configuration** helps with:
+
+- Troubleshooting connectivity issues
+- Configuring servers
+- Monitoring network usage
+- Writing scripts that depend on network state
+
+The `ip` command is a modern replacement for older tools like `ifconfig`, and it offers more flexibility and control.
+
+---
+
+## 🛠️ Real-World Use Cases
+
+| Task                                | Command                                                   |
+| ----------------------------------- | --------------------------------------------------------- |
+| Check if network is up              | `ip link show eth0`                                       |
+| Find your public IP (from terminal) | `curl ifconfig.me`                                        |
+| Monitor interface changes           | `ip monitor`                                              |
+| Bring an interface up/down          | `sudo ip link set eth0 up` / `sudo ip link set eth0 down` |
+
+---
+
+# 🧪 Exercise 2 – Test Network Connectivity with `ping`
+
+In this exercise, you learned how to use the **`ping`** command to test whether your system can successfully communicate with another device or website over the network.
+
+This is a fundamental tool for:
+
+- Checking internet connectivity
+- Diagnosing network issues
+- Testing server availability
+
+---
+
+## 🔍 Overview of What You Learned
+
+| Task                                   | Command                    |
+| -------------------------------------- | -------------------------- |
+| Ping a host continuously               | `ping www.google.com`      |
+| Ping a host a specific number of times | `ping -c 5 www.google.com` |
+
+---
+
+## ✅ Step-by-Step Breakdown
+
+### 🔹 2.1 Test Connectivity to a Host Using `ping`
+
+#### Ping Google continuously:
+
+```bash
+ping www.google.com
+```
+
+You’ll see output like:
+
+```
+64 bytes from 142.251.42.78: icmp_seq=1 ttl=115 time=15.3 ms
+64 bytes from 142.251.42.78: icmp_seq=2 ttl=115 time=14.9 ms
+...
+```
+
+Each line shows:
+
+- The size of the response
+- The IP address of the responding server
+- Sequence number
+- Time-to-live (TTL)
+- Round-trip time in milliseconds
+
+> ⚠️ To stop the ping process, press **Ctrl + C**
+
+---
+
+#### Ping a Host a Specific Number of Times
+
+To limit the number of packets sent, use the `-c` option:
+
+```bash
+ping -c 5 www.google.com
+```
+
+This sends **exactly 5 packets**, then stops automatically.
+
+Useful for:
+
+- Scripting and automation
+- Quick tests without manually stopping the command
+
+---
+
+## 📋 Summary Table
+
+| Command                | Description                             |
+| ---------------------- | --------------------------------------- |
+| `ping hostname`        | Tests if a remote host is reachable     |
+| `ping -c N hostname`   | Pings the host exactly N times          |
+| `ping -c 5 google.com` | Sends 5 packets to google.com and stops |
+
+---
+
+## 🧠 Why This Matters
+
+Using `ping` helps you quickly determine:
+
+- Whether you have **internet access**
+- If a **remote server is online**
+- How fast your connection is (based on **response time**)
+- If there’s packet loss or high latency
+
+It's one of the most basic yet powerful tools in any Linux user's networking toolkit.
+
+---
+
+## 🛠️ Real-World Use Cases
+
+| Scenario                      | Command                                    |
+| ----------------------------- | ------------------------------------------ |
+| Check if you're online        | `ping -c 4 google.com`                     |
+| Troubleshoot slow connections | `ping google.com` (observe response times) |
+| Test local network devices    | `ping 192.168.1.1`                         |
+| Monitor server availability   | `ping -c 10 server.example.com`            |
+
+---
+
+# 📥 Exercise 3 – View or Download Data from a Server
+
+In this exercise, you learned how to **retrieve data from remote servers** using two powerful command-line tools:
+
+- `curl` – for transferring data and viewing content directly in the terminal
+- `wget` – for downloading files (and even entire websites)
+
+These tools are essential for:
+
+- Fetching configuration files
+- Downloading software or scripts
+- Interacting with APIs
+- Automating tasks that involve remote data
+
+---
+
+## 🔍 Overview of What You Learned
+
+| Task                          | Command         |
+| ----------------------------- | --------------- |
+| View file contents from a URL | `curl [URL]`    |
+| Download and save a file      | `curl -O [URL]` |
+| Download a file using wget    | `wget [URL]`    |
+
+---
+
+## ✅ Step-by-Step Breakdown
+
+### 🔹 3.1 Transfer Data from a Server Using `curl`
+
+#### View file contents from a URL:
+
+```bash
+curl https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Bash%20Scripting/usdoi.txt
+```
+
+This displays the full text of the **U.S. Declaration of Independence** directly in your terminal.
+
+> 💡 This is useful when you want to inspect remote files without saving them.
+
+---
+
+#### Save the file to your current directory:
+
+```bash
+curl -O https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Bash%20Scripting/usdoi.txt
+```
+
+Now you have a local copy named `usdoi.txt`.
+
+> 📁 The `-O` option tells `curl` to save the file using its original filename.
+
+---
+
+### 🔹 3.2 Download Files Using `wget`
+
+#### First, remove the file if it already exists:
+
+```bash
+rm usdoi.txt
+```
+
+#### Then download it again using `wget`:
+
+```bash
+wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DB0250EN-SkillsNetwork/labs/Bash%20Scripting/usdoi.txt
+```
+
+This downloads the file and saves it in your current directory.
+
+> ⚙️ `wget` is especially useful because:
+>
+> - It works well in scripts
+> - Supports recursive downloads (`-r`)
+> - Can continue interrupted downloads (`-c`)
+> - Doesn't require user interaction once started
+
+---
+
+## 📋 Summary Table: `curl` vs `wget`
+
+| Feature                      | `curl`                      | `wget`                    |
+| ---------------------------- | --------------------------- | ------------------------- |
+| View content in terminal     | ✅ Yes                      | ❌ No                     |
+| Save file with original name | ✅ With `-O`                | ✅ Yes                    |
+| Recursive download           | ❌ No                       | ✅ Yes with `-r`          |
+| Resume broken download       | ❌ By default               | ✅ With `-c`              |
+| Works silently               | ❌ Noisy by default         | ✅ With `-q`              |
+| Use case                     | API calls, quick inspection | File downloads, scripting |
+
+---
+
+## 🧠 Why These Tools Matter
+
+With `curl` and `wget`, you can:
+
+- **Automate downloads** in scripts
+- **Fetch live data** from APIs or web services
+- **Download large datasets** or software packages
+- **Troubleshoot HTTP responses** and server connectivity
+
+They're foundational tools for working with **networked resources** in Linux.
+
+---
+
+## 🛠️ Real-World Examples
+
+### 🔽 Download a file silently with `wget`:
+
+```bash
+wget -q https://example.com/file.zip
+```
+
+### 🖥️ Download and display JSON from an API:
+
+```bash
+curl https://api.github.com/users/octocat
+```
+
+### 📂 Recursively download an entire website:
+
+```bash
+wget -r https://example.com
+```
+
+### 📥 Resume a partially downloaded file:
+
+```bash
+wget -c http://example.com/largefile.iso
+```
+
+---
+
+## **Exercise 4 – Exploring DNS and Looking Up Domain Information**
+
+In this exercise, you'll learn how to:
+
+- Understand what **DNS** is and why it matters
+- Use `nslookup` and `dig` to look up domain information
+- Check **IP addresses**, **name servers**, and **mail servers** associated with a domain
+
+These tools are essential for:
+
+- Troubleshooting domain issues
+- Checking website availability
+- Understanding how domains resolve to IP addresses
+- Debugging email delivery problems using MX records
+
+---
+
+## 🌐 What Is DNS?
+
+**DNS (Domain Name System)** is like the phonebook of the internet.
+
+It maps **human-readable domain names** (like `google.com`) to **machine-readable IP addresses** (like `172.217.174.78`), so your computer knows where to find a website or service.
+
+### Key DNS Concepts:
+
+| Term            | Meaning                                            |
+| --------------- | -------------------------------------------------- |
+| **A Record**    | Maps a domain name to an IPv4 address              |
+| **AAAA Record** | Maps a domain to an IPv6 address                   |
+| **CNAME**       | Alias record pointing one domain to another        |
+| **MX Record**   | Specifies mail servers for a domain                |
+| **NS Record**   | Identifies authoritative name servers for a domain |
+
+---
+
+## 🔍 Step-by-Step: Using `nslookup`
+
+The `nslookup` command helps you query DNS servers to get domain-related information.
+
+### ✅ View Basic DNS Info for a Website
+
+```bash
+nslookup google.com
+```
+
+This shows:
+
+- The **IP address** of the domain
+- The **DNS server** used to retrieve the info
+
+---
+
+### ✅ Look Up Mail Servers (MX Records)
+
+```bash
+nslookup -type=mx gmail.com
+```
+
+This lists the **mail exchange (MX) servers** responsible for receiving emails for `gmail.com`.
+
+---
+
+### ✅ Query Name Servers (NS Records)
+
+```bash
+nslookup -type=ns ibm.com
+```
+
+This shows which **name servers** are responsible for managing the domain’s DNS records.
+
+---
+
+## 🔎 Step-by-Step: Using `dig`
+
+`dig` (**Domain Information Groper**) is a more detailed and powerful tool than `nslookup`. It gives you full control over DNS queries.
+
+### ✅ View A Record for a Domain
+
+```bash
+dig google.com
+```
+
+Look for the **ANSWER SECTION**:
+
+```
+google.com.     299     IN      A       172.217.174.78
+```
+
+This shows the **IPv4 address** that `google.com` resolves to.
+
+---
+
+### ✅ Look Up MX Records with `dig`
+
+```bash
+dig MX gmail.com
+```
+
+Scroll down to the **ANSWER SECTION** to see which servers handle email for Gmail.
+
+---
+
+### ✅ Get All DNS Records for a Domain
+
+```bash
+dig ANY ibm.com
+```
+
+This fetches all available DNS records for `ibm.com`, including:
+
+- A / AAAA
+- CNAME
+- MX
+- NS
+- TXT (used for SPF, DKIM, etc.)
+
+> ⚠️ Some domains may restrict "ANY" queries for security reasons.
+
+---
+
+## 📋 Summary Table: Useful DNS Commands
+
+| Task                           | Command                       |
+| ------------------------------ | ----------------------------- |
+| View basic DNS info            | `nslookup google.com`         |
+| Look up MX records (for email) | `nslookup -type=mx gmail.com` |
+| Look up name servers           | `nslookup -type=ns ibm.com`   |
+| View A record                  | `dig google.com`              |
+| View MX records                | `dig MX gmail.com`            |
+| View all DNS records           | `dig ANY ibm.com`             |
+
+---
+
+## 🧠 Why This Matters
+
+Understanding DNS helps you:
+
+- Diagnose **domain resolution issues**
+- Verify **email server settings**
+- Configure **custom domains**
+- Troubleshoot **website downtime**
+
+Tools like `nslookup` and `dig` are invaluable for system administrators, developers, and anyone working with web services.
+
+---
+
+## 🛠️ Real-World Examples
+
+| Scenario                            | Command                                                |
+| ----------------------------------- | ------------------------------------------------------ |
+| Check if a site resolves correctly  | `dig example.com`                                      |
+| Find who handles a domain’s email   | `dig MX example.com`                                   |
+| Debug DNS propagation after changes | `dig @8.8.8.8 example.com` _(use Google's public DNS)_ |
+| Test local DNS cache                | `nslookup example.com` _(before and after flush)_      |
+
+---
+
+# 🛠️ **Practice Exercises – Networking in Linux**
+
+These exercises will help reinforce your understanding of **network-related commands** in Linux. You'll be working with tools like `hostname`, `ping`, `ip`, `curl`, and `wget` to inspect network configuration, test connectivity, and transfer data.
+
+---
+
+## 🔧 Before You Begin
+
+Make sure you're in the correct directory:
+
+```bash
+cd /home/project
+pwd
+```
+
+You should see:
+
+```
+/home/project
+```
+
+Now let's go through each exercise step-by-step.
+
+---
+
+## ✅ 1. Display Your Host’s IP Address
+
+### 💡 Hint:
+
+Use the `hostname` command with an option that shows the IP address.
+
+### ✅ Solution:
+
+```bash
+hostname -i
+```
+
+This displays your system’s internal **IPv4 address**, such as:
+
+```
+172.17.0.2
+```
+
+> This is useful for checking what IP address your machine is using on the local network.
+
+---
+
+## ✅ 2. Get Connectivity Stats on Your Connection to www.google.com
+
+### 💡 Hint:
+
+Use the `ping` command with a limited number of packets.
+
+### ✅ Solution:
+
+```bash
+ping -c 5 www.google.com
+```
+
+This sends **5 ICMP echo requests** to Google's servers and returns stats like:
+
+- Round-trip time (latency)
+- Packet loss
+
+Example output:
+
+```
+--- www.google.com ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4005ms
+rtt min/avg/max/mdev = 10.2/11.8/13.9/1.2 ms
+```
+
+> This helps determine if your system can reach external sites and how fast it does so.
+
+---
+
+## ✅ 3. View Info About Your Ethernet Adapter `eth0`
+
+### 💡 Hint:
+
+Use the `ip` command to show details about the network interface.
+
+### ✅ Solution:
+
+```bash
+ip addr show eth0
+```
+
+This shows:
+
+- Interface status (`UP`)
+- IPv4 and IPv6 addresses
+- MAC address
+- Broadcast and subnet info
+
+Look for the line starting with `inet` — this is your **IP address**.
+
+Example:
+
+```
+inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
+```
+
+> This is helpful when troubleshooting or configuring network interfaces.
+
+---
+
+## ✅ 4. View the HTML Code for www.google.com’s Landing Page
+
+### 💡 Hint:
+
+Use `curl` to fetch and display remote content.
+
+### ✅ Solution:
+
+```bash
+curl www.google.com
+```
+
+This displays the raw **HTML source code** of Google's homepage directly in your terminal.
+
+> Tip: If the output looks messy, try saving it to a file instead (next step).
+
+---
+
+## ✅ 5. Download the HTML Code for www.google.com’s Landing Page
+
+### 💡 Hint:
+
+Use `wget` to download and save the page.
+
+### ✅ Solution:
+
+```bash
+wget www.google.com
+```
+
+This saves the downloaded HTML as:
+
+```
+index.html
+```
+
+Verify the file exists:
+
+```bash
+ls -l
+```
+
+You’ll see something like:
+
+```
+-rw-r--r-- 1 user user 12345 Apr 5 10:00 index.html
+```
+
+> You now have a local copy of Google's home page!
+
+---
+
+## 📋 Summary Table
+
+| Task                        | Command                    |
+| --------------------------- | -------------------------- |
+| Show host IP address        | `hostname -i`              |
+| Test connectivity to Google | `ping -c 5 www.google.com` |
+| View eth0 interface info    | `ip addr show eth0`        |
+| View HTML of Google         | `curl www.google.com`      |
+| Download Google's HTML      | `wget www.google.com`      |
+
+---
+
+# **File Archiving and Compression Commands in Linux**
+
+---
+
+## **1. Introduction**
+
+✅ Understand the difference between **archiving** and **compression**  
+✅ Create and extract **tarballs** (`.tar` files)  
+✅ Compress and decompress using **gzip** and **zip**  
+✅ Extract contents from **compressed archives**
+
+These skills are essential for:
+
+- Backing up data
+- Transferring large collections of files
+- Managing disk space
+
+---
+
+## **2. Key Concepts**
+
+### **A. Archiving**
+
+- **Definition**: Combines multiple files into a **single file** without reducing size.
+- **Purpose**: For **portability and backup**.
+- **Example Format**: `.tar`
+
+### **B. Compression**
+
+- **Definition**: Reduces file size by removing redundancy.
+- **Purpose**: Saves **storage space**, speeds up **transfers**, and reduces **bandwidth usage**.
+- **Common Tools**:
+  - `gzip` – used with `.tar.gz` or `.tgz`
+  - `zip` – used with `.zip`
+
+---
+
+## **3. Using `tar` – Tape ARchiver**
+
+### **Purpose**
+
+Create or extract **archive files** (called **tarballs**) that bundle directories and files.
+
+### **Basic Syntax**
+
+```bash
+tar [options] [archive_name.tar] [files_or_directories]
+```
+
+### **Common Options**
+
+| Option | Meaning                                             |
+| ------ | --------------------------------------------------- |
+| `-c`   | Create a new archive                                |
+| `-f`   | Specify filename                                    |
+| `-t`   | List contents of an archive                         |
+| `-x`   | Extract files from archive                          |
+| `-z`   | Filter through gzip (for compression/decompression) |
+
+---
+
+### **A. Creating a Tar Archive**
+
+To archive a directory called `notes`:
+
+```bash
+tar -cf notes.tar notes/
+```
+
+> Creates `notes.tar`, containing all files in the `notes` directory.
+
+---
+
+### **B. Listing Contents of a Tar File**
+
+To view what's inside `notes.tar`:
+
+```bash
+tar -tf notes.tar
+```
+
+---
+
+### **C. Extracting Files from a Tar Archive**
+
+To extract files:
+
+```bash
+tar -xf notes.tar
+```
+
+---
+
+### **D. Compressing a Tar Archive with GZIP**
+
+To compress `notes.tar` into a smaller `notes.tar.gz`:
+
+```bash
+tar -czf notes.tar.gz notes/
+```
+
+> This bundles and compresses the `notes` directory into a single compressed archive.
+
+---
+
+### **E. Extracting a `.tar.gz` File**
+
+To extract both the archive and its compressed contents:
+
+```bash
+tar -xzf notes.tar.gz
+```
+
+> The `-z` option automatically handles **gzip compression**.
+
+---
+
+## **4. Using `zip` and `unzip`**
+
+### **A. What is `zip`?**
+
+- Combines **compression and archiving** in one step.
+- Produces `.zip` files — widely supported across operating systems.
+
+### **Creating a ZIP Archive**
+
+To compress the `notes` folder into `notes.zip`:
+
+```bash
+zip -r notes.zip notes/
+```
+
+> The `-r` flag ensures **all subdirectories** are included.
+
+---
+
+### **Listing Contents of a ZIP File**
+
+Use `unzip` to list contents:
+
+```bash
+unzip -l notes.zip
+```
+
+---
+
+### **Extracting a ZIP File**
+
+To extract the contents:
+
+```bash
+unzip notes.zip
+```
+
+> Automatically recreates the original directory structure.
+
+---
+
+## **5. Summary Table of Archiving & Compression Commands**
+
+| Task                     | Command                           | Description                            |
+| ------------------------ | --------------------------------- | -------------------------------------- |
+| Create tar archive       | `tar -cf archive.tar folder/`     | Bundle files into a single `.tar` file |
+| List tar contents        | `tar -tf archive.tar`             | View files inside `.tar`               |
+| Extract tar archive      | `tar -xf archive.tar`             | Unpack `.tar` without compression      |
+| Create compressed tar.gz | `tar -czf archive.tar.gz folder/` | Archive + gzip compression             |
+| Extract tar.gz file      | `tar -xzf archive.tar.gz`         | Decompress and unpack `.tar.gz`        |
+| Create zip archive       | `zip -r archive.zip folder/`      | Compress and bundle in `.zip` format   |
+| List zip contents        | `unzip -l archive.zip`            | Show files inside `.zip`               |
+| Extract zip file         | `unzip archive.zip`               | Uncompress and unpack `.zip`           |
+
+---
+
+## **6. Comparison: `tar` vs `zip`**
+
+| Feature                    | `tar`                                   | `zip`                            |
+| -------------------------- | --------------------------------------- | -------------------------------- |
+| **Primary Use**            | Archiving (with optional compression)   | Archiving + built-in compression |
+| **Compression Tool**       | Usually combined with `gzip` (`tar.gz`) | Built-in compression             |
+| **Cross-Platform Support** | Limited on Windows                      | Widely supported                 |
+| **Recursive by Default**   | Yes                                     | Requires `-r` for folders        |
+| **Preserves Permissions**  | Yes (on Unix/Linux)                     | No (on Windows)                  |
+
+---
+
+## **7. Example Directory Structure**
+
+Suppose you have this directory:
+
+```
+notes/
+├── math/
+│   ├── week1.txt
+│   └── week2.txt
+└── physics/
+    ├── week1.txt
+    └── week2.txt
+```
+
+You can compress it into:
+
+- `notes.tar` (just archived)
+- `notes.tar.gz` (archived + compressed)
+- `notes.zip` (compressed archive)
+
+And later extract it back to the same structure using the appropriate command.
+
+---
+
+## **8. Final Tips**
+
+- Use `tar` when preserving permissions and working in Linux/Unix environments.
+- Use `zip` for cross-platform compatibility (e.g., sharing with Windows users).
+- Always double-check your file extensions:
+  - `.tar` → just archived
+  - `.tar.gz` or `.tgz` → archived + compressed
+  - `.zip` → compressed archive
+- Combine `tar` with `gzip` for efficient backups.
+- Use `unzip` and `tar -tzf` to preview contents before extraction.
+
+---
+
+# 📦 Exercise 1 - File and Folder Archiving and Compression
+
+In this exercise, you learned how to **package**, **compress**, and **extract** files using the Linux command line tools:
+
+- `tar` – for creating `.tar` archives
+- `zip` – for compressing into `.zip` format
+- `unzip` – for extracting `.zip` files
+
+These are essential skills for:
+
+- Backing up data
+- Transferring multiple files as a single package
+- Saving disk space with compression
+- Managing software distributions or logs
+
+---
+
+## 🔧 Step-by-Step Breakdown
+
+### 🔹 1.1 Create and Manage File Archives with `tar`
+
+#### Create a `.tar` archive of the `/bin` directory:
+
+```bash
+tar -cvf bin.tar /bin
+```
+
+- `-c` = create a new archive
+- `-v` = show progress (verbose)
+- `-f` = specify filename (`bin.tar`)
+
+This creates a large file called `bin.tar`, which contains all files from the `/bin` directory.
+
+---
+
+#### List contents of the `.tar` archive:
+
+```bash
+tar -tvf bin.tar
+```
+
+This shows a detailed list of files inside the archive — useful for verifying contents before extraction.
+
+---
+
+#### Extract files from the `.tar` archive:
+
+```bash
+tar -xvf bin.tar
+```
+
+- `-x` = extract
+- `-v` = show progress
+- `-f` = specify filename
+
+After extraction, you'll see a folder named `bin` in your current directory.
+
+> Tip: Use `ls -l` to confirm it was extracted correctly.
+
+---
+
+### 🔹 1.2 Package and Compress Archive Files with `zip`
+
+#### Create a `.zip` file of all `.conf` files in `/etc`:
+
+```bash
+zip config.zip /etc/*.conf
+```
+
+This bundles all configuration files ending in `.conf` into one compressed file: `config.zip`.
+
+---
+
+#### Create a compressed ZIP archive of an entire directory:
+
+```bash
+zip -ry bin.zip /bin
+```
+
+- `-r` = recursively include all files and subdirectories
+- `-y` = store symbolic links as such (instead of following them)
+
+This compresses the entire `/bin` directory into a portable `bin.zip` file.
+
+---
+
+### 🔹 1.3 Extract, List, or Test ZIP Archives with `unzip`
+
+#### List contents of a `.zip` file:
+
+```bash
+unzip -l config.zip
+```
+
+This shows what’s inside the archive without extracting anything — helpful for previewing.
+
+---
+
+#### Extract all files from a `.zip` archive:
+
+```bash
+unzip -o bin.zip
+```
+
+- `-o` = overwrite existing files (useful if you run the command more than once)
+- Automatically creates a `bin` directory containing the extracted files
+
+---
+
+## 📋 Summary Table
+
+| Task                 | Command                           |
+| -------------------- | --------------------------------- |
+| Create tar archive   | `tar -cvf archive.tar directory/` |
+| List tar contents    | `tar -tvf archive.tar`            |
+| Extract tar archive  | `tar -xvf archive.tar`            |
+| Zip specific files   | `zip archive.zip file1 file2`     |
+| Zip entire directory | `zip -r archive.zip directory/`   |
+| List zip contents    | `unzip -l archive.zip`            |
+| Extract zip archive  | `unzip -o archive.zip`            |
+
+---
+
+## 🧠 Why This Matters
+
+Understanding archiving and compression helps you:
+
+- Bundle and share multiple files easily
+- Save storage space
+- Backup important directories
+- Transfer data securely between systems
+
+`tar` is commonly used in Linux environments for packaging, while `zip` offers cross-platform compatibility with Windows and macOS.
+
+---
+
+## 💡 Pro Tips
+
+- Combine `tar` and `gzip` for compressed archives:
+  ```bash
+  tar -czvf archive.tar.gz directory/
+  ```
+- Use wildcards with zip:
+  ```bash
+  zip logfiles.zip *.log
+  ```
+- Exclude files when zipping:
+  ```bash
+  zip -r project.zip project/ -x "*.git*"
+  ```
+
+---
+
+# 🎉 Module Summary & Highlights – Great Work!
+
+You've successfully completed a comprehensive module that covers **essential Linux command-line skills**, from navigating the system and managing files to working with networks, processes, and archives.
+
+Here's a clean, organized summary of what you’ve learned — your **Linux command cheat sheet** for future reference.
+
+---
+
+## 🔧 Shell & Terminal Basics
+
+| Task                    | Command                       |
+| ----------------------- | ----------------------------- |
+| Start shell             | Default shell is Bash         |
+| Display current user    | `whoami`                      |
+| Show user ID info       | `id`                          |
+| Get OS info             | `uname -a`                    |
+| List directory contents | `ls`, `ls -l`                 |
+| Change directories      | `cd directory_name`           |
+| Show current path       | `pwd`                         |
+| Find files              | `find /path -name "filename"` |
+
+---
+
+## 📁 File and Directory Management
+
+| Task                     | Command                   |
+| ------------------------ | ------------------------- |
+| Create file              | `touch filename`          |
+| Make directory           | `mkdir dirname`           |
+| Copy file/dir            | `cp source destination`   |
+| Move or rename           | `mv old new`              |
+| Remove file              | `rm filename`             |
+| Remove empty dir         | `rmdir dirname`           |
+| View file content        | `cat filename`            |
+| View first N lines       | `head -N filename`        |
+| View last N lines        | `tail -N filename`        |
+| Count lines/words/chars  | `wc`, `wc -l filename`    |
+| Sort lines               | `sort filename`           |
+| Remove duplicates        | `uniq filename`           |
+| Search in files          | `grep "pattern" filename` |
+| Extract fields           | `cut -d "," -f2 filename` |
+| Merge files line-by-line | `paste file1 file2`       |
+
+---
+
+## 💾 Archiving and Compression
+
+| Task                   | Command                            |
+| ---------------------- | ---------------------------------- |
+| Create `.tar` archive  | `tar -cvf archive.tar folder/`     |
+| List `.tar` contents   | `tar -tvf archive.tar`             |
+| Extract `.tar` archive | `tar -xvf archive.tar`             |
+| Compress into `.zip`   | `zip -r archive.zip folder/`       |
+| List `.zip` contents   | `unzip -l archive.zip`             |
+| Extract `.zip` archive | `unzip archive.zip`                |
+| Combine tar + gzip     | `tar -czvf archive.tar.gz folder/` |
+
+---
+
+## 🌐 Networking Tools
+
+| Task                       | Command                                     |
+| -------------------------- | ------------------------------------------- |
+| View hostname              | `hostname`                                  |
+| View IP address            | `hostname -i`                               |
+| Inspect network interfaces | `ip addr` or `ip a`                         |
+| Test connectivity          | `ping www.google.com`                       |
+| Transfer data              | `curl https://example.com/file.txt`         |
+| Download files             | `wget https://example.com/file.txt`         |
+| Look up DNS records        | `nslookup example.com` or `dig example.com` |
+
+---
+
+## 🖥️ System Monitoring & Info
+
+| Task              | Command          |
+| ----------------- | ---------------- |
+| Disk space        | `df -h`          |
+| Running processes | `ps -e`, `top`   |
+| Current date/time | `date`           |
+| Print text/values | `echo "message"` |
+| Read manual pages | `man command`    |
+
+---
+
+## 🔒 File Permissions and Ownership
+
+| Task               | Command                                       |
+| ------------------ | --------------------------------------------- |
+| View permissions   | `ls -l`                                       |
+| Change permissions | `chmod u+rwx filename`                        |
+| Change ownership   | `chown user:group filename` _(requires root)_ |
+
+---
+
+## 🛠️ Text Processing & Data Wrangling
+
+| Task                     | Command                   |
+| ------------------------ | ------------------------- | ----- |
+| Sort lines               | `sort filename`           |
+| Remove duplicate lines   | `sort file                | uniq` |
+| Extract patterns         | `grep "search" file`      |
+| Cut out columns          | `cut -d "," -f1 file.csv` |
+| Merge files side-by-side | `paste file1 file2`       |
+
+---
+
+## 🧠 Why This Matters
+
+You now have a solid foundation in:
+
+- **Navigating and managing files**
+- **Searching and processing text**
+- **Understanding and controlling file permissions**
+- **Working with networked resources**
+- **Archiving and compressing files**
+
+These are core skills used daily by:
+
+- **System administrators**
+- **Developers**
+- **Data engineers**
+- **DevOps engineers**
+- **Security analysts**
+
+---
+
+# 📄 Module 2 Cheat Sheet – Introduction to Linux Commands
+
+This cheat sheet is your **go-to reference** for the most commonly used **Linux commands** in system navigation, file management, text processing, networking, and more.
+
+---
+
+## ❓ **Getting Information**
+
+| Task                         | Command       |
+| ---------------------------- | ------------- |
+| Show current user            | `whoami`      |
+| Display user/group ID info   | `id`          |
+| Show OS and kernel info      | `uname -a`    |
+| View command manual          | `man top`     |
+| List all available man pages | `man -k .`    |
+| Get help on a command        | `curl --help` |
+| Show current date/time       | `date`        |
+
+---
+
+## 🧭 **Navigating and Working with Directories**
+
+| Task                               | Command                   |
+| ---------------------------------- | ------------------------- |
+| List files by date (newest first)  | `ls -lrt`                 |
+| Find `.sh` files in directory tree | `find -name "*.sh"`       |
+| Show current working directory     | `pwd`                     |
+| Create a new directory             | `mkdir new_folder`        |
+| Move up one level                  | `cd ../`                  |
+| Go to home directory               | `cd ~` or just `cd`       |
+| Remove empty directory             | `rmdir temp_directory -v` |
+
+---
+
+## 🔍 **Monitoring System Performance**
+
+| Task                           | Command                        |
+| ------------------------------ | ------------------------------ |
+| List running processes         | `ps`                           |
+| List all processes             | `ps -e`                        |
+| View real-time system stats    | `top`                          |
+| Check disk space usage         | `df`                           |
+| Show disk usage of directories | `du` _(not listed but useful)_ |
+
+---
+
+## 📁 **Creating, Copying, Moving, and Deleting Files**
+
+| Task                  | Command                                    |
+| --------------------- | ------------------------------------------ |
+| Create an empty file  | `touch a_new_file.txt`                     |
+| Copy a file           | `cp file.txt new_path/new_name.txt`        |
+| Rename or move a file | `mv this_file.txt that_path/that_file.txt` |
+| Delete a file         | `rm this_old_file.txt -v`                  |
+
+---
+
+## 🔐 **Working with File Permissions**
+
+| Task                              | Command                             |
+| --------------------------------- | ----------------------------------- |
+| Make file executable for everyone | `chmod +x my_script.sh`             |
+| Give owner execute permission     | `chmod u+x my_file.txt`             |
+| Remove read from group & others   | `chmod go-r filename`               |
+| Change file ownership             | `chown user:group file` _(as root)_ |
+
+---
+
+## 📖 **Displaying File and String Contents**
+
+| Task                     | Command                   |
+| ------------------------ | ------------------------- |
+| View full file contents  | `cat my_shell_script.sh`  |
+| View file page-by-page   | `more ReadMe.txt`         |
+| View first N lines       | `head -10 data_table.csv` |
+| View last N lines        | `tail -10 data_table.csv` |
+| Print string or variable | `echo "I am $USERNAME"`   |
+
+---
+
+## 🧹 **Basic Text Wrangling**
+
+### Sorting and Deduplication
+
+| Task                     | Command                         |
+| ------------------------ | ------------------------------- |
+| Sort file alphabetically | `sort text_file.txt`            |
+| Sort in reverse order    | `sort -r text_file.txt`         |
+| Remove duplicate lines   | `uniq list_with_duplicates.txt` |
+
+### Counting Lines/Words/Characters
+
+| Task                       | Command                   |
+| -------------------------- | ------------------------- |
+| Count lines in a file      | `wc -l table_of_data.csv` |
+| Count words in a file      | `wc -w my_essay.txt`      |
+| Count characters in a file | `wc -m some_document.txt` |
+
+### Searching with `grep`
+
+| Task                                  | Command                                |
+| ------------------------------------- | -------------------------------------- |
+| Search case-insensitively for "hello" | `grep -iw hello a_bunch_of_hellos.txt` |
+| List files containing "hello"         | `grep -l hello *.txt`                  |
+
+### Merging Files with `paste`
+
+| Task                     | Command                                                      |
+| ------------------------ | ------------------------------------------------------------ |
+| Merge files side-by-side | `paste first_name.txt last_name.txt phone_number.txt`        |
+| Use comma as delimiter   | `paste -d "," first_name.txt last_name.txt phone_number.txt` |
+
+### Extracting Data with `cut`
+
+| Task                             | Command                       |
+| -------------------------------- | ----------------------------- |
+| Extract first field (CSV)        | `cut -d "," -f 1 names.csv`   |
+| Extract bytes 2–5 from each line | `cut -b 2-5 my_text_file.txt` |
+| Extract from byte 10 onward      | `cut -b 10- my_text_file.txt` |
+
+---
+
+## 📦 **Compression and Archiving**
+
+| Task                           | Command                                                 |
+| ------------------------------ | ------------------------------------------------------- |
+| Create tar archive             | `tar -cvf my_archive.tar file1 file2`                   |
+| Compress with zip              | `zip my_zipped_files.zip file1 file2`                   |
+| Compress directory with zip    | `zip -r my_zipped_folders.zip dir1 dir2`                |
+| Extract zip file               | `unzip my_zipped_file.zip`                              |
+| Extract zip to specific folder | `unzip my_zipped_file.zip -d extract_to_this_directory` |
+
+---
+
+## 🌐 **Networking Commands**
+
+| Task                              | Command               |
+| --------------------------------- | --------------------- |
+| Show hostname                     | `hostname`            |
+| Test network connectivity         | `ping www.google.com` |
+| Configure/view network interfaces | `ip`                  |
+| Download content from URL         | `curl <url>`          |
+| Download and save file            | `wget <url>`          |
+
+---
+
+## 🧠 Pro Tips
+
+- Combine commands using pipes:
+  ```bash
+  grep "error" /var/log/syslog | wc -l
+  ```
+- Use wildcards to match patterns:
+  ```bash
+  ls *.txt
+  ```
+- Always double-check what you're about to delete:
+  ```bash
+  rm -i *.tmp
+  ```
+
+---
+
+You're now equipped with a powerful set of tools to work confidently in the Linux environment. Whether you're managing servers, writing scripts, or analyzing logs — this cheat sheet will be your best companion.
+
+---
