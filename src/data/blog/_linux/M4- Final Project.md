@@ -1,9 +1,10 @@
 ---
-title: Linux-M4 - Final Project and Final Exam
+title: Linux-M4 - Final Project
 pubDatetime: 2025-05-20
 tags:
   - Linux Introduction
   - Introduction
+  - Project
 description: complete a practice project in which you create an automated Extract, Transform, Load (ETL) process to extract daily weather forecasts and observed weather data. You will schedule this process to run automatically at a set time daily and learn how to create a script to measure forecast accuracy. create a scheduled backup script.
 ---
 
