@@ -1,5 +1,5 @@
 ---
-title: Pull, Build and Push the image to Docker Hub.
+title: Pull, Build an image using a Dockerfile and Push the image to Docker Hub.
 pubDatetime: 2025-05-22
 featured: true
 tags:
