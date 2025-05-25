@@ -36,9 +36,9 @@ description: Dive into this practical assignment to learn how to install and sec
 
 6.  **Database Backup and Restore:**
     * Perform a database dump (backup) of the `broadway` database, saving it to a file with a unique name.
-    * Create a new, empty database (e.g., `broadway_restore_test`).
+    * Create a new, empty database (e.g., `broadway_restored`).
     * Restore the data from your backup file into this new database.
-    * Verify that the `broadway_restore_test` database now contains your table and data.
+    * Verify that the `broadway_restored` database now contains your table and data.
 
 ---
 
@@ -206,8 +206,13 @@ sudo mysql_secure_installation
         ```bash
         telnet DB_SERVER_IP 3306
         ```
+         
+
         * **Success:** If you see a blank screen or a garbage character (like `~`), it means the connection was established. Press `Ctrl + ]`, then type `quit` and press `Enter`.
+        ![output-sqlserver](@/assets/images/succ-telnet-sql.png)
         * **Failure:** If it says "Connection refused," "No route to host," or hangs, it means the port isn't reachable. Recheck your VM's firewall (`ufw`), MariaDB's `bind-address` in `50-server.cnf`, and your VM's network settings (Bridged/NAT + Port Forwarding).
+
+       
 
 **7. Install db-client (assuming DBeaver)**
 
