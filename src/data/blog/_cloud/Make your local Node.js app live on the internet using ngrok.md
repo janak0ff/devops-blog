@@ -1,5 +1,5 @@
 ---
-title: Make your local Node.js app live on the internet using ngrok.
+title: Make your localhost app live on the internet using ngrok.
 pubDatetime: 2025-05-21
 featured: true
 tags:
