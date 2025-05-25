@@ -101,7 +101,7 @@ sudo systemctl enable ssh
 
 
 
-### II. Network Configuration (Host Machine and Router)
+### Network Configuration (Host Machine and Router)
 
 This is the most critical part for external access and depends heavily on your setup.
 
