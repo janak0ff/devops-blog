@@ -1,5 +1,5 @@
 ---
-title: SSH to your VM shell from external.
+title: Connect to Your Linux VM via SSH- Guide to Secure Remote Access and Key-Based Authentication
 pubDatetime: 2025-05-24
 featured: false
 tags:
