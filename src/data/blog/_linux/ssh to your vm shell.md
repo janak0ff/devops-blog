@@ -11,6 +11,7 @@ description: learn how to connect to your Linux Virtual Machine (VM) terminal fr
 learn how to connect to your **Linux Virtual Machine (VM)** terminal from an **external via SSH**. 
 ---
 
+![output](@/assets/images/vm-to-host-ssh.png)
 
 ## 🧩 Understand What SSH Is
 
