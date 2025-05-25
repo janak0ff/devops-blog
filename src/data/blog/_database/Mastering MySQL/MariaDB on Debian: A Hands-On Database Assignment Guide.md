@@ -184,12 +184,12 @@ sudo mysql_secure_installation
     This is crucial for "physical host" connectivity.
     * **Option A: Bridged Networking (Recommended for easy access on same LAN)**
         If your VM's network adapter is set to **Bridged**, it gets its own IP address on your local network (e.g., `192.168.1.105`). You can connect to this IP directly from your physical host.
-    * **Option B: NAT with Port Forwarding (If Bridged isn't an option)**
+    <!-- * **Option B: NAT with Port Forwarding (If Bridged isn't an option)**
         If your VM uses **NAT**, you need to set up port forwarding in your virtualization software (VirtualBox, VMware).
         * **Host Port:** Pick an unused port on your physical host (e.g., `33060`).
         * **Guest IP:** Your VM's internal IP (e.g., `10.0.2.15`).
         * **Guest Port:** `3306`.
-        Then, your physical host will connect to its *own* IP on the `Host Port` you defined.
+        Then, your physical host will connect to its *own* IP on the `Host Port` you defined. -->
 
 * **Find your Linux Machine's IP Address (VM or Physical):**
     On the Linux machine where MariaDB is running:
