@@ -119,7 +119,7 @@ This is the most critical part for external access and depends heavily on your s
         ```
     * **Limitations:** This *still* doesn't allow direct access from *outside* your home/office network without further router configuration (Port Forwarding - see Option 3).
 
-<!-- #### Option 2: NAT (Network Address Translation) with Port Forwarding (Most common for a VM behind a host)
+#### Option 2: NAT (Network Address Translation) with Port Forwarding (Most common for a VM behind a host)
 
 * **Concept:** The VM gets an IP address on a *private, internal network* managed by the virtualization software. The host machine acts as a router for the VM, translating its private IP to the host's IP. To allow external devices to connect, you need to set up **Port Forwarding** on the host.
 * **Configuration in Virtualization Software:**
@@ -141,7 +141,7 @@ This is the most critical part for external access and depends heavily on your s
     ```bash
     ssh username@HOST_IP_ADDRESS -p 2222
     ```
-    (Replace `2222` with your chosen Host Port). -->
+    (Replace `2222` with your chosen Host Port).
 
 #### Option 3: Port Forwarding on Your Main Router (For truly external access over the internet)
 
