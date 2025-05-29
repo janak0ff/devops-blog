@@ -41,7 +41,7 @@ For **Ubuntu/Debian-based** distros:
 
 ```bash
 sudo apt update
-sudo apt install openssh-server
+sudo apt install ssh
 ```
 
 
@@ -57,49 +57,6 @@ Enable it to start automatically on boot:
 sudo systemctl enable ssh
 ```
 ---
-
-## If you get this error
-```
-<USER> is not in the sudoers file.
-```
-
-**Log in as the `root` user.**
-
-* **Type `su -` and press Enter.**
-    ```bash
-    janak@debian:~$ su -
-    Password:
-    ```
-* **Enter the `root` user's password.**
-
-* **Your prompt should change to something like `root@debian:~#`**, indicating you are now the root user.
-
-**Add `janak` to the `sudo` group (as `root`).**
-
-* Once you are `root`, execute this command:
-    ```bash
-    usermod -aG sudo janak
-    ```
-    * `usermod`: command to modify user accounts.
-    * `-a`: append to the user's supplementary groups.
-    * `-G sudo`: specifies the group named `sudo`.
-    * `janak`: the username you want to add.
-
-
-**Exit the `root` session.**
-
-
-**Log out and Log back in.**
-
-* **This is a very important step!** Group changes typically only take effect for a user upon their next login session.
-* You can either:
-    * Close your current terminal window and open a new one.
-    * Or, if you are on a graphical desktop, log out of your graphical session and log back in.
-    * Or, if you are on a remote SSH session, close the current SSH connection and reconnect.
-
----
-
-
 
 ### Network Configuration (Host Machine and Router)
 
@@ -207,7 +164,7 @@ Ensure the VM's internal firewall allows incoming SSH connections (default port 
 sudo apt install ufw
 ```     
 ```bash
-sudo ufw allow OpenSSH  # This allows port 22/tcp OR sudo ufw allow 22/tcp 
+sudo ufw allow ssh  # This allows port 22/tcp OR sudo ufw allow 22/tcp 
 sudo ufw enable         # If not already enabled
 sudo ufw status verbose # helps to provide a richer and more detailed description of their operation.
 ```
