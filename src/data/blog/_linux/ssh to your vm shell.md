@@ -288,18 +288,13 @@ There are two common ways to do this:
 Run this on your host machine:
 
 ```bash
-ssh-copy-id username@vm-ip-address
+sudo ssh-copy-id -i ~/.ssh/id_rsa.pub username@vm-ip-address
 ```
 
 Replace:
 - `username` with your Linux VM username.
 - `vm-ip-address` with the IP of your VM (from earlier steps).
 
-Example:
-
-```bash
-ssh-copy-id alice@192.168.1.100
-```
 
 It will ask for your **password**, then copy the public key to the VM.
 
