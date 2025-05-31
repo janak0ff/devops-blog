@@ -1,7 +1,7 @@
 ---
 title: Linux Command Line and Shell Scripting Cheat Sheet for Beginners and Practitioner
 pubDatetime: 2025-05-22
-featured: true
+featured: false
 tags:
   - cheatsheet
 description: Introduction to Linux Commands -   Informational, Navigational, & Management Commands | Working with Text Files, Networking & Archiving Commands | Introduction to Shell Scripting 

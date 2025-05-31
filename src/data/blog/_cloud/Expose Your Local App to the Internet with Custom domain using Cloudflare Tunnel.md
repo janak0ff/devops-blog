@@ -1,7 +1,7 @@
 ---
 title: Expose Your Localhost app to the Internet with Custom domain using Cloudflare Tunnel
 pubDatetime: 2025-05-21
-featured: true
+featured: false
 tags:
   - Setup Guide
   - cloudflare
