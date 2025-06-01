@@ -224,6 +224,7 @@ Now, let's execute your first Ansible playbook\!
 ## Next Steps and Important Concepts
 
   [Refrence DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-20-04)
+  [How to Use Ansible: A Reference Guide](https://www.digitalocean.com/community/cheatsheets/how-to-use-ansible-cheat-sheet-guide)
 
   * **Idempotence:** Ansible is designed to be idempotent. This means you can run the same playbook multiple times, and it will only make changes if the system is not in the desired state. If Nginx is already installed and running, Ansible won't try to install or start it again, resulting in `ok` status for those tasks.
   * **Modules:** Explore more Ansible modules\! There are modules for managing users, services, packages, files, databases, cloud resources, and much more. You can find them in the [Ansible documentation](https://docs.ansible.com/ansible/latest/collections/index.html).

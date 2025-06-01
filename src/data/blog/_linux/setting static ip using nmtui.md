@@ -3,7 +3,7 @@ title: Setting Static IP using nmtui on vmware workstation.
 pubDatetime: 2025-05-23
 tags:
   - Hands On Lab
-description: Cron 
+description: Static IP Configuration Inside the VM (using nmtui)
 ---
 
 
