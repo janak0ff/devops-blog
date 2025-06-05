@@ -1,4 +1,11 @@
+---
+title: Managing Applications with Kubernetes.
+pubDatetime: 2025-05-30
+featured: false
+tags:
+  - Kubernetes
 
+description: explore ReplicaSets, autoscaling, rolling updates, ConfigMaps, Secrets, and service bindings, and learn how you can use these capabilities to manage Kubernetes applications. learn how ReplicaSets scale applications to meet increasing demand, and how autoscaling creates dynamic demand-based scaling.  how to use rolling updates to publish application updates and roll back changes without interrupting the user experience. learn how to use ConfigMaps and Secrets to provide configuration variables and sensitive information to your deployments and to keep your code clean.  scale and update applications deployed in Kubernetes.
 ---
 
 ## ReplicaSet: Ensuring Application Availability and Scalability

@@ -1,10 +1,32 @@
-Here's a comprehensive cheat sheet for "Introduction to Containers with Docker, Kubernetes, and OpenShift," consolidating the commands and their descriptions:
+---
+title:  Docker, Kubernetes, and OpenShift Cheat sheets
+pubDatetime: 2025-06-02
+featured: false
+tags:
+  - Kubernetes
+  - Docker
+  - Cheatsheet
+
+description: Cheatsheet of docker and Kubernetes.
+---
 
 ---
 
 ## **Cheat Sheet: Introduction to Containers with Docker, Kubernetes, and OpenShift**
 
-**Estimated Time:** 40 minutes
+---
+
+| **Command**                         | **Explanation**                         | **Shorthand**   |
+| ----------------------------------- | --------------------------------------- | --------------- |
+| `docker image ls`                   | Lists all images                        | `docker images` |
+| `docker image rm <image>`           | Removes an image                        | `docker rmi`    |
+| `docker image pull <image>`         | Pulls image from a Docker registry      | `docker pull`   |
+| `docker container ls -a`            | Lists all containers                    | `docker ps -a`  |
+| `docker container run <image>`      | Runs a container from an image          | `docker run`    |
+| `docker container rm <container>`   | Removes a container                     | `docker rm`     |
+| `docker container stop <container>` | Stops a container                       | `docker stop`   |
+| `docker container exec <container>` | Executes a command inside the container | `docker exec`   |
+
 
 ---
 
