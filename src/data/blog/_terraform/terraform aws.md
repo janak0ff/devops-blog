@@ -1,12 +1,12 @@
 ---
-title: How to Launch and SSH into an AWS EC2 Instance Using Terraform (Free Tier Guide for Beginners)
+title: Terraform - Create and SSH into an AWS EC2 Instance Using Terraform (Free Tier Guide for Beginners)
 pubDatetime: 2025-06-05
 featured: true
 tags:
   - terraform
   - aws
   - Hands On Lab
-description: In this step-by-step guide, I’ll walk you through how to create and SSH into an Amazon EC2 instance using Terraform — completely within AWS Free Tier limits. We’ll cover essential Terraform setup, defining AWS resources, adding a security group for SSH access, and outputting the public IP for easy login. Perfect for beginners looking to get hands-on with Infrastructure as Code (IaC)!
+description: How to create and SSH into an Amazon EC2 instance using Terraform — completely within AWS Free Tier limits. We’ll cover essential Terraform setup, defining AWS resources, adding a security group for SSH access, and outputting the public IP for easy login. Perfect for beginners looking to get hands-on with Infrastructure as Code (IaC)!
 ---
 
 step-by-step to create a **Virtual Machine (EC2 instance)** on **AWS Free Tier** using **Terraform** and SSH to it.
