@@ -3,7 +3,7 @@ export const SITE = {
   author: "Janak Kr. Shrestha",
   profile: "https://www.janakkumarshrestha0.com.np/",
   desc: "A minimal, responsive and SEO-friendly blog dedicated to DevOps enthusiasts, sharing insights, tutorials, and best practices on automation, CI/CD, containerization, cloud computing, and infrastructure as code. Stay updated with real-world examples, tools, and workflows to streamline development and operations. Perfect for beginners and pros aiming to master modern DevOps culture and technologies.",
-  title: "Janak Kr. Shrestha",
+  title: "Janak Shrestha",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerIndex: 6,
