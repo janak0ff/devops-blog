@@ -352,7 +352,7 @@ Visit: **[http://localhost:8899](http://localhost:8899)**
 
 ---
 
-## 🛑 Stop and Clean
+## 🛑 Stop, Clean and manage
 
 * **To stop your application (and keep the database data):**
     ```bash
@@ -372,8 +372,36 @@ Visit: **[http://localhost:8899](http://localhost:8899)**
     ```
     The `-v` flag tells Docker Compose to also remove any named volumes, including `db_data`. Use this if you want to completely reset your database to the state defined in `init.sql`.
 
-* **To check the status of your running containers:**
-    ```bash
-    docker compose ps
-    ```
+### ✅ `docker compose down --remove-orphans`
+
+This command **stops and removes containers, networks, and volumes** created by `docker-compose up`.
+
+* `down`: Brings down (shuts off and removes) all the services defined in your `docker-compose.yml`.
+* `--remove-orphans`: Removes any **"orphaned" containers** – containers that were started by Docker Compose but are no longer referenced in the current `docker-compose.yml`. This is useful when you've removed a service from the file but its container is still running.
+
+**Use case**: Cleaning up your environment completely when you're done or making a fresh start.
+
+
+### ✅ `docker volume ls`
+
+This lists all Docker **volumes** on your system.
+
+* Volumes are used to persist data outside of containers (like databases).
+* This command helps you see which volumes exist — including ones created by `docker-compose` or manually.
+
+
+### 🔥 Basic Syntax: delete a Docker volume
+
+```bash
+docker volume rm <volume_name>
+```
+
+
+### ✅ `docker rm -f cfdae4f82afd`
+
+This **forcefully removes a container** using its ID (in this case: `cfdae4f82afd`).
+
+* `rm`: Removes a container.
+* `-f`: Forces the removal (even if it’s running).
 ---
+
