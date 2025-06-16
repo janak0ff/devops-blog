@@ -25,15 +25,19 @@ description: Pull an image from Docker Hub and run it as a container. Build an i
 
 ---
 
-## ✅ Step-by-Step Guide
+### ✅ Add user to the `docker` group for avoid typing sudo on every command.
 
-### 🔹 Step 1: Open Terminal (or Command Prompt)
+Run the following command **once** with `sudo`:
 
-Open your terminal or command prompt. This is where you’ll run all Docker commands.
+```bash
+sudo usermod -aG docker $USER
+```
+
+Then, **log out and log back in** (or reboot) for the group changes to take effect.
 
 ---
 
-### 🔹 Step 2: Pull an Image from Docker Hub
+### 🔹 Pull an Image from Docker Hub
 
 Use the `docker pull` command:
 
@@ -51,7 +55,7 @@ docker pull hello-world
 
 ---
 
-### 🔹 Step 3: List Images on Your Machine
+### 🔹  List Images on Your Machine
 
 After pulling the image, check if it was successfully downloaded:
 
@@ -75,7 +79,7 @@ hello-world   latest    d1165f22117a   2 months ago   13.3kB
 
 ---
 
-### 🔹 Step 4: Run the Image as a Container
+### 🔹 Run the Image as a Container
 
 Now, run the image using the `docker run` command:
 
@@ -104,7 +108,7 @@ This message shows that your installation appears to be working correctly.
 
 ---
 
-### 🔹 Step 5: List Running Containers
+### 🔹 List Running Containers
 
 To see containers currently running:
 
@@ -199,7 +203,7 @@ This error occurs because **port `8080` on your machine is already being used by
 
 ## ✅ Step-by-Step Fix
 
-### 🪛 Step 1: Find the Process Using Port 8080
+### 🪛 Find the Process Using Port 8080
 
 Run this command in your terminal:
 
@@ -224,7 +228,7 @@ Here, the process with **PID 12345** is using port 8080.
 
 ---
 
-### 🚫 Step 2: Stop the Conflicting Process
+### 🚫 Stop the Conflicting Process
 
 Use the `kill` command with the PID from above:
 
@@ -238,7 +242,7 @@ sudo kill -9 12345
 
 ---
 
-### ▶️ Step 3: Try Running the Docker Command Again
+### ▶️  Try Running the Docker Command Again
 
 Now try starting NGINX again:
 
@@ -295,7 +299,7 @@ docker rm $(docker ps -aq)
 
 ---
 
-## 📁 Step 1: Create a Project Directory
+## 📁 Create a Project Directory
 
 Open your terminal and create a new folder for your project:
 
@@ -308,7 +312,7 @@ This will be the working directory where you’ll create your `Dockerfile` and a
 
 ---
 
-## 📄 Step 2: Create a Simple Application
+## 📄  Create a Simple Application
 
 For this example, we'll create a very simple **Python web app** using Flask.
 
@@ -337,7 +341,7 @@ This is a basic Flask app that responds with `"Hello from Docker!"` when accesse
 
 ---
 
-## 🐳 Step 3: Create a Dockerfile
+## 🐳  Create a Dockerfile
 
 A `Dockerfile` is a script containing instructions to build a Docker image.
 
@@ -374,7 +378,7 @@ CMD ["python", "app.py"]
 
 ---
 
-## 🏗️ Step 4: Build the Docker Image
+## 🏗️ Build the Docker Image
 
 From inside your project directory (`my-docker-app`), run:
 
@@ -392,7 +396,7 @@ You’ll see output showing each step being executed — downloading Python, ins
 
 ---
 
-## ▶️ Step 5: Run the Container
+## ▶️ Run the Container
 
 Once the image is built, run it as a container:
 
@@ -408,7 +412,7 @@ docker run -d -p 5000:5000 my-flask-app
 
 ---
 
-## 🌍 Step 6: Test the App
+## 🌍 Test the App
 
 Open your browser and go to:
 
@@ -466,7 +470,7 @@ Use `docker ps` to find the container ID.
 
 ---
 
-## 🔐 Step 1: Log in to Docker Hub
+## 🔐 Log in to Docker Hub
 
 In your terminal, run:
 
@@ -488,7 +492,7 @@ Login Succeeded
 
 ---
 
-## 🏗️ Step 2: Tag Your Image with Docker Hub Username
+## 🏗️ Tag Your Image with Docker Hub Username
 
 Before pushing an image to Docker Hub, you need to **tag it with your Docker Hub username**, like this:
 
@@ -514,7 +518,7 @@ You should see both `my-flask-app` and `your-dockerhub-username/my-flask-app` li
 
 ---
 
-## 🚀 Step 3: Push the Image to Docker Hub
+## 🚀  Push the Image to Docker Hub
 
 Now push your image:
 
@@ -539,7 +543,7 @@ latest: digest: sha256:... size: ...
 
 ---
 
-## 🌍 Step 4: Test Pulling Your Image from Docker Hub
+## 🌍 Test Pulling Your Image from Docker Hub
 
 To confirm everything works, stop and remove your local image:
 
