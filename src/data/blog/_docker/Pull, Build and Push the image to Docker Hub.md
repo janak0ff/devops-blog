@@ -185,7 +185,7 @@ You should see the NGINX welcome page!
 
 ---
 
-### You're encountering this error:
+### If you're encountering this port error:
 
 ```
 Bind for 0.0.0.0:8080 failed: port is already allocated
@@ -204,7 +204,7 @@ This error occurs because **port `8080` on your machine is already being used by
 Run this command in your terminal:
 
 ```bash
-lsof -i :8080
+sudo lsof -i :8080
 ```
 
 Or if you don't have `lsof`, use:
@@ -289,21 +289,7 @@ docker rm $(docker ps -aq)
 
 ---
 
-## 📌 Summary
 
-| Problem                              | Solution                                         |
-| ------------------------------------ | ------------------------------------------------ |
-| Port 8080 is already in use          | Kill the conflicting process or use another port |
-| Can't find which process is using it | Use `lsof -i :8080` or `netstat`                 |
-| Don’t want to kill the process       | Run NGINX on a different port: `-p 8000:80`      |
-
----
-
-## 🙌 Final Tip
-
-Once you're comfortable with these basics, explore Docker Hub ([https://hub.docker.com](https://hub.docker.com)) to find thousands of pre-built images for apps like MySQL, Redis, Python apps, etc.
-
----
 
 ## Build an image using a Dockerfile and Run the image as a container
 
@@ -329,10 +315,10 @@ For this example, we'll create a very simple **Python web app** using Flask.
 ### 🔹 Create a file named `app.py`:
 
 ```bash
-touch app.py
+nano app.py
 ```
 
-Now open `app.py` in a text editor and paste the following code:
+Now paste the following code:
 
 ```python
 from flask import Flask
@@ -351,16 +337,6 @@ This is a basic Flask app that responds with `"Hello from Docker!"` when accesse
 
 ---
 
-### 🔹 Create a `requirements.txt` file:
-
-```bash
-echo "flask" > requirements.txt
-```
-
-This tells Docker which Python packages to install.
-
----
-
 ## 🐳 Step 3: Create a Dockerfile
 
 A `Dockerfile` is a script containing instructions to build a Docker image.
@@ -368,10 +344,10 @@ A `Dockerfile` is a script containing instructions to build a Docker image.
 Create the Dockerfile:
 
 ```bash
-touch Dockerfile
+nano Dockerfile
 ```
 
-Open it in your editor and add the following content:
+Now paste the following code:
 
 ```Dockerfile
 # Use an official Python runtime as the base image
@@ -380,19 +356,19 @@ FROM python:3.9-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy only the application file
+COPY app.py /app/
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Flask directly
+RUN pip install --no-cache-dir flask
 
-# Make port 5000 available to the outside world
+# Expose the Flask default port
 EXPOSE 5000
 
-# Define environment variable (optional)
+# Optional environment variable
 ENV NAME="Docker"
 
-# Run app.py when the container launches
+# Run the application
 CMD ["python", "app.py"]
 ```
 
@@ -481,7 +457,6 @@ Use `docker ps` to find the container ID.
 ## ✅ Bonus Tip: Best Practices
 
 - Always use `.dockerignore` to exclude unnecessary files (like `__pycache__`, `.git`, `venv`, etc.)
-- Keep images small by using minimal base images (e.g., `alpine`, `slim`)
 - Avoid installing unnecessary dependencies
 - Use multi-stage builds for more complex apps (advanced topic)
 
