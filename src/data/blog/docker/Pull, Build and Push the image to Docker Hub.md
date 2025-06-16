@@ -35,6 +35,12 @@ sudo usermod -aG docker $USER
 
 Then, **log out and log back in** (or reboot) for the group changes to take effect.
 
+For immediately:
+
+```bash
+newgrp docker
+```
+
 ---
 
 ### 🔹 Pull an Image from Docker Hub
