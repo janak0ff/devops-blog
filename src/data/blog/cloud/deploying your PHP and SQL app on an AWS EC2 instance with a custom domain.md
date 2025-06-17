@@ -199,7 +199,7 @@ If `nginx -t` shows no errors, Nginx is configured correctly.
 
 ---
 
-### Step 6: Configure DNS Records (Outside EC2)
+### Step 6: Configure DNS Records (cloudflare)
 
 This step is done in your domain registrar's DNS management (e.g., cloudflare).
 
