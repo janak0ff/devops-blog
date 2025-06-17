@@ -1,9 +1,9 @@
 ---
-title: Zsh Setup with Auto-Suggestions, Syntax-highlighting & Themes
+title: Automate Your Zsh Setup- Scripted Installation of Oh My Zsh, Auto-Suggestions & Syntax Highlighting
 pubDatetime: 2025-05-23
 tags:
   - Hands On Lab
-description: setting up Zsh, making it your default shell, and enhancing it with Oh My Zsh. install zsh-autosuggestions for smart command completion, zsh-syntax-highlighting for better readability, and easily customize your terminal's look with various Zsh themes.
+description: Ready for a smarter terminal? This guide provides a comprehensive shell script to completely automate the installation and configuration of Zsh as your default shell, set up Oh My Zsh, and integrate must-have plugins like zsh-autosuggestions and zsh-syntax-highlighting. Get a highly functional and beautiful command-line environment with minimal effort, simply by running a file.
 ---
 
 # Method 1: Fully automation with .sh file
@@ -12,8 +12,6 @@ Please save the following content into a file named `setup_zsh.sh` (or any .sh e
 
 ```bash
 #!/bin/bash
-
-# --- Zsh Setup Script (Optimized for Default Theme) ---
 # This script automates the installation and configuration of Zsh,
 # Oh My Zsh, and essential plugins like zsh-autosuggestions and
 # zsh-syntax-highlighting on Ubuntu-based systems.
