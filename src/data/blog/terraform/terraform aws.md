@@ -243,19 +243,217 @@ terraform destroy
 
 ---
 
+# Terraform Handy Commands
 
-### ✅ `terraform refresh` — What It Does
+These commands are crucial for almost every Terraform workflow.
 
-```bash
-terraform refresh
-```
+#### **I. Initialization and Configuration**
 
-The `terraform refresh` command is used to:
+1.  **`terraform init`**
+    * **Purpose:** Initializes a Terraform working directory. This command downloads necessary providers and modules specified in your configuration.
+    * **When to use:** Always the first command you run in a new or cloned Terraform directory, or when you add/change provider/module configurations.
+    * **Example:** `terraform init`
 
-> **Sync the Terraform state file with the actual current state of resources in your AWS (or other) infrastructure.**
+2.  **`terraform validate`**
+    * **Purpose:** Checks the syntax and configuration of your Terraform files (`.tf`) for correctness and internal consistency. It does *not* check against the actual cloud provider.
+    * **When to use:** Before `terraform plan` or `terraform apply` to catch errors early.
+    * **Example:** `terraform validate`
 
-In other words:
-It checks what **exists in real AWS** and updates Terraform’s `.tfstate` file to reflect any changes that happened **outside of Terraform**.
+#### **II. Planning and Applying Changes**
+
+3.  **`terraform plan`**
+    * **Purpose:** Generates an execution plan. It shows you exactly what actions Terraform will take (create, modify, destroy) to reach the desired state defined in your configuration, *without* actually performing them.
+    * **When to use:** Before `terraform apply` to review the proposed changes and ensure they are what you expect.
+    * **Example:** `terraform plan`
+    * **Save Plan for Apply:** `terraform plan -out=myplan.tfplan` (saves the plan to a file)
+
+4.  **`terraform apply`**
+    * **Purpose:** Executes the actions proposed in a Terraform plan to create, update, or destroy infrastructure. This is the command that makes changes to your cloud environment.
+    * **When to use:** After `terraform plan` and you are satisfied with the proposed changes.
+    * **Example:** `terraform apply`
+    * **Apply a Saved Plan:** `terraform apply myplan.tfplan` (applies a plan saved with `-out`)
+    * **Auto-approve (for CI/CD or experienced users):** `terraform apply -auto-approve` (bypasses the confirmation prompt)
+
+#### **III. State Management and Inspection**
+
+5.  **`terraform show`**
+    * **Purpose:** Reads the current state file and outputs the managed infrastructure's configuration in a human-readable format.
+    * **When to use:** To inspect the current state of your deployed resources.
+    * **Example:** `terraform show`
+    * **Show a saved plan:** `terraform show myplan.tfplan`
+
+6.  **`terraform state list`**
+    * **Purpose:** Lists all resources managed by the current Terraform state.
+    * **When to use:** To get an overview of what Terraform is currently managing.
+    * **Example:** `terraform state list`
+
+7.  **`terraform state show [resource_address]`**
+    * **Purpose:** Displays the attributes of a specific resource within the Terraform state.
+    * **When to use:** To get detailed information about a single resource.
+    * **Example:** `terraform state show aws_instance.my_server` (replace `aws_instance.my_server` with your resource name)
+
+8.  **`terraform output [output_name]`**
+    * **Purpose:** Displays the value(s) of output variables defined in your Terraform configuration.
+    * **When to use:** To easily retrieve specific information (like an IP address, DNS name, ARN) from your deployed infrastructure.
+    * **Example:** `terraform output instance_public_ip` (to get a specific output)
+    * **All outputs:** `terraform output` (to list all outputs)
+
+#### **IV. Destruction**
+
+9.  **`terraform destroy`**
+    * **Purpose:** Destroys all resources managed by the current Terraform configuration. **Use with extreme caution!**
+    * **When to use:** When you no longer need the infrastructure and want to tear it down completely.
+    * **Example:** `terraform destroy`
+    * **Auto-approve:** `terraform destroy -auto-approve` (bypasses the confirmation prompt)
+
+#### **V. Workspace Management (Advanced)**
+
+10. **`terraform workspace list`**
+    * **Purpose:** Lists available workspaces. Workspaces allow you to manage multiple distinct environments (e.g., dev, staging, prod) using the same Terraform configuration.
+    * **Example:** `terraform workspace list`
+
+11. **`terraform workspace new [workspace_name]`**
+    * **Purpose:** Creates a new workspace.
+    * **Example:** `terraform workspace new production`
+
+12. **`terraform workspace select [workspace_name]`**
+    * **Purpose:** Switches to an existing workspace.
+    * **Example:** `terraform workspace select staging`
+
+---
+
+**General Workflow Tip:**
+
+1.  `terraform init`
+2.  `terraform validate`
+3.  `terraform plan`
+4.  `terraform apply`
+5.  `terraform output` (to get useful info)
+6.  `terraform destroy` (when done)
+
+These commands form the backbone of most Terraform operations and will cover the vast majority of your use cases!
+You're looking for a good set of "handy" Terraform commands! Here's a breakdown of the most commonly used and useful commands, categorized for easier understanding:
+
+**1. Core Workflow Commands (The Essentials):**
+
+* **`terraform init`**:
+    * **Purpose:** Initializes a working directory containing Terraform configuration files. This is the **first command** you run in a new or cloned Terraform project.
+    * **What it does:** Downloads necessary providers, modules, and sets up the backend (where your state file will be stored).
+    * **Handy Options:**
+        * `terraform init -upgrade`: Upgrades provider plugins to the newest available versions.
+        * `terraform init -migrate-state`: Used when changing backend configurations to attempt to migrate the state.
+
+* **`terraform validate`**:
+    * **Purpose:** Checks whether the configuration files in a directory are syntactically valid and internally consistent.
+    * **What it does:** Catches syntax errors, mismatched types, and other configuration issues *before* attempting a plan or apply. It doesn't check against actual cloud resources.
+
+* **`terraform plan`**:
+    * **Purpose:** Generates an execution plan, showing you what actions Terraform will take to achieve the desired state of your infrastructure. This is a **dry run**.
+    * **What it does:** Compares your configuration with the current state of your real infrastructure (if any) and your Terraform state file, then outlines the additions, modifications, or deletions it would perform.
+    * **Handy Options:**
+        * `terraform plan -out=myplan.tfplan`: Saves the plan to a file, which can then be applied later with `terraform apply myplan.tfplan`. This is great for review or CI/CD pipelines.
+        * `terraform plan -destroy`: Generates a plan to destroy all resources managed by the configuration. Useful for previewing a complete teardown.
+        * `terraform plan -target=resource_type.resource_name`: Plans changes only for a specific resource (use with caution, as it can lead to state drift).
+
+* **`terraform apply`**:
+    * **Purpose:** Applies the changes required to reach the desired state of the configuration. This command **modifies your real infrastructure**.
+    * **What it does:** Executes the plan (either one generated by `terraform plan` or a new one it creates internally) and provisions/modifies/deletes resources in your cloud provider.
+    * **Handy Options:**
+        * `terraform apply --auto-approve`: Skips the interactive "yes/no" prompt, useful for automation (e.g., CI/CD). Use with extreme care!
+        * `terraform apply myplan.tfplan`: Applies a previously saved plan.
+        * `terraform apply -target=resource_type.resource_name`: Applies changes only for a specific resource (again, use with caution).
+
+* **`terraform destroy`**:
+    * **Purpose:** Destroys previously created infrastructure managed by the current Terraform configuration.
+    * **What it does:** Reverses the `terraform apply` process, removing all resources defined in your configuration from your cloud provider.
+    * **Handy Options:**
+        * `terraform destroy --auto-approve`: Skips the interactive "yes/no" prompt, useful for automation. Use with extreme caution!
+        * `terraform destroy -target=resource_type.resource_name`: Destroys only a specific resource.
+
+**2. State Management Commands (Critical for Operations):**
+
+* **`terraform show`**:
+    * **Purpose:** Provides human-readable output from a state or plan file.
+    * **What it does:** Displays the current state of your managed infrastructure, including resource attributes like IP addresses, IDs, etc. If you pass it a `.tfplan` file, it shows the details of that plan.
+    * **Handy Options:**
+        * `terraform show -json`: Outputs the state or plan in JSON format, useful for programmatic parsing.
+
+* **`terraform output [output_name]`**:
+    * **Purpose:** Displays the output values defined in your Terraform configuration.
+    * **What it does:** If `output_name` is provided, it prints the value of that specific output. If no name is given, it prints all defined outputs. This is how you retrieve important dynamic values like VM IPs, load balancer DNS names, etc.
+
+* **`terraform state list`**:
+    * **Purpose:** Lists all resources currently tracked in your Terraform state file.
+    * **What it does:** Gives you an overview of what Terraform thinks it's managing.
+
+* **`terraform state show resource_address`**:
+    * **Purpose:** Displays detailed attributes of a specific resource in the state file.
+    * **What it does:** Similar to `terraform show`, but specifically targets a single resource.
+
+* **`terraform state mv old_address new_address`**:
+    * **Purpose:** Moves a resource's address in the state file.
+    * **What it does:** Useful when you refactor your Terraform code and rename resources, allowing you to tell Terraform that `aws_instance.old_name` is now `aws_instance.new_name` without destroying and recreating it.
+
+* **`terraform state rm resource_address`**:
+    * **Purpose:** Removes a resource from the state file.
+    * **What it does:** This *does not* destroy the actual resource in the cloud, only removes Terraform's knowledge of it. Use carefully! This can be handy if you want to manually manage a resource or re-import it later.
+
+* **`terraform refresh`**:
+    * **Purpose:** Reads the current settings from all managed remote objects and updates the Terraform state to match.
+    * **What it does:** Useful if you suspect your state file might be out of sync with your real infrastructure due to manual changes or external factors. `terraform plan` and `terraform apply` include a refresh step by default.
+
+* **`terraform import resource_type.resource_name resource_id`**:
+    * **Purpose:** Imports existing infrastructure into your Terraform state.
+    * **What it does:** Allows you to bring resources that were *not* created by Terraform under Terraform's management. You'll need to define the resource in your `.tf` files first, then run `import`.
+
+**3. Utility and Helper Commands:**
+
+* **`terraform fmt`**:
+    * **Purpose:** Rewrites Terraform configuration files to a canonical format and style.
+    * **What it does:** Ensures consistent formatting across your team's code, making it more readable. Always a good practice to run this before committing changes.
+    * **Handy Options:**
+        * `terraform fmt --check`: Checks if files are formatted correctly without actually modifying them (useful in CI/CD).
+        * `terraform fmt --diff`: Shows the differences that would be applied by formatting.
+
+* **`terraform workspace`**:
+    * **Purpose:** Manages workspaces, which allow you to have multiple distinct state files for a single Terraform configuration (e.g., `dev`, `staging`, `prod` environments).
+    * **Handy Subcommands:**
+        * `terraform workspace list`: Lists all existing workspaces.
+        * `terraform workspace show`: Shows the name of the current workspace.
+        * `terraform workspace new [name]`: Creates a new workspace.
+        * `terraform workspace select [name]`: Switches to an existing workspace.
+        * `terraform workspace delete [name]`: Deletes a workspace (must be empty).
+
+* **`terraform console`**:
+    * **Purpose:** Provides an interactive console for evaluating and experimenting with Terraform expressions and functions.
+    * **What it does:** Great for testing interpolation syntax, variable values, and built-in functions without running a full plan or apply.
+
+* **`terraform graph`**:
+    * **Purpose:** Generates a visual representation of either a configuration or execution plan.
+    * **What it does:** Outputs in DOT format, which can be visualized using tools like Graphviz to see dependencies between resources.
+
+* **`terraform taint resource_address`**:
+    * **Purpose:** Marks a resource instance as "tainted" in the state file.
+    * **What it does:** When you next run `terraform apply`, a tainted resource will be destroyed and recreated. Useful if a resource is in a bad state and you want Terraform to replace it.
+
+* **`terraform untaint resource_address`**:
+    * **Purpose:** Removes the "tainted" status from a resource instance.
+
+* **`terraform force-unlock LOCK_ID`**:
+    * **Purpose:** Manually unlocks the state if it's locked due to a failed operation.
+    * **What it does:** Use with extreme caution and only if you are certain no other Terraform process is running, as it can lead to state corruption.
+
+* **`terraform version`**:
+    * **Purpose:** Shows the current Terraform version and checks for updates.
+
+**General Tips for Using Commands:**
+
+* **`terraform --help`** or **`terraform [command] --help`**: Almost every Terraform command and subcommand has built-in help. Use it liberally!
+* **Always `plan` before `apply`**: This is a golden rule to avoid unexpected infrastructure changes.
+* **Version Control**: Keep your Terraform configuration files in a version control system (like Git).
+* **Remote State**: For collaborative environments and production, configure a remote backend (like S3, Azure Blob Storage, HashiCorp Cloud) to store your state file. This ensures consistency and enables state locking.
+
+This list covers the most frequently used and crucial Terraform commands to manage your infrastructure effectively.
 
 ---
 
@@ -270,365 +468,3 @@ It checks what **exists in real AWS** and updates Terraform’s `.tfstate` file 
    🔗 [https://registry.terraform.io/providers/hashicorp/aws/latest](https://registry.terraform.io/providers/hashicorp/aws/latest)
 
 ---
-
-
-### Output of my terminal:
-```output
-  janak@king  ~/terraform/aws  terraform validate
-
-Success! The configuration is valid.
-
- janak@king  ~/terraform/aws  terraform fmt     
-main.tf
- janak@king  ~/terraform/aws  terraform apply
-
-data.aws_vpc.default: Reading...
-data.aws_vpc.default: Read complete after 3s [id=vpc-0bdb14565e290df3b]
-
-Terraform used the selected providers to generate the following execution plan. Resource actions are
-indicated with the following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  # aws_instance.my_ec2 will be created
-  + resource "aws_instance" "my_ec2" {
-      + ami                                  = "ami-0c2b8ca1dad447f8a"
-      + arn                                  = (known after apply)
-      + associate_public_ip_address          = (known after apply)
-      + availability_zone                    = (known after apply)
-      + cpu_core_count                       = (known after apply)
-      + cpu_threads_per_core                 = (known after apply)
-      + disable_api_stop                     = (known after apply)
-      + disable_api_termination              = (known after apply)
-      + ebs_optimized                        = (known after apply)
-      + enable_primary_ipv6                  = (known after apply)
-      + get_password_data                    = false
-      + host_id                              = (known after apply)
-      + host_resource_group_arn              = (known after apply)
-      + iam_instance_profile                 = (known after apply)
-      + id                                   = (known after apply)
-      + instance_initiated_shutdown_behavior = (known after apply)
-      + instance_lifecycle                   = (known after apply)
-      + instance_state                       = (known after apply)
-      + instance_type                        = "t2.micro"
-      + ipv6_address_count                   = (known after apply)
-      + ipv6_addresses                       = (known after apply)
-      + key_name                             = "terraform-janak"
-      + monitoring                           = (known after apply)
-      + outpost_arn                          = (known after apply)
-      + password_data                        = (known after apply)
-      + placement_group                      = (known after apply)
-      + placement_partition_number           = (known after apply)
-      + primary_network_interface_id         = (known after apply)
-      + private_dns                          = (known after apply)
-      + private_ip                           = (known after apply)
-      + public_dns                           = (known after apply)
-      + public_ip                            = (known after apply)
-      + secondary_private_ips                = (known after apply)
-      + security_groups                      = [
-          + "allow_ssh",
-        ]
-      + source_dest_check                    = true
-      + spot_instance_request_id             = (known after apply)
-      + subnet_id                            = (known after apply)
-      + tags                                 = {
-          + "Name" = "MyTerraformVM"
-        }
-      + tags_all                             = {
-          + "Name" = "MyTerraformVM"
-        }
-      + tenancy                              = (known after apply)
-      + user_data                            = (known after apply)
-      + user_data_base64                     = (known after apply)
-      + user_data_replace_on_change          = false
-      + vpc_security_group_ids               = (known after apply)
-
-      + capacity_reservation_specification (known after apply)
-
-      + cpu_options (known after apply)
-
-      + ebs_block_device (known after apply)
-
-      + enclave_options (known after apply)
-
-      + ephemeral_block_device (known after apply)
-
-      + instance_market_options (known after apply)
-
-      + maintenance_options (known after apply)
-
-      + metadata_options (known after apply)
-
-      + network_interface (known after apply)
-
-      + private_dns_name_options (known after apply)
-
-      + root_block_device (known after apply)
-    }
-
-  # aws_security_group.ssh_access will be created
-  + resource "aws_security_group" "ssh_access" {
-      + arn                    = (known after apply)
-      + description            = "Allow SSH inbound traffic"
-      + egress                 = [
-          + {
-              + cidr_blocks      = [
-                  + "0.0.0.0/0",
-                ]
-              + from_port        = 0
-              + ipv6_cidr_blocks = []
-              + prefix_list_ids  = []
-              + protocol         = "-1"
-              + security_groups  = []
-              + self             = false
-              + to_port          = 0
-                # (1 unchanged attribute hidden)
-            },
-        ]
-      + id                     = (known after apply)
-      + ingress                = [
-          + {
-              + cidr_blocks      = [
-                  + "0.0.0.0/0",
-                ]
-              + description      = "SSH from anywhere"
-              + from_port        = 22
-              + ipv6_cidr_blocks = []
-              + prefix_list_ids  = []
-              + protocol         = "tcp"
-              + security_groups  = []
-              + self             = false
-              + to_port          = 22
-            },
-        ]
-      + name                   = "allow_ssh"
-      + name_prefix            = (known after apply)
-      + owner_id               = (known after apply)
-      + revoke_rules_on_delete = false
-      + tags_all               = (known after apply)
-      + vpc_id                 = "vpc-0bdb14565e290df3b"
-    }
-
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-Changes to Outputs:
-  + instance_public_ip = (known after apply)
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: yes
-
-aws_security_group.ssh_access: Creating...
-aws_security_group.ssh_access: Creation complete after 7s [id=sg-0abf04ec2463db933]
-aws_instance.my_ec2: Creating...
-aws_instance.my_ec2: Still creating... [00m10s elapsed]
-aws_instance.my_ec2: Still creating... [00m20s elapsed]
-aws_instance.my_ec2: Still creating... [00m30s elapsed]
-aws_instance.my_ec2: Creation complete after 37s [id=i-0cb46a9f04064c1b4]
-
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-instance_public_ip = "3.85.61.224"
- janak@king  ~/terraform/aws  ssh -i terraform-janak.pem ec2-user@3.85.61.224   
-The authenticity of host '3.85.61.224 (3.85.61.224)' can't be established.
-ED25519 key fingerprint is SHA256:BH/7hLSYw/wtVACyiDcZA1V1nWy5EZGxG+EWvIw7qaY.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '3.85.61.224' (ED25519) to the list of known hosts.
-
-       __|  __|_  )
-       _|  (     /   Amazon Linux 2 AMI
-      ___|\___|___|
-
-https://aws.amazon.com/amazon-linux-2/
-55 package(s) needed for security, out of 106 available
-Run "sudo yum update" to apply all updates.
-[ec2-user@ip-172-31-18-218 ~]$ w
- 07:02:35 up 44 min,  1 user,  load average: 0.00, 0.00, 0.00
-USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
-ec2-user pts/0    27.34.65.181     07:02    2.00s  0.01s  0.00s w
-[ec2-user@ip-172-31-18-218 ~]$ exit
-logout
-Connection to 3.85.61.224 closed.
- janak@king  ~/terraform/aws  terraform destroy
-
-data.aws_vpc.default: Reading...
-data.aws_vpc.default: Read complete after 3s [id=vpc-0bdb14565e290df3b]
-aws_security_group.ssh_access: Refreshing state... [id=sg-0abf04ec2463db933]
-aws_instance.my_ec2: Refreshing state... [id=i-0cb46a9f04064c1b4]
-
-Terraform used the selected providers to generate the following execution plan. Resource actions are
-indicated with the following symbols:
-  - destroy
-
-Terraform will perform the following actions:
-
-  # aws_instance.my_ec2 will be destroyed
-  - resource "aws_instance" "my_ec2" {
-      - ami                                  = "ami-0c2b8ca1dad447f8a" -> null
-      - arn                                  = "arn:aws:ec2:us-east-1:442042544656:instance/i-0cb46a9f04064c1b4" -> null
-      - associate_public_ip_address          = true -> null
-      - availability_zone                    = "us-east-1d" -> null
-      - cpu_core_count                       = 1 -> null
-      - cpu_threads_per_core                 = 1 -> null
-      - disable_api_stop                     = false -> null
-      - disable_api_termination              = false -> null
-      - ebs_optimized                        = false -> null
-      - get_password_data                    = false -> null
-      - hibernation                          = false -> null
-      - id                                   = "i-0cb46a9f04064c1b4" -> null
-      - instance_initiated_shutdown_behavior = "stop" -> null
-      - instance_state                       = "running" -> null
-      - instance_type                        = "t2.micro" -> null
-      - ipv6_address_count                   = 0 -> null
-      - ipv6_addresses                       = [] -> null
-      - key_name                             = "terraform-janak" -> null
-      - monitoring                           = false -> null
-      - placement_partition_number           = 0 -> null
-      - primary_network_interface_id         = "eni-09c381fcd7f2a599f" -> null
-      - private_dns                          = "ip-172-31-18-218.ec2.internal" -> null
-      - private_ip                           = "172.31.18.218" -> null
-      - public_dns                           = "ec2-3-85-61-224.compute-1.amazonaws.com" -> null
-      - public_ip                            = "3.85.61.224" -> null
-      - secondary_private_ips                = [] -> null
-      - security_groups                      = [
-          - "allow_ssh",
-        ] -> null
-      - source_dest_check                    = true -> null
-      - subnet_id                            = "subnet-0eb9138e4799cbcd9" -> null
-      - tags                                 = {
-          - "Name" = "MyTerraformVM"
-        } -> null
-      - tags_all                             = {
-          - "Name" = "MyTerraformVM"
-        } -> null
-      - tenancy                              = "default" -> null
-      - user_data_replace_on_change          = false -> null
-      - vpc_security_group_ids               = [
-          - "sg-0abf04ec2463db933",
-        ] -> null
-        # (7 unchanged attributes hidden)
-
-      - capacity_reservation_specification {
-          - capacity_reservation_preference = "open" -> null
-        }
-
-      - cpu_options {
-          - core_count       = 1 -> null
-          - threads_per_core = 1 -> null
-            # (1 unchanged attribute hidden)
-        }
-
-      - credit_specification {
-          - cpu_credits = "standard" -> null
-        }
-
-      - enclave_options {
-          - enabled = false -> null
-        }
-
-      - maintenance_options {
-          - auto_recovery = "default" -> null
-        }
-
-      - metadata_options {
-          - http_endpoint               = "enabled" -> null
-          - http_protocol_ipv6          = "disabled" -> null
-          - http_put_response_hop_limit = 1 -> null
-          - http_tokens                 = "optional" -> null
-          - instance_metadata_tags      = "disabled" -> null
-        }
-
-      - private_dns_name_options {
-          - enable_resource_name_dns_a_record    = false -> null
-          - enable_resource_name_dns_aaaa_record = false -> null
-          - hostname_type                        = "ip-name" -> null
-        }
-
-      - root_block_device {
-          - delete_on_termination = true -> null
-          - device_name           = "/dev/xvda" -> null
-          - encrypted             = false -> null
-          - iops                  = 100 -> null
-          - tags                  = {} -> null
-          - tags_all              = {} -> null
-          - throughput            = 0 -> null
-          - volume_id             = "vol-00b407383785fadd0" -> null
-          - volume_size           = 8 -> null
-          - volume_type           = "gp2" -> null
-            # (1 unchanged attribute hidden)
-        }
-    }
-
-  # aws_security_group.ssh_access will be destroyed
-  - resource "aws_security_group" "ssh_access" {
-      - arn                    = "arn:aws:ec2:us-east-1:442042544656:security-group/sg-0abf04ec2463db933" -> null
-      - description            = "Allow SSH inbound traffic" -> null
-      - egress                 = [
-          - {
-              - cidr_blocks      = [
-                  - "0.0.0.0/0",
-                ]
-              - from_port        = 0
-              - ipv6_cidr_blocks = []
-              - prefix_list_ids  = []
-              - protocol         = "-1"
-              - security_groups  = []
-              - self             = false
-              - to_port          = 0
-                # (1 unchanged attribute hidden)
-            },
-        ] -> null
-      - id                     = "sg-0abf04ec2463db933" -> null
-      - ingress                = [
-          - {
-              - cidr_blocks      = [
-                  - "0.0.0.0/0",
-                ]
-              - description      = "SSH from anywhere"
-              - from_port        = 22
-              - ipv6_cidr_blocks = []
-              - prefix_list_ids  = []
-              - protocol         = "tcp"
-              - security_groups  = []
-              - self             = false
-              - to_port          = 22
-            },
-        ] -> null
-      - name                   = "allow_ssh" -> null
-      - owner_id               = "442042544656" -> null
-      - revoke_rules_on_delete = false -> null
-      - tags                   = {} -> null
-      - tags_all               = {} -> null
-      - vpc_id                 = "vpc-0bdb14565e290df3b" -> null
-        # (1 unchanged attribute hidden)
-    }
-
-Plan: 0 to add, 0 to change, 2 to destroy.
-
-Changes to Outputs:
-  - instance_public_ip = "3.85.61.224" -> null
-
-Do you really want to destroy all resources?
-  Terraform will destroy all your managed infrastructure, as shown above.
-  There is no undo. Only 'yes' will be accepted to confirm.
-
-  Enter a value: yes
-
-aws_instance.my_ec2: Destroying... [id=i-0cb46a9f04064c1b4]
-aws_instance.my_ec2: Still destroying... [id=i-0cb46a9f04064c1b4, 00m10s elapsed]
-aws_instance.my_ec2: Still destroying... [id=i-0cb46a9f04064c1b4, 00m20s elapsed]
-aws_instance.my_ec2: Still destroying... [id=i-0cb46a9f04064c1b4, 00m30s elapsed]
-aws_instance.my_ec2: Still destroying... [id=i-0cb46a9f04064c1b4, 00m40s elapsed]
-aws_instance.my_ec2: Destruction complete after 44s
-aws_security_group.ssh_access: Destroying... [id=sg-0abf04ec2463db933]
-aws_security_group.ssh_access: Destruction complete after 1s
-
-Destroy complete! Resources: 2 destroyed.
- janak@king  ~/terraform/aws  
-```
