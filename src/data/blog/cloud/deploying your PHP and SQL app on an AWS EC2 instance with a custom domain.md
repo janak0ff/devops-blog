@@ -99,6 +99,7 @@ Your EC2 instance's security group acts as a virtual firewall. You need to open 
     * **Type:** HTTPS, **Port range:** 443, **Source:** Anywhere (0.0.0.0/0)
     * (Optional, only if you want direct access to your Docker app without Nginx) **Type:** Custom TCP, **Port range:** 8899, **Source:** Anywhere (0.0.0.0/0)
 
+![output](@/assets/images/Screenshot_20250618_154318.png)
 ---
 
 ### Step 4: Deploy Your Docker Application
@@ -134,7 +135,9 @@ You should see both `web` and `db` containers running.
 
 **Test the application directly (optional, if port 8899 is open):**
 
-Open your web browser and navigate to `http://your_ec2_public_ip:8899`. You should see your PHP application.
+Open your web browser and navigate to `http://your_ec2_public_ip:8899` OR `http://35.173.177.9:8899`. You should see your PHP application.
+
+![output](@/assets/images/Screenshot_20250618_153810.png)
 
 ---
 
