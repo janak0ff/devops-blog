@@ -5,7 +5,7 @@ tags:
   - Hands On Lab
 description: Ready for a smarter terminal? This guide provides a comprehensive shell script to completely automate the installation and configuration of Zsh as your default shell, set up Oh My Zsh, and integrate must-have plugins like zsh-autosuggestions and zsh-syntax-highlighting. Get a highly functional and beautiful command-line environment with minimal effort, simply by running a file.
 ---
-Please save the following content into a file named `setup_zsh.sh` (or any .sh extension), then make it executable using chmod `+x setup_zsh.sh`, and run it with `./setup_zsh.sh`
+Please save the following content into a file named `setup_zsh.sh` (or any .sh extension), then make it executable using `chmod +x setup_zsh.sh`, and run it with `./setup_zsh.sh`
 
 
 # Only zsh (recommended)
