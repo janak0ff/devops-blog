@@ -5,10 +5,120 @@ tags:
   - Hands On Lab
 description: Ready for a smarter terminal? This guide provides a comprehensive shell script to completely automate the installation and configuration of Zsh as your default shell, set up Oh My Zsh, and integrate must-have plugins like zsh-autosuggestions and zsh-syntax-highlighting. Get a highly functional and beautiful command-line environment with minimal effort, simply by running a file.
 ---
-
-# Method 1: Fully automation with .sh file
-
 Please save the following content into a file named `setup_zsh.sh` (or any .sh extension), then make it executable using chmod `+x setup_zsh.sh`, and run it with `./setup_zsh.sh`
+
+
+# Only zsh (recommended)
+
+```bash
+#!/bin/bash
+
+# Lightweight Zsh + Plugins + Git Prompt Setup Script
+
+set -e
+
+# === Functions ===
+info() {
+  echo -e "\n\033[1;32m==> $1\033[0m"
+}
+
+check_sudo() {
+  if ! command -v sudo &>/dev/null; then
+    echo "❌ sudo not found."
+    exit 1
+  fi
+  if ! sudo -v &>/dev/null; then
+    echo "❌ Sudo access required."
+    exit 1
+  fi
+}
+
+# === Begin ===
+info "Checking sudo access..."
+check_sudo
+
+info "Installing zsh, git, curl..."
+sudo apt update
+sudo apt install -y zsh git curl
+
+info "Setting zsh as default shell..."
+if [[ "$SHELL" != *zsh ]]; then
+  chsh -s "$(which zsh)"
+  echo "✅ Zsh will be used next time you log in."
+else
+  echo "✅ Zsh is already the default shell."
+fi
+
+# === Plugin Setup ===
+ZSH_PLUGIN_DIR="$HOME/.zsh/plugins"
+mkdir -p "$ZSH_PLUGIN_DIR"
+
+info "Installing zsh-autosuggestions..."
+if [ ! -d "$ZSH_PLUGIN_DIR/zsh-autosuggestions" ]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_PLUGIN_DIR/zsh-autosuggestions"
+else
+  echo "zsh-autosuggestions already installed."
+fi
+
+info "Installing zsh-syntax-highlighting..."
+if [ ! -d "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting" ]; then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_PLUGIN_DIR/zsh-syntax-highlighting"
+else
+  echo "zsh-syntax-highlighting already installed."
+fi
+
+# === Generate .zshrc ===
+ZSHRC="$HOME/.zshrc"
+info "Writing ~/.zshrc..."
+
+cat > "$ZSHRC" <<'EOF'
+# === Git branch/status in prompt ===
+autoload -Uz vcs_info
+precmd() { vcs_info }
+setopt prompt_subst
+
+# Git status icons
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr '✔'
+zstyle ':vcs_info:git:*' unstagedstr '✚'
+zstyle ':vcs_info:git:*' untrackedstr '💥'
+zstyle ':vcs_info:git:*' formats '(%b %u%c)'
+
+# Show current dir and git info
+PROMPT='%~ ${vcs_info_msg_0_}> '
+
+# === Shell options ===
+setopt autocd
+setopt hist_expire_dups_first
+setopt hist_ignore_space
+setopt hist_verify
+
+HISTFILE=~/.zsh_history
+HISTSIZE=2000
+SAVEHIST=4000
+
+# === Autosuggestions ===
+source $HOME/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#999999"
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+# === Syntax Highlighting ===
+source $HOME/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+
+# === Environment ===
+export EDITOR="vim"
+export PATH="$HOME/.local/bin:$PATH"
+EOF
+
+# === Done ===
+info "✅ Zsh minimal setup complete."
+echo -e "\n🎯 Run \033[1mzsh\033[0m or restart your terminal to start using Zsh."
+```
+
+# zsh + Oh My Zsh
+
 
 ```bash
 #!/bin/bash
@@ -139,116 +249,6 @@ echo "     Find the line 'ZSH_THEME=\"robbyrussell\"' and change it to your desi
 echo "   - Save the file and run 'source ~/.zshrc' or restart your terminal."
 echo "   - You can browse themes at: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes"
 echo "------------------------------------------------------------------"
-```
-
-After the Script Runs: restart your terminal or run `source ~/.zshrc` to apply changes.
-
-
-# Method 2: Manually Step by step
-
-### Install Zsh
-
-```bash
-sudo apt update
-sudo apt install zsh
-```
-
------
-
-###  Make Zsh your default shell
-
-```bash
-chsh -s $(which zsh)
-```
-
------
-
-###  Install Oh My Zsh 
-
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-```
-
-
------
-
-### Install and Configure `zsh-autosuggestions, syntax-highlighting` 
-
-Now let's install the `zsh-autosuggestions` plugin, which provides command auto-suggestion based on your history.
-
-1.  **Clone the plugin repository:**
-
-    ```bash
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    ```
-
-     ```bash
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    ```
-
-
-2.  **Enable the plugin in your `.zshrc` file:**
-    Open your `~/.zshrc` file using a text editor (e.g., `nano`, `vim`, `code`):
-
-    ```bash
-    nano ~/.zshrc
-    ```
-
-    Find the line that starts with `plugins=(...)`. By default, it usually looks something like `plugins=(git)`.
-
-    Add `zsh-autosuggestions and  syntax-highlighting` to the list of plugins. It should look like this:
-
-    ```bash
-    plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
-    ```
-
-    You can add other plugins later as you discover them.
-
-
-3.  **Find Available Themes (Optional)**
-
-Oh My Zsh has a dedicated wiki page listing all its built-in themes with screenshots. This is the best place to browse and see what they look like:
-
-* **Oh My Zsh Themes Wiki:** [https://github.com/ohmyzsh/ohmyzsh/wiki/Themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes)
-
-You can also find them locally in your system:
-```bash
-ls ~/.oh-my-zsh/themes/*.zsh-theme
-```
-This command will list all the theme files, but it won't show you previews. The wiki page is much more useful for selection.
-
-Some popular themes include:
-* `agnoster` (requires a Powerline-compatible font)
-* `pure` (not built-in to OMZ, but a popular standalone)
-* `powerlevel10k` (not built-in to OMZ, but the most popular and customizable theme, also requires a Powerline-compatible font)
-* `robbyrussell` (the default Oh My Zsh theme)
-* `ys`
-* `muse`
-
-
-*  Look for the line that starts with `ZSH_THEME=`. By default, it's usually set to `robbyrussell`:
-    ```bash
-    ZSH_THEME="robbyrussell"
-    ```
-
-* Change the value inside the double quotes (`""`) to the name of the theme you want to try. For example, if you want to try the `agnoster` theme:
-    ```bash
-    ZSH_THEME="agnoster"
-    ```
-*    **Important Note for `agnoster` and `powerlevel10k`:** These themes use special characters (like arrows and icons) that require a "Powerline-compatible font" to display correctly. If you switch to them and see strange question marks or broken symbols, you'll need to install a font like `MesloLGS NF` (recommended for `powerlevel10k`) or any other Powerline font (e.g., from [Nerd Fonts](https://www.nerdfonts.com/)). After installing the font, you'll also need to configure your terminal emulator (e.g., iTerm2, Kitty, Alacritty, GNOME Terminal, etc.) to use that font.
-
-
-  
-###  Save and exit the `.zshrc` file.
-
------
-
-###   Reload your Zsh configuration
-
-For the changes to take effect, you need to reload your `~/.zshrc` file.
-
-```bash
-source ~/.zshrc
 ```
 
 -----
