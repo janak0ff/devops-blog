@@ -1,6 +1,6 @@
 ---
 title: Request a new ACM certificate with cloudflare.
-pubDatetime: 2025-07-29
+pubDatetime: 2025-06-26
 featured: false
 tags:
   - aws

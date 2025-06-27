@@ -1,6 +1,6 @@
 ---
 title: AWS Application Load Balancer with a Custom Domain (Cloudflare)
-pubDatetime: 2025-07-29
+pubDatetime: 2025-06-27
 featured: true
 tags:
   - aws
