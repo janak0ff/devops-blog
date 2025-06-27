@@ -6,7 +6,7 @@ tags:
   - aws
   - Hands On Lab
 
-description: Request a new ACM certificate with cloudflare.
+description: Guide ti request a new ACM certificate with cloudflare.
 ---
 
 Getting an AWS Certificate Manager (ACM) certificate for your subdomain `aws.saraswatishrestha.com.np` is a straightforward process, especially when you're going to use Cloudflare for your DNS. Here's a step-by-step guide:
