@@ -138,7 +138,7 @@ For **each** of your backend EC2 instances:
 
 10. * **Secure listener settings: SSL Certificate (for HTTPS: 443 Listener):**
         * Choose **From ACM (recommended)**.
-        * If you don't already have an SSL certificate for your domain like `medical.janakkumarshrestha0.com.np` in AWS Certificate Manager (ACM), click "Request a new ACM certificate" and follow the prompts to create a new Public Certificate. This usually involves DNS validation (adding a CNAME record to your DNS). **Follow this guide:** [Request a new ACM certificate]()
+        * If you don't already have an SSL certificate for your domain like `medical.janakkumarshrestha0.com.np` in AWS Certificate Manager (ACM), click "Request a new ACM certificate" and follow the prompts to create a new Public Certificate. This usually involves DNS validation (adding a CNAME record to your DNS). **Follow this guide:** [Request a new ACM certificate](https://blogs.janakkumarshrestha0.com.np/posts/cloud/request-a-new-acm-certificate)
         * Once the certificate is issued in ACM or already have it, refresh and select it from the dropdown.
     * **Security Policy:** Stick with the default (or recommended).
 
