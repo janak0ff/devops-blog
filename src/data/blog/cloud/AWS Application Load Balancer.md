@@ -126,7 +126,7 @@ For **each** of your backend EC2 instances:
     * Click **Include as pending below**.
     * Click **Create Target Group**.
 
-![output](@/assets/images/Screenshot_20250627_142747.png)
+![output](@/assets/images/Screenshot_20250627_165410.png)
 
 9.    * **Listeners and routing:**
         * By default, `HTTP: 80` will be listed.
