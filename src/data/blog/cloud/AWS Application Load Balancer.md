@@ -1,4 +1,3 @@
- 
 ---
 title: AWS Application Load Balancer with a Custom Domain (Cloudflare)
 pubDatetime: 2025-07-29
@@ -9,6 +8,7 @@ tags:
 
 description: step-by-step walkthrough for beginners on setting up an AWS Application Load Balancer (ALB), securing it with SSL/TLS using ACM
 ---
+
 Using an **AWS Application Load Balancer (ALB)**. For a production environment it is highly available, scalable, and fully managed load balancing solution.
 
 ---
