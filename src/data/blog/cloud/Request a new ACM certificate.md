@@ -1,7 +1,7 @@
 ---
 title: Request a new ACM certificate with cloudflare.
 pubDatetime: 2025-07-29
-featured: true
+featured: false
 tags:
   - aws
   - Hands On Lab
