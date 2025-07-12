@@ -111,7 +111,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"  # Using a stable version of AWS provider
+      version = "~> 5.0" # Using a stable version of AWS provider
     }
   }
 }
@@ -120,7 +120,7 @@ terraform {
 # AWS provider configuration
 # --------------------------------------------------
 provider "aws" {
-  region = "us-east-1"  # AWS region to deploy resources
+  region = "us-east-1" # AWS region to deploy resources
 }
 
 # --------------------------------------------------
@@ -131,23 +131,39 @@ data "aws_vpc" "default" {
 }
 
 # --------------------------------------------------
-# Security group resource to allow SSH access
+# Security group resource
 # --------------------------------------------------
-resource "aws_security_group" "ssh_access" {
-  name        = "allow_ssh"
-  description = "Allow SSH inbound traffic"
-  vpc_id      = data.aws_vpc.default.id  # Attach to the default VPC
+resource "aws_security_group" "web_access_sg" {
+  name        = "web_access_sg"
+  description = "Allow SSH, HTTP, and HTTPS inbound traffic"
+  vpc_id      = data.aws_vpc.default.id
 
-  # Inbound rule to allow SSH from any IP
+  # Inbound rules
   ingress {
     description = "SSH from anywhere"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # ⚠️ For production, replace with your IP (e.g. ["203.0.113.0/32"])
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Outbound rule to allow all traffic
+  ingress {
+    description = "HTTP from anywhere"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTPS from anywhere"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Outbound  rules
   egress {
     from_port   = 0
     to_port     = 0
@@ -156,17 +172,20 @@ resource "aws_security_group" "ssh_access" {
   }
 }
 
+
 # --------------------------------------------------
 # EC2 instance resource
 # --------------------------------------------------
 resource "aws_instance" "my_ec2" {
-  ami           = "ami-0c2b8ca1dad447f8a"  # Amazon Linux 2 AMI (Free tier eligible)
-  instance_type = "t2.micro"              # Free tier eligible instance type
-  key_name      = "terraform-janak"       # Replace with the name of your existing AWS EC2 key pair
-  security_groups = [aws_security_group.ssh_access.name]  # Attach the SSH security group
+  ami               = "ami-020cba7c55df1f615"              # Ubuntu Server 20.04 LTS AMI in us-east-1
+  count             = 1                                    # Number of instances to create
+  availability_zone = "us-east-1a"                         # Specify the availability zone
+  instance_type     = "t2.micro"                           # Free tier eligible instance type
+  key_name          = "aws-janak"                          # Replace with the name of your existing AWS EC2 key pair
+  security_groups   = [aws_security_group.web_access_sg.name] # Attach the SSH security group
 
   tags = {
-    Name = "MyTerraformVM"  # Tag to identify your instance
+    Name = "MyTerraformVM" # Tag to identify your instance
   }
 }
 
@@ -175,7 +194,8 @@ resource "aws_instance" "my_ec2" {
 # --------------------------------------------------
 output "instance_public_ip" {
   description = "Public IP of the EC2 instance"
-  value       = aws_instance.my_ec2.public_ip
+  value       = aws_instance.my_ec2[0].public_ip
+
 }
 
 ```
