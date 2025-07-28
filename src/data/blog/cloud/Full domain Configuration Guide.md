@@ -240,9 +240,9 @@ From Netlify:
 
 ![out](@/assets/images/Screenshot_20250727_213803.png)
 
-  ```
-  https://ai.ishworishrestha.com.np/
-  ```
+
+ [https://ai.ishworishrestha.com.np/](https://ai.ishworishrestha.com.np/)
+
 ![out](@/assets/images/Screenshot_20250727_214017.png)
 
 ---
