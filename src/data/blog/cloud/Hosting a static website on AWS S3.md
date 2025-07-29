@@ -106,7 +106,9 @@ While the bucket policy grants public read access, you also need to ensure that 
 **6. Access Your Website\!**
 
   * Paste the "Bucket website endpoint" URL you copied in Step 3 into your web browser.
-  * You should now see your static website live on the internet\!
+  * You should now see your static website live on the internet.
+
+[http://janakshrestha.s3-website-us-east-1.amazonaws.com](http://janakshrestha.s3-website-us-east-1.amazonaws.com/)
 
 ![output](@/assets/images/Screenshot_20250627_163819.png)
 
