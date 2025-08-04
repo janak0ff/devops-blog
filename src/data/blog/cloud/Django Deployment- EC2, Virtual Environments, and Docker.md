@@ -17,10 +17,10 @@ So, you've built a fantastic Django todo app, and it's running perfectly on your
 
 ### 1\. Connect to Your EC2 Instance via SSH
 
-  **Connect:**
-    ```bash
-     ssh -i ~/.ssh/aws-janak.pem  ubuntu@13.221.102.188
-    ```
+  ```bash
+  ssh -i ~/.ssh/aws-janak.pem  ubuntu@44.202.47.32
+  ```
+    
 
 ### 2\. Prepare the EC2 Server Environment
 
@@ -45,19 +45,16 @@ Once connected via SSH to your EC2 instance:
 
 -----
 
-## Part 2: Deploying with a Python Virtual Environment 🐍
+## Deploying with a Python Virtual Environment 🐍
 
 This is a straightforward way to get your app running without Docker.
 
 ### 1\. Clone Your Django Project
 
-On your **EC2 instance's terminal**:
-
-  **Clone your project:**
-    ```bash
-    git clone https://github.com/shreys7/django-todo.git
-    cd django-todo
-    ```
+  ```bash
+  git clone https://github.com/shreys7/django-todo.git
+  cd django-todo
+  ```
 
 ### 2\. Create and Activate Virtual Environment (on EC2)
 
@@ -71,15 +68,16 @@ On your **EC2 instance's terminal**:
     ```
     Your prompt should now show `(venv)` at the beginning, indicating the virtual environment is active.
 
-### 4\. Install Dependencies
+![out](@/assets/images/Screenshot_20250804_161105.png)
 
-1.  **Install from `requirements.txt`:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *If `pip` command doesn't work directly (e.g., `Command 'pip' not found`), use `python3 -m pip install -r requirements.txt` instead.*
 
-### 5\. Configure Django Settings
+### 3\. Configure Django Settings
+
+ **Install Core Django:**
+  ```bash
+  pip install django
+  ```
+
 
 You need to tell Django about your EC2 instance's public IP and prepare it for a production-like environment.
 
@@ -87,18 +85,13 @@ You need to tell Django about your EC2 instance's public IP and prepare it for a
     ```bash
     nano todoApp/settings.py
     ```
-    *(Replace `todoApp` with your actual main Django project folder name if different).*
 2.  **Set `DEBUG = False`:**
-    Find `DEBUG = True` and change it to:
-    ```python
-    DEBUG = False
-    ```
     **Never run with `DEBUG = True` in production\! It exposes sensitive information.**
 3.  **Add your EC2 Public IP to `ALLOWED_HOSTS`:**
     Find `ALLOWED_HOSTS = []` and add your instance's public IP.
     ```python
-    ALLOWED_HOSTS = ['your_instance_public_ip']
-    # Example: ALLOWED_HOSTS = ['52.202.151.15']
+    ALLOWED_HOSTS = ['44.202.47.32']
+    # Example for all: ALLOWED_HOSTS = ['*'] 
     ```
     If you get a domain name later, add it here too: `['your_instance_public_ip', 'your-domain.com']`.
 4.  **Configure `STATIC_ROOT`:**
@@ -106,10 +99,10 @@ You need to tell Django about your EC2 instance's public IP and prepare it for a
     ```python
     import os
     # ... other settings ...
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     ```
 5.  **Save and Exit:** Press `Ctrl+X`, then `Y`, then `Enter`.
+
+![out](@/assets/images/Screenshot_20250804_161344.png)
 
 ### 6\. Prepare Database and Static Files
 
@@ -118,17 +111,18 @@ You need to tell Django about your EC2 instance's public IP and prepare it for a
     python3 manage.py collectstatic
     ```
     Type `yes` when prompted. This gathers all static assets (CSS, JS, images) into the `staticfiles` folder.
-2.  **Apply Migrations:**
+1.  **Apply Migrations:**
     ```bash
     python3 manage.py makemigrations # Only needed if you made model changes
     python3 manage.py migrate
     ```
-3.  **Create Superuser (Optional):**
+3.  **Create Superuser:**
     ```bash
     python3 manage.py createsuperuser
     ```
+![out](@/assets/images/Screenshot_20250804_171012.png)
 
-### 7\. Test with Django's Development Server (Temporary)
+### 7\. Test with Django's Development Server 
 
 This is just to confirm your app runs before setting up production servers.
 
@@ -137,9 +131,11 @@ This is just to confirm your app runs before setting up production servers.
     python3 manage.py runserver 0.0.0.0:8000
     ```
     You'll see warnings about it being a development server, which is expected.
-2.  **Access in browser:** Open your browser and go to `http://your_instance_public_ip:8000/`.
+2.  **Access in browser:** Open your browser and go to `http://44.202.47.32:8000/`.
     *If you get a `DisallowedHost` error, double-check that your EC2 Public IP is correctly added to `ALLOWED_HOSTS` in `settings.py`.*
-    *Make sure **Port 8000** is open in your EC2 instance's Security Group (as set up in Part 1).*
+    *Make sure **Port 8000** is open in your EC2 instance's Inbound Security Group.*
+
+![out](@/assets/images/Screenshot_20250804_170706.png)
 
 ### 8\. Run in Background with `nohup` (Temporary)
 
@@ -155,25 +151,50 @@ To keep the development server running even after you close your SSH session:
 
 -----
 
-## Part 3: Containerizing with Docker (Optional, but Recommended) 🐳
+## Part 3: Containerizing with Docker
 
 Docker provides a consistent and isolated environment for your app, making deployments more reliable.
 
-### 1\. Ensure Dockerfile and .dockerignore are Ready
-
-You mentioned you already have your `Dockerfile` and `.dockerignore` files. Make sure they are in the root of your Django project.
+### 1\. Create Dockerfile and .dockerignore
 
   * Your `.dockerignore` file should exclude unnecessary files like `venv/`, `__pycache__/`, `.git/`, `db.sqlite3`, etc.
+  ```dockerignore
+  # .dockerignore
+  venv/
+  __pycache__/
+  *.pyc
+  .git/
+  .gitignore
+  .DS_Store
+  nohup.out
+  db.sqlite3
+  ```
   * Your `Dockerfile` should look something like this (you've already confirmed you have it):
     ```dockerfile
+    # Use an official Python runtime as a parent image
     FROM python:3
-    RUN pip install django==5.2.4
-    COPY . .
-    RUN python3 manage.py migrate
-    CMD ["python3","manage.py", "runserver", "0.0.0.0:8001"]
-    ```
-    *(Remember, for production, you'd typically use `pip install -r requirements.txt` and `gunicorn` as the `CMD`.)*
 
+    # Set the working directory in the container
+    WORKDIR /app
+
+    # Install Django (ideally from requirements.txt, but using direct install for this example)
+    RUN pip install django==5.2.4
+
+    # Copy the entire Django project into the container
+    # The .dockerignore file will prevent unwanted files like 'venv/' from being copied
+    COPY . .
+
+    # Run database migrations
+    RUN python3 manage.py migrate
+
+    # Expose the port that the Django development server will listen on
+    EXPOSE 7777
+
+    # Define the command to run the application
+    # We'll use port 8001 for the Dockerized version to distinguish it
+    CMD ["python3","manage.py", "runserver", "0.0.0.0:7777"]
+    ```
+ 
 ### 2\. Build the Docker Image
 
 On your **EC2 instance**, in your project's root:
@@ -189,11 +210,11 @@ sudo docker build -t django-todo-app .
 To run your app in a Docker container in the background:
 
 ```bash
-sudo docker run -d -p 8001:8001 django-todo-app
+sudo docker run -d -p 7777:7777 django-todo-app
 ```
 
   * `-d`: Runs the container in "detached" (background) mode.
-  * `-p 8001:8001`: Maps port 8001 on your EC2 instance (host) to port 8001 inside the container.
+  * `-p 7777:7777`: Maps port 8001 on your EC2 instance (host) to port 8001 inside the container.
 
 ### 4\. Verify and Access Your Dockerized App
 

@@ -30,3 +30,18 @@ Before installing dependencies on EC2, ensure your local project has a `requirem
     git pull origin main # or 'develop'
     ```
     This ensures your EC2 instance has the updated `requirements.txt`.
+
+
+### 4\. Install Dependencies
+
+1.  **Install from `requirements.txt`:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *If `pip` command doesn't work directly (e.g., `Command 'pip' not found`), use `python3 -m pip install -r requirements.txt` instead.*
+
+
+
+    ==================
+
+
