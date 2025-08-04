@@ -1,49 +1,32 @@
-Okay, the new screenshot (image_473cad.png) is exactly what we needed! This confirms Netlify's recommended DNS configuration for your domain.
+  * **Rule 4: Custom TCP (Port 8000/8001):** We'll use this temporarily for testing the Django development server or Docker.
+      * Type: `Custom TCP`
+      * Port range: `8000` (for virtual env testing) and `8001` (for Docker testing).
+      * Source type: `Anywhere`
 
-You're right, after clicking "Awaiting External DNS," Netlify gives you the precise instructions for the records you need to create in Cloudflare.
 
-Here's the breakdown of what you need to do in your **Cloudflare DNS settings** for `milantimalsina4.com.np`:
 
-**1. Go to your Cloudflare Dashboard:**
-   * Log in to your Cloudflare account.
-   * Select your domain `milantimalsina4.com.np`.
-   * Go to the **DNS** section (DNS > Records).
 
-**2. Add/Edit the Recommended Record for your Root Domain (`milantimalsina4.com.np`):**
+### 2\. Prepare Your Local Project for Deployment
 
-Netlify recommends using an **ALIAS, ANAME, or Flattened CNAME record** if your DNS provider supports it. Cloudflare does support "CNAME Flattening" at the root, which effectively works like an ALIAS/ANAME.
+Before installing dependencies on EC2, ensure your local project has a `requirements.txt` file.
 
-* **Type:** `CNAME`
-* **Name:** `@` (or leave it blank, Cloudflare will automatically interpret it as the root domain)
-* **Target:** `apex-loadbalancer.netlify.com`
-* **Proxy status:** Ensure the cloud icon is **orange (Proxied)**. This is crucial for Cloudflare's performance and security features.
-* Click **"Save"**.
-
-**Why the CNAME to `apex-loadbalancer.netlify.com` is better:**
-This approach is more robust because `apex-loadbalancer.netlify.com` is a dynamic target that Netlify manages. If Netlify changes the underlying IP address of their load balancer, your domain will automatically resolve to the new IP without you needing to update your DNS records.
-
-**3. Ensure Your `www` CNAME Record is Correct (if you haven't already):**
-
-You also need a CNAME record for `www.milantimalsina4.com.np`. This typically points to your specific Netlify site URL (e.g., `milantimalsina.netlify.app`).
-
-* **Type:** `CNAME`
-* **Name:** `www`
-* **Target:** Your specific Netlify-generated subdomain (e.g., `milantimalsina.netlify.app`). You can find this on your Netlify project's domain management page, usually listed right above your custom domains.
-* **Proxy status:** Ensure the cloud icon is **orange (Proxied)**.
-* Click **"Save"**.
-
-**Summary of what your Cloudflare DNS records for `milantimalsina4.com.np` should look like:**
-
-| Type  | Name                 | Content                         | Proxy Status |
-| :---- | :------------------- | :------------------------------ | :----------- |
-| CNAME | `@`                  | `apex-loadbalancer.netlify.com` | Proxied (Orange Cloud) |
-| CNAME | `www`                | `milantimalsina.netlify.app`    | Proxied (Orange Cloud) |
-| (Any existing records like MX, TXT, NS will remain) | ... | ... | ... |
-
-**Important Final Steps:**
-
-1.  **Delete any existing A records:** If you previously added an `A` record for `@` pointing to `75.2.60.5` (or any other IP), **delete it** now that you are using the recommended CNAME approach.
-2.  **Wait for Propagation:** After making these changes in Cloudflare, it can take some time (minutes to a few hours) for the DNS changes to propagate across the internet.
-3.  **Check Netlify Status:** Go back to your Netlify dashboard for `milantimalsina4.com.np` (the "Domain management" section). The "Awaiting External DNS" status should eventually update to "DNS Verified" and then "Netlify DNS" or "Active" as Netlify detects the correct records. Netlify will then automatically provision an SSL certificate for your domain.
-
-This process will successfully connect your `milantimalsina4.com.np` domain to your Netlify project while leveraging Cloudflare for your DNS management and its benefits.
+1.  **Generate `requirements.txt` (on your LOCAL machine):**
+      * Navigate to your project's root on your local machine.
+      * If you have a local virtual environment, activate it.
+      * Run:
+        ```bash
+        pip freeze > requirements.txt
+        ```
+      * **Add `gunicorn` to `requirements.txt`:** Open the file and add `gunicorn` on a new line. Save it.
+      * **Commit and Push:** Make sure `requirements.txt` (with `gunicorn`) is committed and pushed to your GitHub repository.
+        ```bash
+        git add requirements.txt
+        git commit -m "Add requirements.txt including gunicorn"
+        git push origin main # or 'develop' if that's your branch
+        ```
+2.  **Pull Changes on EC2:**
+    Back on your **EC2 instance's terminal** (in `~/django-todo`):
+    ```bash
+    git pull origin main # or 'develop'
+    ```
+    This ensures your EC2 instance has the updated `requirements.txt`.
