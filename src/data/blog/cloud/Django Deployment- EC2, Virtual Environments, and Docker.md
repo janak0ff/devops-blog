@@ -9,11 +9,13 @@ tags:
 description: guiding you through deploying your Django todo app on an AWS EC2 instance, covering both traditional virtual environment setup and containerization with Docker.
 ---
 
-So, you've built a fantastic Django todo app, and it's running perfectly on your local machine. Now, you're ready to share it with the world by deploying it to a cloud server\! **AWS EC2**
+## Add 2 Inbound rule to your EC2 instance.
+  * **Rule: Custom TCP (Port 8000/7777):** We'll use this temporarily for testing the Django development server or Docker.
+      * Type: `Custom TCP`
+      * Port range: `8000` (for virtual env testing) and `7777` (for Docker testing).
+      * Source type: `Anywhere`
 
-----
-
-
+![out](@/assets/images/Screenshot_20250804_173244.png)
 
 ### 1\. Connect to Your EC2 Instance via SSH
 
@@ -36,10 +38,8 @@ Once connected via SSH to your EC2 instance:
 2.  **Install Essential Software:**
 
     ```bash
-    sudo apt install python3-pip python3.12-venv docker.io -y
+    sudo apt installs python3.12-venv docker.io -y
     ```
-
-      * `python3-pip`: Python's package installer.
       * `python3.12-venv`: For creating isolated Python environments.
     
 
@@ -47,7 +47,6 @@ Once connected via SSH to your EC2 instance:
 
 ## Deploying with a Python Virtual Environment 🐍
 
-This is a straightforward way to get your app running without Docker.
 
 ### 1\. Clone Your Django Project
 
@@ -91,7 +90,7 @@ You need to tell Django about your EC2 instance's public IP and prepare it for a
     Find `ALLOWED_HOSTS = []` and add your instance's public IP.
     ```python
     ALLOWED_HOSTS = ['44.202.47.32']
-    # Example for all: ALLOWED_HOSTS = ['*'] 
+    # Example for all: ALLOWED_HOSTS = ['*']
     ```
     If you get a domain name later, add it here too: `['your_instance_public_ip', 'your-domain.com']`.
 4.  **Configure `STATIC_ROOT`:**
@@ -223,11 +222,36 @@ sudo docker run -d -p 7777:7777 django-todo-app
     sudo docker ps
     ```
     You should see your `django-todo-app` container listed with a `Status` of "Up...".
-2.  **Access in browser:** Ensure **Port 8001** is open in your EC2 Security Group. Then, open your web browser and go to `http://your_instance_public_ip:8001/`.
+
+![out](@/assets/images/Screenshot_20250804_172754.png)
+
+2.  **Access in browser:** Ensure **Port 8001** is open in your EC2 Security Group. Then, open your web browser and go to `http://44.202.47.32:7777/todos/`.
+
+![out](@/assets/images/Screenshot_20250804_172945.png)
 
 -----
+###  Prepare Your Local Project for Deployment
 
-## What's Next for Production? 🚀
+
+1.  **Generate `requirements.txt` (on your LOCAL machine):**
+      * Navigate to your project's root on your local machine.
+      * If you have a local virtual environment, activate it.
+      * Run:
+        ```bash
+        pip freeze > requirements.txt
+        ```
+    
+
+###  Install Dependencies
+
+1.  **Install from `requirements.txt`:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *If `pip` command doesn't work directly (e.g., `Command 'pip' not found`), use `python3 -m pip install -r requirements.txt` instead.*
+-----
+
+## What's Next for Production?
 
 While your app is now accessible, remember the warnings about using the Django development server. For a truly production-ready setup, you would:
 
@@ -236,6 +260,3 @@ While your app is now accessible, remember the warnings about using the Django d
 3.  **Use a Production Database:** Migrate from SQLite to a robust database like PostgreSQL, ideally using AWS RDS for managed services.
 4.  **Set up HTTPS (SSL/TLS):** Secure your application with an SSL certificate (e.g., using Certbot with Let's Encrypt).
 5.  **Environment Variables:** Store sensitive data (like Django's `SECRET_KEY`, database credentials) using environment variables or AWS Secrets Manager, not directly in `settings.py`.
-
-Congratulations\! You've successfully deployed your Django todo app to an AWS EC2 instance using both a virtual environment and Docker for testing. This is a huge step in your cloud journey\!
-\</immersive\>
