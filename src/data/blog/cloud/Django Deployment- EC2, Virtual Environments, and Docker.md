@@ -5,6 +5,7 @@ featured: true
 tags:
   - aws
   - Hands On Lab
+  - Django app
 
 description: guiding you through deploying your Django todo app on an AWS EC2 instance, covering both traditional virtual environment setup and containerization with Docker.
 ---
@@ -148,6 +149,7 @@ To keep the development server running even after you close your SSH session:
     You'll see a message about output being redirected to `nohup.out`. You can check it with `tail -f nohup.out`.
     *To stop it later: `ps aux | grep 'runserver' | grep -v 'grep'` to find the PID, then `kill <PID>`.*
 
+![out](@/assets/images/Screenshot_20250804_175254.png)
 -----
 
 ## Part 3: Containerizing with Docker
@@ -240,7 +242,7 @@ sudo docker run -d -p 7777:7777 django-todo-app
         ```bash
         pip freeze > requirements.txt
         ```
-    
+![out](@/assets/images/Screenshot_20250804_174944.png)   
 
 ###  Install Dependencies
 
@@ -249,6 +251,10 @@ sudo docker run -d -p 7777:7777 django-todo-app
     pip install -r requirements.txt
     ```
     *If `pip` command doesn't work directly (e.g., `Command 'pip' not found`), use `python3 -m pip install -r requirements.txt` instead.*
+-----
+
+![out](@/assets/images/Screenshot_20250804_175444.png)
+
 -----
 
 ## What's Next for Production?
