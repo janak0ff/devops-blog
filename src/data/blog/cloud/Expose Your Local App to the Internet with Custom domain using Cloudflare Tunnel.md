@@ -14,18 +14,18 @@ Since you **can’t use a custom domain with the free ngrok plan**, but your dom
 
 ---
 
-## Use **Cloudflare Tunnel** (Argo Tunnel) — 100% FREE, allows custom domains
+## Use **Cloudflare Tunnel** — 100% FREE, allows custom domains
 
-You’ll expose your local site (like your localhost site) **directly through your own domain** using `cloudflared`, without needing ngrok at all.
+You’ll expose your localhost app **directly through your own domain** using `cloudflared`.
 
 ---
 
 ### Goal:
 
-You want to expose your local app (e.g. running on `http://localhost:3000`) to:
+To expose your local app (e.g. running on `http://localhost:3000`) to:
 
 ```
-https://your-subdomain.yourdomain.com
+https://subdomain.yourdomain.com
 ```
 
 e.g.
@@ -54,13 +54,9 @@ wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudfla
 sudo dpkg -i cloudflared-linux-amd64.deb
 ```
 
-Other OS? See: [https://developers.cloudflare.com/cloudflared/install/](https://developers.cloudflare.com/cloudflared/install/)
-
 ---
 
 #### 3. **Authenticate cloudflared with Cloudflare**
-
-Run:
 
 ```bash
 cloudflared tunnel login
@@ -70,13 +66,13 @@ This opens a browser. Log in to your Cloudflare account and authorize.
 
 ---
 
-#### 4. **Create a tunnel**
+#### 4. **CCreate a new tunnel. You can name it whatever you like**
 
 ```bash
 cloudflared tunnel create mytunnel
 ```
 
-This will generate a `credentials-file` and `tunnel ID` inside `/home/YOUR_USERNAME/.cloudflared/`.
+This will generate a `credentials-file` and `tunnel ID` inside `/home/USERNAME/.cloudflared/`.
 
 ---
 
@@ -142,11 +138,14 @@ You can enable the tunnel as a system service:
 
 ```bash
 sudo cloudflared service install
+sudo systemctl start cloudflared
+sudo systemctl enable cloudflared
+sudo systemctl status cloudflared
 ```
 
 ---
 
-###  Bonus: Secure with Access Rules (Optional)
+###  Secure with Access Rules (Optional)
 
 You can protect your tunnel with Cloudflare Access (Google login, OTP, etc.) — all free.
 
