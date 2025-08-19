@@ -14,13 +14,13 @@ Since you **can’t use a custom domain with the free ngrok plan**, but your dom
 
 ---
 
-## ✅ Use **Cloudflare Tunnel** (Argo Tunnel) — 100% FREE, allows custom domains
+## Use **Cloudflare Tunnel** (Argo Tunnel) — 100% FREE, allows custom domains
 
 You’ll expose your local site (like your localhost site) **directly through your own domain** using `cloudflared`, without needing ngrok at all.
 
 ---
 
-### 🌐 Goal:
+### Goal:
 
 You want to expose your local app (e.g. running on `http://localhost:3000`) to:
 
@@ -36,7 +36,7 @@ https://local.janakkumarshrestha0.com.np
 
 ---
 
-### ✅ Step-by-Step: Use Cloudflare Tunnel with Custom Domain
+### Step-by-Step: Use Cloudflare Tunnel with Custom Domain
 
 #### 1. **Make sure your domain is on Cloudflare**
 
@@ -128,7 +128,7 @@ cloudflared tunnel run mytunnel
 
 ---
 
-### ✅ DONE! Your local site is now live at:
+### DONE! Your local site is now live at:
 
 ```
 https://local.janakkumarshrestha0.com.np
@@ -136,7 +136,7 @@ https://local.janakkumarshrestha0.com.np
 
 ---
 
-### 🔁 Optional: Auto-start the tunnel at boot
+### Optional: Auto-start the tunnel at boot
 
 You can enable the tunnel as a system service:
 
@@ -146,7 +146,7 @@ sudo cloudflared service install
 
 ---
 
-### 🔒 Bonus: Secure with Access Rules (Optional)
+###  Bonus: Secure with Access Rules (Optional)
 
 You can protect your tunnel with Cloudflare Access (Google login, OTP, etc.) — all free.
 

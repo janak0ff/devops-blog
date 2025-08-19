@@ -70,6 +70,11 @@ Once connected via SSH to your EC2 instance:
 
 ![out](@/assets/images/Screenshot_20250804_161105.png)
 
+If you want to **Deactivate the current virtual environment(Dont do)**
+```bash
+deactivate
+```
+Ensure `(venv)` disappears from your prompt.
 
 ### 3\. Configure Django Settings
 
