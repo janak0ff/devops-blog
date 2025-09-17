@@ -39,9 +39,9 @@ Once connected via SSH to your EC2 instance:
 2.  **Install Essential Software:**
 
     ```bash
-    sudo apt installs python3.12-venv docker.io -y
+    sudo apt install python3.13 python3.13-venv -y
     ```
-      * `python3.12-venv`: For creating isolated Python environments.
+      * `python3.13-venv`: For creating isolated Python environments.
     
 
 -----
