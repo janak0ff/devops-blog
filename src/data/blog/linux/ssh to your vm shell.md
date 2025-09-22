@@ -1,23 +1,21 @@
 ---
-title: Connect to Your Linux VM via SSH- Guide to Secure Remote Access and Key-Based Authentication
-pubDatetime: 2025-05-24
+title: Connect to Your Linux inside VM via SSH- Guide to Secure Remote Access and Key-Based Authentication
+pubDatetime: 2025-09-20
 featured: false
 tags:
   - Hands On Lab
   - Linux
-description: learn how to connect to your Linux Virtual Machine (VM) terminal from an external via SSH. Also Set up SSH key-based authentication.
+description: learn how to connect to your Linux Virtual Machine (VM) terminal from an host via SSH. Also Set up SSH key-based authentication.
 ---
 
-learn how to connect to your **Linux Virtual Machine (VM)** terminal from an **external via SSH**. 
+Connect to your **Linux Virtual Machine (VM)** terminal from an **host via SSH**. 
 ---
 
-![output](@/assets/images/vm-to-host-ssh.png)
+![output](@/assets/images/Screenshot_20250921_221154.png)
 
-## 🧩 Understand What SSH Is
+## Understand What SSH Is
 
 **SSH (Secure SHell)** is a protocol used to securely log into another computer over a network. It encrypts all communication between two systems.
-
-So if you're connecting to your VM via SSH, you're basically logging into it remotely.
 
 ---
 
@@ -35,12 +33,11 @@ If you get something like "active (running)", then SSH is already installed and 
 
 If not:
 
-### 🟢 Install OpenSSH Server
+### Install OpenSSH Server
 
 For **Ubuntu/Debian-based** distros:
 
 ```bash
-sudo apt update
 sudo apt install ssh
 ```
 
@@ -57,7 +54,7 @@ Enable it to start automatically on boot:
 sudo systemctl enable ssh
 ```
 ---
-
+<!-- 
 ### Network Configuration (Host Machine and Router)
 
 This is the most critical part for external access and depends heavily on your setup.
@@ -127,7 +124,6 @@ This is the most critical part for external access and depends heavily on your s
     ```
     (Replace `2222` with the `External/Public Port` you set on your router).
 
-    * **Consider Dynamic DNS (DDNS):** If your public IP changes frequently (most home internet connections do), your router's public IP will change. A DDNS service (like No-IP, DuckDNS, DynDNS) can map a hostname (e.g., `myvm.ddns.net`) to your dynamic public IP, so you can always use the hostname instead of the changing IP.
 
 #### Option 4: Host-Only Networking (Only for Host-to-VM, not external)
 
@@ -138,26 +134,13 @@ This is the most critical part for external access and depends heavily on your s
 
 * **Concept:** Cloud providers handle most networking, but you need to configure their firewall/security groups.
 * **Steps:**
-    1.  **Ensure SSH is installed and running** on the cloud VM (as in Section I).
+    1.  **Ensure SSH is installed and running** on the cloud VM.
     2.  **Configure Security Groups/Network Rules:** In your cloud provider's console, ensure that the security group (AWS, Azure) or firewall rules (Google Cloud) associated with your VM allow inbound TCP traffic on port 22 (or your custom SSH port) from your source IP address (or `0.0.0.0/0` for testing, though less secure).
-    3.  **Use Public IP/DNS Name:** Cloud VMs usually have a public IP address or a public DNS name assigned.
-* **Usage:**
-    ```bash
-    ssh username@VM_PUBLIC_IP_OR_DNS_NAME
-    ```
-    (Often uses SSH keys for authentication, which you'd configure in the cloud console and use with the `-i` flag: `ssh -i /path/to/your/key.pem username@VM_PUBLIC_IP`).
-
-
-### Important Security Considerations:
-
-* **Use SSH Keys:** Always prefer SSH key-based authentication over passwords, especially for external access. Generate a key pair (`ssh-keygen`), put the public key on your VM's `~/.ssh/authorized_keys`, and keep your private key secure on your local machine.
-* **Disable Password Authentication for SSH:** Once keys are set up, disable password logins in `/etc/ssh/sshd_config` (`PasswordAuthentication no`).
-* **Change Default SSH Port (22):** As mentioned, using a non-standard port (e.g., 2222, 30000) for incoming external connections reduces automated scanning attempts.
-* **Firewalls on All Levels:** Ensure firewalls are configured correctly on the VM, the host, and your router.
-* **Fail2Ban:** Install `fail2ban` on your VM to automatically ban IPs that attempt brute-force SSH attacks.
-* **Keep Software Updated:** Regularly update your VM's OS and SSH server.
+    3.  **Use Public IP/DNS Name:** Cloud VMs usually have a public IP address or a public DNS name assigned. -->
 
 ##  **Configure VM Firewall (UFW/firewalld):**
+UFW (Uncomplicated Firewall) in Linux is a user-friendly command-line tool designed to simplify the management of firewall rules. It acts as a frontend for the more complex iptables firewall system, making it easier for users to allow or block network traffic on their Linux systems, particularly Ubuntu and Debian-based distributions.
+
 Ensure the VM's internal firewall allows incoming SSH connections (default port 22).
 * **Now, install the ufw package. (Ubuntu/Debian):**
 ```bash
@@ -169,51 +152,20 @@ sudo ufw enable         # If not already enabled
 sudo ufw status verbose # helps to provide a richer and more detailed description of their operation.
 ```
 
-## 📍 Find the IP Address of the Linux VM
-
-You need to know the **IP address** of your Linux VM so you can connect to it.
-
-Run this command in the VM terminal:
+##  Find the IP Address of the Linux VM
 
 ```bash
 ip a
 # OR
 ifconfig # if net-tools is installed
 ```
-
-Look for something like:
-
-```
-inet 192.168.x.x
-```
-
-This is your local network IP address. Note it down.
-
-Example output:
-```
-2: enp0s3: <BROADCAST,MULTICAST,UP> mtu 1500...
-    inet 192.168.1.100/24 brd 192.168.1.255 scope global dynamic enp0s3
-```
-
-In this case, the IP is: `192.168.1.100`
-
 ---
-## 🖥️  Connect to the VM Using SSH From Host Machine
+##   Connect to the VM Using SSH From Host Machine
 
-Now open a terminal on your **host machine** (your main OS, not the VM), and type:
-
-```bash
-ssh username@vm-ip-address
-```
-
-Replace:
-- `username` with your Linux VM username.
-- `vm-ip-address` with the IP you noted earlier.
-
-Example:
+Now open a terminal on your **host machine** (your main OS), and type:
 
 ```bash
-ssh alice@192.168.1.100 -p 22
+ssh janak@192.168.63.132
 ```
 
 Then press Enter and type the password when prompted.
@@ -222,13 +174,13 @@ If successful, you'll now be inside the Linux VM's terminal — but connected vi
 
 ---
 
-# Set up SSH key-based authentication.
+## set up SSH key-based authentication.
 
  This method is more secure than using passwords and allows you to log in without typing a password every time.
 
 ---
 
-## 🔐 What Is SSH Key-Based Authentication?
+##  What Is SSH Key-Based Authentication?
 
 SSH keys are a pair of cryptographic keys:
 - **Private Key**: You keep this on your local machine (host), and it must be kept secret.
@@ -238,13 +190,13 @@ When you connect via SSH, the system checks if your private key matches the publ
 
 ---
 
-## 🧰 Step-by-Step Guide to Set Up SSH Keys
+##  Step-by-Step Guide to Set Up SSH Keys
 
-We’ll do this from your **host machine** (your main computer) and then copy the public key to your **Linux VM**.
+We’ll do this from your **host machine**  and then copy the public key to your **Linux VM**.
 
 ---
 
-### ✅ Step 1: Generate an SSH Key Pair on Your Host Machine
+###  Step 1: Generate an SSH Key Pair on Your Host Machine
 
 Open a terminal on your **host machine** (not the VM).
 
@@ -256,15 +208,6 @@ ssh-keygen -t rsa -b 4096
 
 This command generates a strong RSA key pair with 4096 bits.
 
-You'll see something like:
-
-```
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/youruser/.ssh/id_rsa):
-```
-
-Just press **Enter** to accept the default location (`~/.ssh/id_rsa`).
-
 Then it asks:
 
 ```
@@ -273,13 +216,13 @@ Enter passphrase (empty for no passphrase):
 
 You can leave it empty or set a passphrase for extra security.
 
-✅ Done! Your keys are now created:
+ Done! Your keys are now created:
 - Private key: `~/.ssh/id_rsa`
 - Public key: `~/.ssh/id_rsa.pub`
 
 ---
 
-### ✅ Step 2: Copy the Public Key to Your Linux VM
+###  Step 2: Copy the Public Key to Your Linux VM
 
 There are two common ways to do this:
 
@@ -288,15 +231,12 @@ There are two common ways to do this:
 Run this on your host machine:
 
 ```bash
-sudo ssh-copy-id -i ~/.ssh/id_rsa.pub username@vm-ip-address
+sudo ssh-copy-id -i ~/.ssh/id_rsa.pub janak@192.168.63.132
 ```
 
 Replace:
 - `username` with your Linux VM username.
-- `vm-ip-address` with the IP of your VM (from earlier steps).
-
-
-It will ask for your **password**, then copy the public key to the VM.
+- `vm-ip-address` with the IP of your VM.
 
 If successful, you’ll see:
 
@@ -312,12 +252,10 @@ On your **host machine**, view your public key:
 cat ~/.ssh/id_rsa.pub
 ```
 
-Copy the entire line (it starts with `ssh-rsa AAAAB3NzaC1yc2...`).
-
 Now, **log in to your Linux VM** normally via SSH:
 
 ```bash
-ssh username@vm-ip-address
+ssh janak@192.168.63.132
 ```
 
 Once inside, create the `.ssh` directory and edit the `authorized_keys` file:
@@ -338,18 +276,18 @@ chmod 600 ~/.ssh/authorized_keys
 
 ---
 
-### ✅ Step 3: Test SSH Without Password
+###  Step 3: Test SSH Without Password
 
 Now try logging in again:
 
 ```bash
-ssh username@vm-ip-address
+ssh janak@192.168.63.132
 ```
 
 If everything went well, you should be logged in **without being asked for a password**!
 
 ---
-
+<!-- 
 ## 🔒 Optional: Disable Password Login (for extra security)
 
 Once you've confirmed key-based login works, you can disable password-based SSH logins.
@@ -405,3 +343,13 @@ Now only users with the correct private key can log in.
 Learn More:
 - Setting up multiple keys for multiple VMs/servers.
 - Using an SSH config file for easier connections.
+
+
+### Important Security Considerations:
+
+* **Use SSH Keys:** Always prefer SSH key-based authentication over passwords, especially for external access. Generate a key pair (`ssh-keygen`), put the public key on your VM's `~/.ssh/authorized_keys`, and keep your private key secure on your local machine.
+* **Disable Password Authentication for SSH:** Once keys are set up, disable password logins in `/etc/ssh/sshd_config` (`PasswordAuthentication no`).
+* **Change Default SSH Port (22):** As mentioned, using a non-standard port (e.g., 2222, 30000) for incoming external connections reduces automated scanning attempts.
+* **Firewalls on All Levels:** Ensure firewalls are configured correctly on the VM, the host, and your router.
+* **Fail2Ban:** Install `fail2ban` on your VM to automatically ban IPs that attempt brute-force SSH attacks.
+* **Keep Software Updated:** Regularly update your VM's OS and SSH server. -->
