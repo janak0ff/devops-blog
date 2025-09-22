@@ -5,6 +5,7 @@ featured: false
 tags:
   - Linux
   - LAMP
+  - Hands On Lab
 description: set up a LAMP stack (Linux, Apache, MariaDB/MySQL, PHP) with phpMyAdmin on Debian step by step.
 
 ---
