@@ -1,11 +1,11 @@
 ---
-title: Connect to Your Linux inside VM via SSH- Guide to Secure Remote Access and Key-Based Authentication
+title: Connect to Linux VM via SSH form host OS with Key-Based Authentication
 pubDatetime: 2025-09-20
 featured: false
 tags:
   - Hands On Lab
   - Linux
-description: learn how to connect to your Linux Virtual Machine (VM) terminal from an host via SSH. Also Set up SSH key-based authentication.
+description: learn how to connect to your Linux Virtual Machine (VM) from an host via SSH. Also Set up SSH key-based authentication.
 ---
 
 Connect to your **Linux Virtual Machine (VM)** terminal from an **host via SSH**. 
@@ -19,7 +19,7 @@ Connect to your **Linux Virtual Machine (VM)** terminal from an **host via SSH**
 
 ---
 
-## 🧪  Check If SSH Server Is Installed on Linux VM
+##   Check If SSH Server Is Installed on Linux VM
 
 Most Linux distributions do **not install the SSH server by default** for security reasons.
 
@@ -174,7 +174,7 @@ If successful, you'll now be inside the Linux VM's terminal — but connected vi
 
 ---
 
-## set up SSH key-based authentication.
+## Set up SSH key-based authentication.
 
  This method is more secure than using passwords and allows you to log in without typing a password every time.
 
@@ -190,13 +190,13 @@ When you connect via SSH, the system checks if your private key matches the publ
 
 ---
 
-##  Step-by-Step Guide to Set Up SSH Keys
+##  Guide to Set Up SSH Keys
 
 We’ll do this from your **host machine**  and then copy the public key to your **Linux VM**.
 
 ---
 
-###  Step 1: Generate an SSH Key Pair on Your Host Machine
+###  Generate an SSH Key Pair on Your Host Machine
 
 Open a terminal on your **host machine** (not the VM).
 
@@ -222,7 +222,7 @@ You can leave it empty or set a passphrase for extra security.
 
 ---
 
-###  Step 2: Copy the Public Key to Your Linux VM
+###  Copy the Public Key to Your Linux VM
 
 There are two common ways to do this:
 
@@ -276,7 +276,7 @@ chmod 600 ~/.ssh/authorized_keys
 
 ---
 
-###  Step 3: Test SSH Without Password
+###  Test SSH Without Password
 
 Now try logging in again:
 
