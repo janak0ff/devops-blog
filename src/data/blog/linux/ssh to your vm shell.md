@@ -1,17 +1,77 @@
 ---
-title: Connect to Linux VM via SSH form host OS with Key-Based Authentication
+title: Setting static IP and Connect to Ubuntu Linux VM via SSH form host OS with Key-Based Authentication.
 pubDatetime: 2025-09-20
 featured: false
 tags:
   - Hands On Lab
   - Linux
-description: learn how to connect to your Linux Virtual Machine (VM) from an host via SSH. Also Set up SSH key-based authentication.
+description: learn how to connect and setting static IP to your ubuntu Linux Virtual Machine (VM) from an host via SSH. Also Set up SSH key-based authentication.
+---
+
+Assign a static IP address in  Ubuntu 24.04 Linux inside VMware
+
+---
+
+## Check your network ## 
+
+   ```bash
+   ip a
+   ```
+
+## Backup the file (just in case):
+
+```bash
+sudo cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.bak
+```
+
+## Set a Static IP in Ubuntu 
+
+Now edit your Ubuntu Netplan config:
+
+```bash
+sudo nano /etc/netplan/50-cloud-init.yaml
+```
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens33:
+      dhcp4: no
+      addresses:
+        - 172.16.25.150/24
+      routes:
+        - to: default
+          via: 172.16.25.2
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 1.1.1.1
+```
+
+Then apply:
+
+```bash
+sudo netplan apply
+```
+
+---
+
+##  Verify
+
+```bash
+ip addr show ens33
+ip route
+ping 8.8.8.8
+ping google.com
+```
 ---
 
 Connect to your **Linux Virtual Machine (VM)** terminal from an **host via SSH**. 
 ---
 
-![output](@/assets/images/Screenshot_20250921_221154.png)
+![output](@/assets/images/Screenshot_20250924_010745.png)
 
 ## Understand What SSH Is
 
@@ -287,6 +347,50 @@ ssh janak@192.168.63.132
 If everything went well, you should be logged in **without being asked for a password**!
 
 ---
+
+
+Based on your `ip a` output, your primary network interface is **`ens33`**. To set a static IP, you'll need to edit the network configuration file and specify the new static details for this interface.
+
+-----
+
+###  How to Set a Static IP on Debian
+
+1.  **Identify the Network Interface**: From your output, the interface with a dynamic IP is `ens33`. You can see its current dynamic IP is `192.168.193.128`.
+
+2.  **Edit the Network Configuration File**: Open the `/etc/network/interfaces` file using a text editor like `nano` with administrative privileges.
+
+    ```bash
+    sudo nano /etc/network/interfaces
+    ```
+
+3.  **Add Static IP Configuration**: Locate the section for `ens33` and change it from `dhcp` (or similar) to `static`. Add the following lines, replacing the placeholder values with your desired settings.
+
+    ```
+    # The primary network interface
+    auto ens33
+    iface ens33 inet static
+        address 192.168.193.150  # Your new static IP address
+        netmask 255.255.255.0
+        gateway 192.168.193.1    # Your router's IP address
+        dns-nameservers 8.8.8.8 8.8.4.4
+    ```
+
+      * **address**: Choose a static IP within the same subnet as your current IP (`192.168.193.x`), but outside of your router's DHCP range to avoid conflicts. For this example, `192.168.193.150` is a good choice.
+      * **netmask**: This is typically `255.255.255.0` for home networks.
+      * **gateway**: This is your router's IP address. Based on your current IP, your gateway is likely `192.168.193.1`. You can confirm this with the `ip route` command.
+      * **dns-nameservers**: These are the IP addresses of your DNS servers. Google's public DNS (`8.8.8.8`) is a reliable option.
+
+4.  **Save and Exit**: Press `Ctrl + X`, then `Y`, and `Enter` to save the changes and close the editor.
+
+5.  **Restart the Network Service**: Apply the changes by restarting the networking service.
+
+    ```bash
+    sudo systemctl restart networking
+    ```
+
+6.  **Verify the New IP**: Run `ip a` again to confirm that `ens33` now shows the static IP address you assigned.
+
+
 <!-- 
 ## 🔒 Optional: Disable Password Login (for extra security)
 
