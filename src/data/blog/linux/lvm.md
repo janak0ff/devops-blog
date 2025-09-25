@@ -200,6 +200,8 @@ sudo resize2fs /dev/janak-vg/janak-data-lv
 
 Use `df -h` again to confirm the new size. The logical volume should now show as 7GB.
 
+---
+
 ### Remove the Logical Volume: 
 
 
