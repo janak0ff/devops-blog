@@ -271,7 +271,7 @@ UUID="9e64e9a3-5c74-4b55-a249-14a09e0a0f5a" /mnt/data_storage ext4 defaults 0 2
 
 Press **Ctrl + O** to save the file and then **Ctrl + X** to exit `nano`.
 
------
+---
 
 ### Step 4: Test the `fstab` Entry
 
