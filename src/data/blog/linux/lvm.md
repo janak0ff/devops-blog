@@ -140,7 +140,7 @@ To summarize:
 | -L     | Specify size with units (e.g., G, M, etc.) | `-L +5G`          | Increase logical volume by 5 gigabytes  |
 | -l     | Specify size in logical extents             | `-l +100%FREE`    | Increase logical volume by all free extents |
 
-Thus, `-L` is for size units, and `-l` is for extents within LVM's internal allocation system.[6][9][11]
+Thus, `-L` is for size units, and `-l` is for extents within LVM's internal allocation system.
 
 -----
 
