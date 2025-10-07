@@ -1,12 +1,12 @@
 ---
-title: Hosting wordpress website using just Docker in simple steps.
+title: Hosting wordpress website using just Docker and domain name with ssl in simple steps.
 pubDatetime: 2025-09-22
 featured: false
 tags:
   - docker
   - Wordpress
   - Hands On Lab
-description: Hosting wordpress website using just Docker in simple steps.
+description: Hosting wordpress website using just Docker, pointing to custom domain name and secure it with ssl with apache web server.
 
 ---
 
@@ -98,8 +98,7 @@ http://192.168.63.132:8080
 ---
 
 
-
-## Hosting a it with Apache Web Server
+## Hosting it with Apache Web Server
 
 Apache HTTP Server is one of the most widely used open-source web servers. It allows you to host websites and applications, handle multiple domains on a single server, and even act as a reverse proxy to route traffic to backend applications running on different ports.
 
