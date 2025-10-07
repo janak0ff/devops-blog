@@ -126,6 +126,22 @@ sudo lvs
 
   * **lvdisplay**: This command displays the attributes of logical volumes, including the LV path, size, and the volume group it belongs to.
 
+
+The difference between the options -L and -l in the `lvextend` command is:
+
+- `-L`: Specifies the new size or the amount to extend the logical volume by in absolute terms, using size units like G (gigabytes), M (megabytes), etc. For example, `-L +5G` means increase the logical volume size by 5 gigabytes.
+
+- `-l`: Specifies the size to extend the logical volume by in terms of logical extents (LEs), which are units used internally by LVM. You can specify a number of extents or use `+100%FREE` to use all remaining free space in the volume group.
+
+To summarize:
+
+| Option | Usage                                      | Example           | Meaning                                 |
+|--------|--------------------------------------------|-------------------|-----------------------------------------|
+| -L     | Specify size with units (e.g., G, M, etc.) | `-L +5G`          | Increase logical volume by 5 gigabytes  |
+| -l     | Specify size in logical extents             | `-l +100%FREE`    | Increase logical volume by all free extents |
+
+Thus, `-L` is for size units, and `-l` is for extents within LVM's internal allocation system.[6][9][11]
+
 -----
 
 ### Format and Mount the Logical Volume
@@ -164,47 +180,8 @@ sudo mount /dev/janak-vg/janak-data-lv /mnt/data
   * **/dev/janak-vg/janak-data-lv**: The source device to be mounted.
   * **/mnt/data**: The destination mount point.
 
-To verify that the volume is mounted, you can use the `df -h` command:
 
-```bash
-df -h
-```
-
-  * **df**: This command reports file system disk space usage.
-  * **-h**: This flag displays the output in a human-readable format (e.g., using M for megabytes, G for gigabytes).
-
-You have now successfully created, formatted, and mounted a logical volume using LVM\!
-
------
-
-###  Resize a Logical Volume (LV)
-
-One of the main benefits of LVM is the ability to **easily resize logical volumes**. Let's extend our LV to 555GB.
-
-![output](@/assets/images/Screenshot_20250924_055649.png)
-
-First, you need to extend the logical volume itself:
-
-```bash
-sudo lvextend -L +5G /dev/janak-vg/janak-data-lv
-```
-
-  * **lvextend**: This command extends the size of a logical volume.
-  * **-L +2G**: This flag specifies that you want to **add** 2 gigabytes to the existing size. You can also specify the final size directly (e.g., `-L 7G`).
-
-Next, you must **resize the file system** on the logical volume to recognize the new space. For `ext4`, use `resize2fs`:
-
-```bash
-sudo resize2fs /dev/janak-vg/janak-data-lv
-```
-
-  * **resize2fs**: This command resizes ext2, ext3, or ext4 file systems. It will automatically detect the new size of the underlying logical volume.
-
-Use `df -h` again to confirm the new size. The logical volume should now show as 7GB.
-
----
-
-## Making Logical Volumes Permanent
+### Making Logical Volumes Permanent
 
 To ensure your logical volume's storage is accessible after a reboot, you need to configure your system to automatically mount it during startup. This is done by adding an entry for the volume in the **`/etc/fstab`** file.
 
@@ -287,9 +264,34 @@ If there are no error messages, your logical volume has been successfully mounte
 
   * **Command:** `df -h`
 
-This command will show you a list of all mounted filesystems. You should see your logical volume listed with its correct size and mount point.
-
 Now, your logical volume will be mounted automatically and ready to use every time you reboot.
+
+-----
+
+###  Resize a Logical Volume (LV)
+
+One of the main benefits of LVM is the ability to **easily resize logical volumes**. Let's extend our LV to 555GB.
+
+![output](@/assets/images/Screenshot_20250924_055649.png)
+
+First, you need to extend the logical volume itself:
+
+```bash
+sudo lvextend -L +5G /dev/janak-vg/janak-data-lv
+```
+
+  * **lvextend**: This command extends the size of a logical volume.
+  * **-L +2G**: This flag specifies that you want to **add** 2 gigabytes to the existing size. You can also specify the final size directly (e.g., `-L 7G`).
+
+Next, you must **resize the file system** on the logical volume to recognize the new space. For `ext4`, use `resize2fs`:
+
+```bash
+sudo resize2fs /dev/janak-vg/janak-data-lv
+```
+
+  * **resize2fs**: This command resizes ext2, ext3, or ext4 file systems. It will automatically detect the new size of the underlying logical volume.
+
+Use `df -h` again to confirm the new size. The logical volume should now show as 7GB.
 
 ---
 
@@ -361,147 +363,4 @@ Your `/dev/xvdb` disk is now back to its initial state.
 
 ---
 
-A Beginner's Guide to Making Logical Volumes Permanent 🚀
-
-To ensure your logical volume's storage is accessible after a reboot, you need to configure your system to automatically mount it during startup. This is done by adding an entry for the volume in the **`/etc/fstab`** file.
-
------
-
-### Step 1: Find the Logical Volume's UUID
-
-First, you need to find the unique identifier (UUID) of your logical volume. Using the UUID is the most reliable method, as it ensures the correct volume is always mounted, even if its path changes.
-
-  * **Command:** `sudo blkid /dev/your_vg_name/your_lv_name`
-
-**Explanation:**
-
-  * **`sudo blkid`**: The command used to locate and print the attributes of a block device.
-  * **`/dev/your_vg_name/your_lv_name`**: The full path to your logical volume. You can find this path with the `sudo lvs` command.
-
-**Example Output:**
-
-```
-/dev/mapper/my_vg-my_lv: UUID="9e64e9a3-5c74-4b55-a249-14a09e0a0f5a" TYPE="ext4"
-```
-
-Copy the long string of characters within the quotation marks after `UUID=`.
-
------
-
-### Step 2: Create a Mount Point Directory
-
-A mount point is an empty directory that acts as the entry point for your logical volume. If you don't already have one, create it.
-
-  * **Command:** `sudo mkdir /mnt/data_storage`
-
-**Explanation:**
-
-  * **`sudo mkdir`**: The command to create a new directory.
-  * **`/mnt/data_storage`**: The path to your new mount point. You can name this anything you want, but it's a good practice to create mount points in the `/mnt` directory.
-
------
-
-### Step 3: Edit the `/etc/fstab` File
-
-The `/etc/fstab` file is the system's configuration file for mounting filesystems at boot. You'll add a new line to this file. Use a text editor like `nano`.
-
-  * **Command:** `sudo nano /etc/fstab`
-
-**Explanation:**
-
-  * **`sudo nano`**: Opens the `nano` text editor with administrative privileges.
-
-Add the following line to the end of the file. Replace the UUID and mount point with your own information.
-
-```
-UUID="9e64e9a3-5c74-4b55-a249-14a09e0a0f5a" /mnt/data_storage ext4 defaults 0 2
-```
-
-**Field Explanations:**
-
-  * **`UUID="..."`**: The unique identifier of your logical volume.
-  * **`/mnt/data_storage`**: The directory where the volume will be mounted.
-  * **`ext4`**: The filesystem type of your logical volume. If you used a different filesystem (like `xfs`), specify that instead.
-  * **`defaults`**: A common set of mount options that are suitable for most situations.
-  * **`0`**: The `dump` field. `0` means the filesystem will not be backed up by the `dump` utility.
-  * **`2`**: The `fsck` field. `2` means `fsck` will check the integrity of this filesystem at boot, after the root filesystem is checked.
-
-Press **Ctrl + O** to save the file and then **Ctrl + X** to exit `nano`.
-
------
-
-### Step 4: Test the `fstab` Entry
-
-It's crucial to test your new `fstab` entry before rebooting to ensure there are no errors.
-
-  * **Command:** `sudo mount -a`
-
-**Explanation:**
-
-  * **`sudo mount -a`**: This command tells the system to mount all filesystems listed in `/etc/fstab`.
-
-If there are no error messages, your logical volume has been successfully mounted. You can now verify that everything is working as expected.
-
-  * **Command:** `df -h`
-
-This command will show you a list of all mounted filesystems. You should see your logical volume listed with its correct size and mount point.
-
-Now, your logical volume will be mounted automatically and ready to use every time you reboot.
-
----
-
-
-Good news\! Your **/dev/ubuntu18-25gb-tmp-vg/root** logical volume is **already permanent storage** and is automatically mounted at boot.
-
-### Why it's Already Permanent
-
-In the output you provided, the logical volume is mounted as the **root filesystem (`/`)**:
-
-`/dev/mapper/ubuntu18--25gb--tmp--vg-root 54G 2.0G 49G 4% /`
-
-The root filesystem is the most crucial part of your operating system. For the system to boot and function, it **must** be mounted automatically via an entry in the `/etc/fstab` file or, in modern Linux distributions, often via kernel parameters or initramfs configuration that uses the **UUID** of the LV.
-
-If you are able to log in and run commands, it confirms that:
-
-1.  **The LV is listed in `/etc/fstab`:** An entry exists for the root filesystem (`/`).
-2.  **The system automatically mounted it:** The operating system successfully read the configuration and mounted the volume at boot time.
-
-### What You Should Know
-
-You do **not** need to manually add an entry for this volume to `/etc/fstab`, as it's already configured.
-
-However, if you want to **verify** the entry, you can inspect the `/etc/fstab` file:
-
-```bash
-cat /etc/fstab
-```
-
-You will likely see an entry that looks similar to this, possibly using the LV's UUID or path:
-
-```
-/dev/mapper/ubuntu18--25gb--tmp--vg-root / ext4 errors=remount-ro 0 1
-```
-
-The key permanent mounting configuration elements for your root volume are:
-
-  * **Mount Point:** `/` (the root of the filesystem).
-  * **Pass Number:** `1` (which tells the system's filesystem check utility, `fsck`, to check the root filesystem first).
-
-Your system is all set up\! You have successfully **extended this permanent volume from 24GB to 54GB** and resized its filesystem, all while it was running. Great LVM practice\!
-
-
----
-The difference between the options -L and -l in the `lvextend` command is:
-
-- `-L`: Specifies the new size or the amount to extend the logical volume by in absolute terms, using size units like G (gigabytes), M (megabytes), etc. For example, `-L +5G` means increase the logical volume size by 5 gigabytes.
-
-- `-l`: Specifies the size to extend the logical volume by in terms of logical extents (LEs), which are units used internally by LVM. You can specify a number of extents or use `+100%FREE` to use all remaining free space in the volume group.
-
-To summarize:
-
-| Option | Usage                                      | Example           | Meaning                                 |
-|--------|--------------------------------------------|-------------------|-----------------------------------------|
-| -L     | Specify size with units (e.g., G, M, etc.) | `-L +5G`          | Increase logical volume by 5 gigabytes  |
-| -l     | Specify size in logical extents             | `-l +100%FREE`    | Increase logical volume by all free extents |
-
-Thus, `-L` is for size units, and `-l` is for extents within LVM's internal allocation system.[6][9][11]
+# Thank You
