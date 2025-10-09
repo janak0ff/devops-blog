@@ -214,3 +214,5 @@ SELECT * FROM messages;  -- 'Hello from node2!' should appear
 With this guide, anyone can set up a robust MariaDB Galera Cluster ensuring continuous availability and strong data consistency across multiple nodes. Happy clustering!
 
 ***
+
+Reference [MariaDB Galera Cluster Guide - mariadb.com](https://mariadb.com/docs/galera-cluster/galera-cluster-quickstart-guides/mariadb-galera-cluster-guide)
