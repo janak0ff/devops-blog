@@ -118,7 +118,7 @@ This is where you tell Cloudflare to direct traffic for your domain to your Netl
 2.  **Add CNAME for the Root Domain (`ishworishrestha.com.np`):**
     * **Type:** `CNAME`
     * **Name:** `@` (Cloudflare recognizes this as your root domain)
-    * **Target:** `apex-loadbalancer.netlify.com` (as recommended by Netlify in `image_473cad.png`)
+    * **Target:** `apex-loadbalancer.netlify.com`
     * **Proxy status:** Make sure the cloud icon is **orange (Proxied)**. This ensures Cloudflare's CDN and security features work.
     * Click **"Save."**
 
