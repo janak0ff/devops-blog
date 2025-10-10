@@ -1,7 +1,7 @@
 ---
 title: Nginx as a load balancer on AWS EC2
 pubDatetime: 2025-06-14
-featured: true
+featured: false
 tags:
   - aws
   - Docker

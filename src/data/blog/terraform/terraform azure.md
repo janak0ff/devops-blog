@@ -1,7 +1,7 @@
 ---
 title: Terraform - Complete step-by-step process to create a (VM) on Azure and SSH under student pack subscription.
 pubDatetime: 2025-06-07
-featured: true
+featured: false
 tags:
   - terraform
   - azure

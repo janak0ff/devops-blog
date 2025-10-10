@@ -1,7 +1,7 @@
 ---
 title: First Database Project - Setting Up & Managing MySQL/MariaDB on Linux, Database Dump, Backup and Restore
 pubDatetime: 2025-05-25
-featured: true
+featured: false
 tags:
   - Database
   - Hands On Lab

@@ -1,7 +1,7 @@
 ---
 title: Terraform - Create and SSH into an AWS EC2 Instance Using Terraform (Free Tier Guide for Beginners)
 pubDatetime: 2025-06-05
-featured: true
+featured: false
 tags:
   - terraform
   - aws

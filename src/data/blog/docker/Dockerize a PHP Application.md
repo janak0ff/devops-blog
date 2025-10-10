@@ -1,7 +1,7 @@
 ---
 title: Dockerizing a PHP and MySQL/MariaDB Application with Docker Compose
 pubDatetime: 2025-06-10
-featured: true
+featured: false
 tags:
   - Containers and Containerization
   - Docker

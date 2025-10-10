@@ -1,7 +1,7 @@
 ---
 title: How To Install and Configure Ansible on Ubuntu.
 pubDatetime: 2025-05-28
-featured: true
+featured: false
 tags:
   - Ansible
   - Hands On Lab

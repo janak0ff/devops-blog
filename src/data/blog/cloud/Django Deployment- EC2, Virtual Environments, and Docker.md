@@ -1,7 +1,7 @@
 ---
 title: Django Todo App Deployment - EC2, Virtual Environments, and Docker 
 pubDatetime: 2025-07-25
-featured: true
+featured: false
 tags:
   - aws
   - Hands On Lab

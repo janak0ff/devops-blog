@@ -1,7 +1,7 @@
 ---
 title: AWS Application Load Balancer with a Custom Domain (Cloudflare)
 pubDatetime: 2025-06-27
-featured: true
+featured: false
 tags:
   - aws
   - Hands On Lab
