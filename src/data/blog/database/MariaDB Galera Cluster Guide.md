@@ -1,5 +1,5 @@
 ---
-title: Ultimate Beginner’s Guide to Setting Up MariaDB Galera Cluster for High Availability
+title: Setting Up MariaDB Galera Cluster (Active Active) for High Availability
 pubDatetime: 2025-09-28
 featured: false
 tags:
