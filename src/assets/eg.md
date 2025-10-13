@@ -1,4 +1,4 @@
-![output](@/assets/images/Screenshot_20250924_045117.png)
+![output](@/assets/images/Screenshot_20251013_155057.png)
 
 ---
 title: Guide to NFS on Linux
