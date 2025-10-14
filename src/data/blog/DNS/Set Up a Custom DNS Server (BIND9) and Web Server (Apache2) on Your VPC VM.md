@@ -322,3 +322,9 @@ Finally, open your web browser and navigate directly to your custom domain name:
   * **Expected Success:** The browser should load the **Apache2 "It works\!"** page, confirming that the client successfully used your custom DNS server to find the web server and establish a connection.
 
   ---
+
+
+  - Reference : 
+  [How to Setup Bind (DNS Server) on Ubuntu 24.04 | 22.04](https://www.linuxtechi.com/install-configure-bind-9-dns-server-ubuntu-debian/)
+
+[How To Configure BIND as a Private Network DNS Server on Ubuntu 14.04](https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-ubuntu-14-04)
