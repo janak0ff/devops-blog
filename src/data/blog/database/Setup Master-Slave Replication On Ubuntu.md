@@ -115,6 +115,8 @@ Save and close the file.
       * **File:** `mysql-bin.00000X` (e.g., `mysql-bin.000003`)
       * **Position:** `XXX` (e.g., `157`)
 
+output
+
 ```output
 mysql> SHOW MASTER STATUS \G
 *************************** 1. row ***************************
@@ -185,7 +187,8 @@ Save and close the file.
     ```
 2.  **Connect** to MySQL and run the `CHANGE MASTER TO` command using the values recorded in **Step 4** and the password from **Step 5**:
     ```sql
-    sudo mysql
+    sudo mysql -u root -p 
+    mysql> SHOW MASTER STAT
     mysql> STOP SLAVE;
     mysql> RESET SLAVE ALL; -- Clears any previous attempts
 
@@ -215,6 +218,8 @@ mysql> SHOW SLAVE STATUS \G
 
   * `Slave_IO_Running: Yes`
   * `Slave_SQL_Running: Yes`
+
+output
 
 ```output
 mysql>  SHOW SLAVE STATUS \G
@@ -289,13 +294,15 @@ mysql>
 1.  **On the Master (`10.10.1.20`)**: Create a production database and table.
 
     ```sql
-    sudo mysql
+    sudo mysql -u root -p 
+    mysql> SHOW MASTER STAT
     mysql> CREATE DATABASE production_app_db;
     mysql> USE production_app_db;
     mysql> CREATE TABLE users (id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50));
     mysql> INSERT INTO users (username) VALUES ('admin_user'), ('guest_user');
     mysql> EXIT;
     ```
+output
 
 ```output
 mysql> CREATE DATABASE production_app_db;
@@ -316,7 +323,8 @@ mysql>
 2.  **On the Slave (`10.10.1.125`)**: Verify replication.
 
     ```sql
-    sudo mysql
+    sudo mysql -u root -p 
+    mysql> SHOW MASTER STAT
     mysql> SHOW DATABASES;
     -- Expected: 'production_app_db' listed.
 
@@ -324,6 +332,8 @@ mysql>
     mysql> SELECT * FROM users;
     -- Expected: Both 'admin_user' and 'guest_user' listed.
     ```
+Output
+
 ```output
 mysql> SHOW DATABASES;
 +--------------------+
