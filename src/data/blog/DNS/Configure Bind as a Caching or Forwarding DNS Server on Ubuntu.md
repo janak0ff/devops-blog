@@ -117,7 +117,7 @@ After saving the configuration file, you must check for syntax errors before res
 
 For your internal devices to benefit from the caching and forwarding, they must be configured to use your BIND server's IP address (e.g., **`192.168.1.50`**) as their primary DNS server.
 
-### Option A: Temporary Client Configuration
+### Temporary Client Configuration
 
 This is best for quick testing on a client machine.
 
@@ -135,21 +135,21 @@ This is best for quick testing on a client machine.
 nameserver 10.10.1.20
 ```
 
-### Option B: Permanent Client Configuration
-
-You typically set the primary DNS server IP in your network manager (GUI) or your router's DHCP settings so that all devices on your network automatically receive your BIND server's IP.
-
 -----
 
 ## 5\. Testing the Server
 
-Use the `dig` command from your client machine to test resolution and confirm it's using your server.
+Use the `hostmane -I` and `dig` command from your client machine to test resolution and confirm it's using your server.
 
 | Command | Explanation |
 | :--- | :--- |
-| `dig janakkumarshrestha0.com.np` | Queries the domain using the DNS server set in your `/etc/resolv.conf`. |
+| `dig janakkumarshrestha0.com.np` | Queries the DNS server configured in your client's `/etc/resolv.conf` (which should be your BIND server at `10.10.1.20`) for the IP address of the domain `janakkumarshrestha0.com.np`. This confirms client-side resolution. |
+| `hostname -I` | Displays all the **private IP addresses** currently assigned to the server's network interfaces (e.g., `10.10.1.20`). This is a quick way to confirm the local machine's identifier without parsing `ifconfig` or `ip addr`.  |
 
 ```bash
+~ > hostname -I                   
+10.10.1.125 
+~ > 
 ~ > dig janakkumarshrestha0.com.np
 
 ; <<>> DiG 9.18.30-0ubuntu0.24.04.2-Ubuntu <<>> janakkumarshrestha0.com.np
