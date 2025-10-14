@@ -1,6 +1,6 @@
 ---
 title: Setup mysql Master-Slave Replication On Ubuntu
-pubDatetime: 2025-09-28
+pubDatetime: 2025-10-14
 featured: false
 tags:
   - Hands On Lab
