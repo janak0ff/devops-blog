@@ -216,3 +216,5 @@ With this guide, anyone can set up a robust MariaDB Galera Cluster ensuring cont
 ***
 
 Reference [MariaDB Galera Cluster Guide - mariadb.com](https://mariadb.com/docs/galera-cluster/galera-cluster-quickstart-guides/mariadb-galera-cluster-guide)
+
+[https://medium.com/mr-dops/mariadb-with-galera-cluster-8ded2e83721b](https://medium.com/mr-dops/mariadb-with-galera-cluster-8ded2e83721b)
