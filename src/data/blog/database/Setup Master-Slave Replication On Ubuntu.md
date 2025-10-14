@@ -372,3 +372,11 @@ This sequence guarantees a clean, stable, and verified replication setup ready f
 ## Conclusion
 
 By implementing the `default_authentication_plugin = mysql_native_password` fix, you've bypassed a common hurdle in modern MySQL and successfully built a robust replication environment. This setup allows you to scale reads efficiently and provides crucial redundancy for your database.
+
+---
+
+### References
+
+[MySQL Database Replication](https://medium.com/@larcz94/mysql-database-replication-4412fc702b29)
+[Master Replication: 6 Easy Steps for MySQL Master-Slave Setup](https://airbyte.com/data-engineering-resources/master-slave-replication)
+[How to setup MySQL Master-Slave Replication on Ubuntu 22.04](https://www.linuxhelp.com/how-to-setup-mysql-master-slave-replication-on-ubuntu-22-04)
