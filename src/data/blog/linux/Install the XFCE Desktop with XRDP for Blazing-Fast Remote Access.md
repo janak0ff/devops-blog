@@ -45,41 +45,118 @@ First, we'll update the system, install the necessary XRDP service, and then ins
     sudo apt install xrdp -y
     ```
 
-3.  **Install the XFCE Desktop Environment:**
-    We'll install the core XFCE package. This ensures you get a complete, functional desktop.
-
-    ```bash
-    sudo apt install xfce4 -y
-    ```
-
-    *(**Pro Tip:** If you want a truly minimal installation, you could use `xfce4-session` instead of `xfce4` to install fewer dependencies.)*
-
------
-
-## Step 2: Configure XRDP to Use XFCE
-
-By default, XRDP might try to load a different or non-existent session, leading to a blank or slow screen. We must explicitly tell it to use the newly installed XFCE desktop.
-
-1.  **Stop the XRDP service** temporarily before making changes:
-
-    ```bash
-    sudo systemctl stop xrdp
-    ```
-
-2.  **Configure the user's session:**
+3.  **Install the Desktop Environment and Configure:**
+    **Configure the user's session:**
     Create or edit the `.xsession` file in the home directory of the user you will use to connect. This file tells XRDP which desktop to launch.
 
-    ```bash
-    echo xfce4-session > ~/.xsession
-    ```
+---
 
-3.  **Set correct permissions** for the `.xsession` file:
+- Install XFCE DEs:
+```bash
+sudo apt install xfce4 -y 
+sudo apt install xubuntu-desktop -y # The full Xubuntu experience.
+```
+
+```bash
+echo xfce4-session > ~/.xsession
+echo startxfce4 > ~/.xsession
+```
+
+![output](@/assets/images/Screenshot_20251031_172654.png)
+
+
+---
+
+- Install LXQt DEs:
+```bash
+sudo apt install lxqt -y # The full Lubuntu (now LXQt-based) experience.
+sudo apt install lubuntu-desktop -y # The full Lubuntu (now LXQt-based) experience.
+```
+
+```bash
+echo startlxqt > ~/.xsession
+```
+![output](@/assets/images/Screenshot_20251031_165528.png)
+
+---
+
+- Install MATE DEs:
+```bash
+sudo apt install ubuntu-mate-desktop -y # The full Ubuntu MATE experience.
+sudo apt install mate-desktop-environment -y # A more standard MATE install.
+sudo apt install mate-session-manager -y # Installs the core session manager.
+```
+
+```bash
+echo mate-session > ~/.xsession
+```
+
+![output](@/assets/images/Screenshot_20251031_171435.png)
+
+---
+
+- Install Cinnamon DEs:
+```bash
+sudo apt install cinnamon-desktop-environment -y # Standard Cinnamon installation.
+sudo apt install cinnamon -y # Installs the core Cinnamon package.
+```
+
+```bash
+echo cinnamon-session > ~/.xsession
+```
+
+![output](@/assets/images/Screenshot_20251031_173606.png)
+
+---
+
+- Install Enlightenment (E) DEs:
+```bash
+sudo apt install enlightenment -y # A unique, lightweight, and fast DE/WM.
+```
+
+```bash
+echo enlightenment_start > ~/.xsession
+```
+
+![output](@/assets/images/Screenshot_20251031_174205.png)
+
+---
+
+- Install Gnome DEs:
+```bash
+sudo apt install ubuntu-desktop -y # The full, default Ubuntu experience.
+sudo apt install gnome-session # Installs the core session manager.
+sudo apt install gnome-core # Installs a minimal GNOME experience.
+```
+```bash
+echo gnome-session > ~/.xsession
+```
+
+![output](@/assets/images/Screenshot_20251101_110535.png)
+
+---
+
+- Install KDE Plasma DEs:
+```bash
+sudo apt install kubuntu-desktop -y # The full Kubuntu experience.
+sudo apt install plasma-desktop # Installs a more basic version of Plasma.
+sudo apt install gkde-plasma-desktop # Minimal
+```
+```bash
+echo startplasma-x11 > ~/.xsession
+```
+
+![output](@/assets/images/Screenshot_20251101_123423.png)
+
+---
+
+2.  **Set correct permissions** for the `.xsession` file:
 
     ```bash
     sudo chown -R $USER:$USER /home/$USER/.xsession
     ```
 
-4.  **Restart the XRDP service** to load the new configuration:
+3.  **Restart the XRDP service** to load the new configuration:
 
     ```bash
     sudo systemctl restart xrdp
@@ -95,6 +172,7 @@ If you are using **UFW (Uncomplicated Firewall)**, run this command:
 
 ```bash
 sudo ufw allow 3389/tcp
+sudo ufw enable
 sudo ufw reload
 ```
 
@@ -116,4 +194,3 @@ You are now ready to connect\! Use your favorite **RDP client** on your local ma
 
 You should now be presented with a responsive, high-performance XFCE desktop, giving you a full graphical interface on your cloud server without the resource overhead\!
 
-![output](@/assets/images/Screenshot_20251030_154700.png)
