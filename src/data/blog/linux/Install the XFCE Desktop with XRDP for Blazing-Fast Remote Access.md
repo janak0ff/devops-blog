@@ -192,5 +192,31 @@ You are now ready to connect\! Use your favorite **RDP client** on your local ma
 | **Username & Password** | The credentials of the Ubuntu user you configured. |
 
 
+## Reference 
+
+- Desktop Environment Installation and Session Commands (Ubuntu/Debian)
+
+| Installation Command | Desktop Environment (DE) | `~/.xsession` Command (Generally Reliable) | Notes |
+| :--- | :--- | :--- | :--- |
+| `sudo apt install ubuntu-desktop` | **GNOME** (Standard Ubuntu) | `exec gnome-session` | The full, default Ubuntu experience. |
+| `sudo apt install gnome-session` | **GNOME** (Core Session) | `exec gnome-session` | Installs the core session manager. |
+| `sudo apt install gnome-core` | **GNOME** (Minimal Core) | `exec gnome-session` | Installs a minimal GNOME experience. |
+| `sudo apt install kubuntu-desktop` | **KDE Plasma** (Full Kubuntu) | `exec startplasma-x11` | The full Kubuntu experience. |
+| `sudo apt install plasma-desktop` | **KDE Plasma** (Minimal) | `exec startplasma-x11` | Installs a more basic version of Plasma. |
+| `sudo apt install kde-plasma-desktop` | **KDE Plasma** (Minimal) | `exec startplasma-x11` | Similar to `plasma-desktop`. |
+| `sudo apt install xubuntu-desktop` | **Xfce** (Full Xubuntu) | `exec startxfce4` or `exec xfce4-session` | The full Xubuntu experience. `startxfce4` is usually preferred. |
+| `sudo apt install mate-desktop-environment` | **MATE** (Standard) | `exec mate-session` | A more standard MATE install. |
+| `sudo apt install ubuntu-mate-desktop` | **MATE** (Full Ubuntu MATE) | `exec mate-session` | The full Ubuntu MATE experience. |
+| `sudo apt install mate-session-manager` | **MATE** (Core Session) | `exec mate-session` | Installs the core session manager. |
+| `sudo apt install lubuntu-desktop` | **LXQt** (Full Lubuntu) | `exec startlxqt` | The full Lubuntu (now LXQt-based) experience. |
+| `sudo apt install lxqt` | **LXQt** (Minimal) | `exec startlxqt` | Installs the base LXQt environment. |
+| `sudo apt install cinnamon-desktop-environment` | **Cinnamon** (Standard) | `exec cinnamon-session` | Standard Cinnamon installation. |
+| `sudo apt install enlightenment` | **Enlightenment** (E) | `exec enlightenment_start` | A unique, lightweight, and fast DE/WM. |
+| `sudo apt install cinnamon` | **Cinnamon** (Core) | `exec cinnamon-session` | Installs the core Cinnamon package. |
+| `sudo apt install budgie-desktop` | **Budgie** | `exec budgie-session` | Used by Ubuntu Budgie. |
+| `sudo apt install i3` | **i3** (Tiling Window Manager) | `exec i3` | A very popular manual window manager (not a full DE). |
+| `sudo apt install openbox` | **Openbox** (Stacking Window Manager) | `exec openbox-session` | A highly configurable, minimal stacking window manager. |
+
+
 You should now be presented with a responsive, high-performance XFCE desktop, giving you a full graphical interface on your cloud server without the resource overhead\!
 
