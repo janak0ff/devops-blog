@@ -46,7 +46,7 @@ Linux DEs cater to every taste, whether you prioritize eye-candy, low resource u
 
 -----
 
-## Step 1: Install XRDP and XFCE
+## Install XRDP and XFCE
 
 First, we'll update the system, install the necessary XRDP service, and then install the XFCE desktop environment.
 
@@ -206,7 +206,7 @@ sudo systemctl set-default graphical.target
 
 -----
 
-## Step 3: Configure the Firewall
+## Configure the Firewall
 
 The default RDP port is **3389**. You must open this port in your server's firewall to allow incoming connections.
 
@@ -222,7 +222,7 @@ sudo ufw reload
 
 -----
 
-## Step 4: Connect with an RDP Client
+## Connect with an RDP Client
 
 You are now ready to connect\! Use your favorite **RDP client** on your local machine (Windows Remote Desktop Connection, Remmina, Microsoft Remote Desktop for Mac, etc.).
 

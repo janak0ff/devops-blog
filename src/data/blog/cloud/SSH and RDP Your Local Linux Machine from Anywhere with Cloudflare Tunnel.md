@@ -21,7 +21,7 @@ Before you start, make sure you have:
   * Running Node app locally on 3000 port.
 
 
-# I am gonna do ssh, access remote desktop (RDP) and access localhost:3000 app on my local pc form anywhere form internet (different network).
+# I am gonna do ssh, access remote desktop (RDP) and access localhost:3000 app on my local pc form anywhere on internet (different network).
 
 #### what is Cloudflare Tunnel?
 Cloudflare Tunnel is a secure way to connect your local server or device to the internet through Cloudflare without exposing your IP address or opening ports. It creates an outbound-only encrypted connection from your server to Cloudflare, which then safely routes internet traffic to your server. This improves security by keeping your server hidden behind a firewall and simplifies remote access without complex network setups.​
