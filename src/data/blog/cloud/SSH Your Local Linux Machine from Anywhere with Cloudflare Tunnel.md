@@ -18,13 +18,14 @@ Before you start, make sure you have:
   * A **domain name** added to your Cloudflare account and using Cloudflare's nameservers.
   * **SSH server running** on your local PC (e.g., OpenSSH on Linux/macOS, or an SSH server on Windows) on the default port **22** (or your custom port).
   * On my local/host server firewall is inactive, if you have enable then add rules for tcp(22,3389 and 3000) ports.
+  * Running Node app locally on 3000 port.
 
 
-### I am gonna do ssh
+# I am gonna do ssh, access remote desktop (RDP) and access localhost:3000 app on my local pc form anywhere form internet (different network).
 
 -----
 
-## Host Setup – The Local Linux Server**
+## Host Setup – The Local Linux Server
 
 The Host Machine is your local PC that you want to access remotely.
 
@@ -66,7 +67,7 @@ We must ensure the services are installed and listening locally before the tunne
    ```
    You should see the service as active (running).
 
-#### XRDP
+#### XRDP - for remote desktop access
 
 1. Install xrdp:
    ```
@@ -128,7 +129,7 @@ sudo ss -tuln | grep 22
       - hostname: desktop.janakkumarshrestha0.com.np # For remote desktop
         service: tcp://localhost:3389    
       - hostname: localnode.janakkumarshrestha0.com.np # For node app
-        service: tcp://localhost:3000
+        service: http://localhost:3000
       #If you have any other services on local host, go on like this...
       - service: http_status:404
     ```
@@ -214,41 +215,281 @@ You can now connect to your local PC from anywhere on the internet using the sim
 ```bash
 ssh remote-ssh-janak
 # or
-ssh -vvv remote-ssh-janak
+ssh -vvv remote-ssh-janak # for more details
 ```
 
   * The first time, you may be prompted to authenticate with Cloudflare Access (e.g., a browser login). After that, you will be prompted for your local PC's SSH password or key.
------
 
-## Final Security and Persistence**
+----
 
+### SSH connect directly using a single command without having to rely on the configuration block in your `~/.ssh/config` file.
 
-#### **If you want to  Make the Tunnel Permanent/auto start on boot (Host Machine)**
+To connect directly while still using the Cloudflare Tunnel as a proxy, you need to embed the `ProxyCommand` directly into the `ssh` command using the **`-o` (Option)** flag.
 
-1.  **Stop Foreground:** If running, stop the tunnel (Ctrl+C).
-2.  **Create and Start Service:** (Uses your existing service definition)
+Here is the format you would use:
+
+```bash
+ssh janak@ssh.janakkumarshrestha0.com.np \
+    -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"
+```
+
+- Breakdown of the Command
+
+| Part of Command | Purpose |
+| :--- | :--- |
+| `ssh janak@...` | Specifies the user (`janak`) and the destination host (`ssh.janakkumarshrestha0.com.np`). |
+| `-o ProxyCommand="..."` | The `-o` flag overrides or sets an option usually found in `~/.ssh/config`. |
+| `"/usr/local/bin/cloudflared access ssh --hostname %h"` | This is the command that initiates the tunnel connection. |
+| `%h` | This is a placeholder that is replaced by the actual hostname (`ssh.janakkumarshrestha0.com.np`) at runtime. |
+
+- Security Note
+
+Since you have set up **Cloudflare Access** and **disabled password login**, the connection sequence will be:
+
+1.  The command runs the `ProxyCommand`.
+2.  Your browser opens to verify your identity (Cloudflare Access).
+3.  Once verified, the SSH client uses your private key (`~/.ssh/id_ed25519` or similar) to complete the login without asking for a password.
+
+- Alternative: Simplify the Command
+
+If you want to make this long command easier to type repeatedly without using your `~/.ssh/config` file, you could create a **shell alias** in your shell startup file (`~/.bashrc` or `~/.zshrc`):
+
+```bash
+# Add this line to ~/.bashrc or ~/.zshrc
+alias remote-ssh='ssh janak@ssh.janakkumarshrestha0.com.np -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"'
+```
+
+After reloading your shell (`source ~/.bashrc`), you could simply type:
+
+```bash
+remote-ssh
+```
+
+----
+
+### Stronger Authentication (SSH Keys)
+
+Relying on a password is less secure than using SSH keys. Since your SSH server is now running, you should configure key-based authentication.
+
+**On the Client Machine (Your Laptop):**
+
+1.  **Generate a new SSH key pair** (if you don't already have one):
+
     ```bash
-    sudo systemctl daemon-reload
-    sudo systemctl start cloudflared-remote.service
-    sudo systemctl enable cloudflared-remote.service
+    ssh-keygen -t ed25519
     ```
 
-#### **Step 7: Apply Zero Trust Access Policies**
+2.  **Copy the public key** to your remote server:
+
+    ```bash
+    ssh-copy-id remote-ssh-janak
+    ```
+
+    *This command will prompt for your server password one last time and then install your public key (`~/.ssh/id_ed25519.pub`) into the `~/.ssh/authorized_keys` file on the remote server.*
+
+After this, when you run `ssh remote-ssh-janak`, you will no longer be asked for a password, as your secure SSH key will handle the final authentication step automatically.
+
+----
+
+###  Disabling Password-Based SSH Login
+
+You need to edit the configuration file for the SSH server (`sshd`) on your **host machine**.
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+- Modify the Authentication Directives
+
+Scroll through the file (or use Ctrl+W to search) and ensure the following two directives are set exactly as shown below. Make sure to **uncomment** the lines (remove the `#` symbol) if they are commented out.
+
+| Directive | Value | Purpose |
+| :--- | :--- | :--- |
+| `PasswordAuthentication` | `no` | This is the main directive that blocks all password logins. |
+| `PubkeyAuthentication` | `yes` | This ensures SSH key-based login remains active (it's usually `yes` by default). |
+
+- Restart the SSH Service
+
+```bash
+sudo systemctl restart ssh
+# OR
+sudo systemctl restart sshd
+```
+- Confirm Security Settings **On your Local PC (the Host/Server):**
+
+```bash
+# Verify password authentication is disabled
+grep -E 'PasswordAuthentication|PubkeyAuthentication' /etc/ssh/sshd_config
+```
+
+  * **Expected Output:**
+    ```
+    PubkeyAuthentication yes
+    PasswordAuthentication no
+    ```
+
+-----
+
+
+### Prepare your host Deskop for remote desktop (RDP)
+
+This step fixes the common issue where RDP connects but immediately closes or shows a blank screen on KDE/Plasma environments.
+
+1.  **Modify the xRDP Startup Script:** This tells xRDP exactly which desktop environment to launch.
+    ```bash
+    sudo nano /etc/xrdp/startwm.sh
+    ```
+2.  **Edit the Script:** Scroll to the bottom and **comment out** the two default startup lines, then **add** the `startplasma-x11` command:
+    ```bash
+    # test -x /etc/X11/Xsession && exec /etc/X11/Xsession
+    # exec /bin/sh /etc/X11/Xsession
+
+    # Add these lines for KDE
+    startplasma-x11
+    ```
+3.  **Create `.xinitrc` File:** This ensures the session environment is initialized correctly for your user.
+    ```bash
+    nano ~/.xinitrc
+    ```
+    *Paste:*
+    ```bash
+    #!/bin/sh
+    exec startplasma-x11
+    ```
+4.  **Restart xRDP Service:** Apply the session changes.
+    ```bash
+    sudo systemctl restart xrdp
+    ```
+
+---
+
+
+### Run the Cloudflared Client in TCP Mode (Client Machine)
+
+You need to run a separate `cloudflared` command on the **client machine** that listens on a local port (e.g., `33389`), performs the Cloudflare Access handshake, and forwards all traffic to your tunnel hostname.
+
+1.  **Open a New Terminal** on your **Client Machine**.
+
+2.  **Run the RDP Proxy Command:** On the Client Machine (Keep this terminal open)
+
+    ```bash
+    /usr/local/bin/cloudflared access tcp --hostname desktop.janakkumarshrestha0.com.np --url 127.0.0.1:33389
+    ```
+
+      * **`access tcp`**: Tells `cloudflared` to act as a TCP proxy client.
+      * **`--hostname`**: Specifies the remote hostname to connect to (your tunnel endpoint).
+      * **`--url 127.0.0.1:33389`**: Tells `cloudflared` to listen on your local machine at port `33389` and forward any traffic it receives.
+
+
+### Connect the RDP Client
+
+Once the browser authentication is complete, your local proxy is running\!
+
+1.  **Open your RDP Client** (e.g., Microsoft Remote Desktop,Remmina and KRDC).
+2.  **Connect to the local proxy address:**
+      * **Host/IP:** `127.0.0.1` (or `localhost`)
+      * **Port:** `33389` (The local port specified in the `cloudflared` command)
+
+Your RDP client connects locally to `33389`, `cloudflared` forwards the traffic securely through the tunnel, and you should see the RDP login screen for your host machine.
+- On the host machine, you have atleast 2 user one for current login session and other for remote desktop, because same luser cat login in 2 platform.
+- Enter your login credential: username and password
+
+---
+
+
+## **If you want to  Make the Tunnel Permanent/auto start on boot (Host Machine)**
+
+
+### Manual Systemd Service Creation
+
+We will create a service file that explicitly tells the operating system to run `cloudflared` using your user's configuration file.
+
+### 1\. Stop the Foreground Tunnel (If Running)
+
+Make sure you've pressed **Ctrl + C** in the terminal where the tunnel was running.
+
+### 2\. Create the Service File
+
+You need to create a new file for the service definition.
+
+**On the Host Machine:**
+
+```bash
+sudo nano /etc/systemd/system/cloudflared-remote.service
+```
+
+### 3\. Paste the Service Configuration
+
+Paste the following configuration into the file. **This file is configured specifically for your setup:**
+
+  * It uses your username (`janak`).
+  * It points directly to your configuration file (`/home/janak/.cloudflared/config.yml`).
+  * It uses the correct tunnel name (`remote-ssh`).
+
+<!-- end list -->
+
+```ini
+[Unit]
+Description=Cloudflare Tunnel Remote SSH Service
+After=network.target
+
+[Service]
+# Set the user and group to run the tunnel as
+User=janak #Your hostmachine's username
+# The main executable. We use 'tunnel run' with the name of your tunnel.
+ExecStart=/usr/local/bin/cloudflared tunnel run remote-ssh
+# Ensure the service restarts if it fails
+Restart=always
+# Point the service to your existing config file
+Environment="CLOUDFLARED_OPTS=--config /home/janak/.cloudflared/config.yml"
+# Give up waiting if start takes too long
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+*Note: Make sure to verify the username `janak` is correct.*
+
+Save the file and exit the editor.
+
+### 4\. Enable and Start the Service
+
+Now, tell `systemd` about the new service file, enable it for boot, and start it.
+
+**On the Host Machine:**
+
+```bash
+# Reload the systemd manager configuration
+sudo systemctl daemon-reload
+
+# Enable the service to start automatically on boot
+sudo systemctl enable cloudflared-remote.service
+
+# Start the tunnel service
+sudo systemctl start cloudflared-remote.service
+
+# Stop the tunnel service
+sudo systemctl stop cloudflared-remote.service
+
+# Disable this service on startup
+sudo systemctl disable cloudflared-remote.service
+
+# Check the status
+sudo systemctl status cloudflared-remote.service
+```
+
+You should see **"Active: active (running)"**. You can now close your host terminal, and the tunnel will remain active.
+
+
+### Apply Zero Trust Access Policies
 
 You must secure both new hostnames in your Cloudflare Zero Trust Dashboard $\to$ **Access** $\to$ **Applications**, creating a separate **Self-hosted Application** for:
 
   * `ssh.janakkumarshrestha0.com.np`
   * `desktop.janakkumarshrestha0.com.np`
+  * `localnode.janakkumarshrestha0.com.np`
 
 For both, set the **Access Policy** to **Allow** only your verified **Email Address**.
 
 -----
-
-### **Phase 6: Connection Methods**
-
-| Protocol | Purpose | Client Command/Action |
-| :--- | :--- | :--- |
-| **SSH** (Command Line) | Secure terminal access. | **`ssh remote-ssh-janak`** |
-| **RDP** (Remote Desktop) | Graphical desktop access. | **1. Run Proxy (Terminal):** `cloudflared access tcp --hostname desktop.janakkumarshrestha0.com.np --url 127.0.0.1:33389` **2. Connect RDP Client:** Target `127.0.0.1:33389` |
-
-Your system is now fully set up for secure, persistent, multi-protocol remote access\!
