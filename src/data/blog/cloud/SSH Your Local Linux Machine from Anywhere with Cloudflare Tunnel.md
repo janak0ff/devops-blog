@@ -1,5 +1,5 @@
 ---
-title: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your Linux PC from Anywhere Using Cloudflare Tunnel
+title: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your local linux PC and accessible from Anywhere Using Cloudflare Tunnel
 pubDatetime: 2025-11-02
 featured: false
 tags:
@@ -7,7 +7,7 @@ tags:
   - Linux
   - local ssh server
   - cloudflare
-description: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your Linux PC from Anywhere Using Cloudflare Tunnel
+description: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your local linux PC and accessible from Anywhere Using Cloudflare Tunnel
 ---
 
 ## 💻 Prerequisites
@@ -440,10 +440,9 @@ For SSH, you'll use the built-in **OpenSSH Client** in Windows (or PuTTY/Git Bas
 
 Since Windows SSH clients don't use the simple `~/.ssh/config` file in the same way, you must include the **ProxyCommand** directly in your terminal, or use a tool like Git Bash which supports the Linux-style configuration.
 
-**In PowerShell or Command Prompt:**
+**In PowerShell or Command Prompt:** Run this command to SSH:
 
 ```powershell
-# Run this command to SSH:
 ssh janak@ssh.janakkumarshrestha0.com.np -o ProxyCommand="C:\Cloudflared\cloudflared.exe access ssh --hostname %h"
 ```
 
@@ -465,10 +464,9 @@ You need to run the `cloudflared` command in a separate, dedicated terminal wind
 
 1.  **Open PowerShell/Command Prompt** (as a normal user).
 
-2.  **Run the RDP Proxy Command:**
+2.  **Run the RDP Proxy Command:** Keep this terminal window open for the entire session.
 
     ```powershell
-    # Keep this terminal window open for the entire session.
     C:\Cloudflared\cloudflared.exe access tcp --hostname desktop.janakkumarshrestha0.com.np --url 127.0.0.1:33389
     ```
 
