@@ -1,23 +1,17 @@
 ---
-title: Install XFCE Desktop with XRDP for Blazing-Fast Remote Access on Ubuntu Server
+title: Install XFCE, LXQt, MATE, Cinnamon, Enlightenment, Gnome, KDE Plasma Desktop Environment with XRDP for Remote Desltop Access on a single Ubuntu Server.
 pubDatetime: 2025-10-30
 featured: false
 tags:
   - Hands On Lab
   - Linux
   - xrdp
-description: Install XFCE Desktop with XRDP for Blazing-Fast Remote Access on Ubuntu Server
+  - Desktop Environments
+description: Install XFCE, LXQt, MATE, Cinnamon, Enlightenment, Gnome, KDE Plasma Desktop Environment with XRDP for Remote Desltop Access on a single Ubuntu Server.
 ---
 
-# 🚀 Turbocharge Your Cloud Server: Install the XFCE Desktop with XRDP for Blazing-Fast Remote Access
+# Install the 7 different Desktop Environment with XRDP for Blazing-Fast Remote Access
 
-If you're running an Ubuntu server on the cloud and are tired of the slow, resource-heavy experience of a default desktop environment over RDP, you need a change. The secret to a fast, reliable, and efficient remote desktop is pairing the **XRDP** server with a **lightweight Desktop Environment (DE)**.
-
-We recommend **XFCE**. It’s renowned for its **low resource consumption** and **stability**, making it the ideal choice for a cloud server where performance and efficiency are critical.
-
-Here is a step-by-step guide to installing and configuring XFCE and XRDP for a top-tier remote desktop experience.
-
------
 
 ## Prerequisites
 
@@ -192,6 +186,9 @@ You are now ready to connect\! Use your favorite **RDP client** on your local ma
 | **Username & Password** | The credentials of the Ubuntu user you configured. |
 
 
+You should now be presented with a responsive, high-performance XFCE desktop, giving you a full graphical interface on your cloud server without the resource overhead\!
+
+
 ## Reference 
 
 - Desktop Environment Installation and Session Commands (Ubuntu/Debian)
@@ -217,6 +214,103 @@ You are now ready to connect\! Use your favorite **RDP client** on your local ma
 | `sudo apt install i3` | **i3** (Tiling Window Manager) | `exec i3` | A very popular manual window manager (not a full DE). |
 | `sudo apt install openbox` | **Openbox** (Stacking Window Manager) | `exec openbox-session` | A highly configurable, minimal stacking window manager. |
 
+## Learn More:
 
-You should now be presented with a responsive, high-performance XFCE desktop, giving you a full graphical interface on your cloud server without the resource overhead\!
+## 💻 `~/.xinitrc` (X-Init RC)
+
+* **Usage Context:** Primarily used when you start the X session **manually** from a text console using the command `startx` (which is a wrapper script for `xinit`).
+* **Purpose:** It's the startup script for the `xinit` program.
+* **Contents:** It's responsible for setting up the basic X environment (like resources, keyboard settings) and, critically, **launching the core component of your graphical session**, typically a Window Manager (WM) or a Desktop Environment (DE).
+* **Execution Flow:**
+    1.  You log in to a text console.
+    2.  You run the command `startx`.
+    3.  `startx` calls `xinit`, which looks for `~/.xinitrc`.
+    4.  The script runs. **The X session remains active as long as the last command in `~/.xinitrc` is running.** This last command is usually the WM/DE, often started with `exec` (e.g., `exec startxfce4` or `exec i3`).
+    5.  When the WM/DE exits, the script terminates, and `xinit` kills the X server, returning you to the text console.
+
+---
+
+## 🖥️ `~/.xsession` (X-Session)
+
+* **Usage Context:** Primarily used when you log in through a **Display Manager (DM)**, such as GDM, LightDM, SDDM, or KDM (the graphical login screen).
+* **Purpose:** It's the startup script used by the display manager to initialize the user's custom graphical session.
+* **Contents:** It serves a similar role to `~/.xinitrc`—it sets up the environment and launches the session's Window Manager or Desktop Environment. However, on some distributions (like Debian), the system's `Xsession` script may be designed to be a **unified startup point** that handles both `startx` and DM logins, often by sourcing the user's `~/.xsession` file.
+* **Execution Flow:**
+    1.  The Display Manager is already running and shows a graphical login screen.
+    2.  You log in.
+    3.  The Display Manager runs a system-wide `/etc/X11/Xsession` script, which then looks for and executes or sources the user's `~/.xsession` file.
+    4.  The script launches the WM/DE.
+
+---
+
+## 🎯 Summary Table
+
+| Feature | `~/.xinitrc` | `~/.xsession` |
+| :--- | :--- | :--- |
+| **Trigger** | Manual start via `xinit` or `startx`. | Graphical login via a **Display Manager** (DM). |
+| **Core Program** | `xinit` (or `startx` wrapper). | System-wide `Xsession` script (called by the DM). |
+| **Typical Use** | Custom, minimal, or tiling Window Manager setups. | Desktop Environment (DE) or custom sessions via DM. |
+
+**Note:** On modern systems and in many distributions (especially Debian-based ones), the system-wide `/etc/X11/xinit/xinitrc` file often calls the system-wide `/etc/X11/Xsession` script. This convergence is an attempt to **unify the startup process** so that your graphical environment is consistent whether you use `startx` or a Display Manager, often relying more heavily on `~/.xsession` for user customization.
+
+
+### 1\. Check Current Display Manager
+
+You can usually check the currently configured Display Manager using one of these commands:
+
+  * **Systemd-based systems:**
+    ```bash
+    systemctl status display-manager.service
+    ```
+    This command will show which service is symlinked to `display-manager.service` and its status.
+  * **Debian/Ubuntu systems:**
+    ```bash
+    cat /etc/X11/default-display-manager
+    ```
+    This file often contains the path to the executable of the currently set default DM.
+
+-----
+
+### 2\. Change the Default Display Manager
+
+The method for changing the DM depends on your Linux distribution:
+
+#### A. Debian/Ubuntu-based Systems (using `dpkg-reconfigure`)
+
+If you have multiple DMs installed (e.g., `gdm3`, `lightdm`, `sddm`), you can use the `dpkg-reconfigure` utility, which will prompt you to select the default one from a list:
+
+1.  Run the command, replacing `gdm3` with the name of any installed Display Manager package:
+    ```bash
+    sudo dpkg-reconfigure gdm3 
+    ```
+      * This will bring up a configuration screen where you can select your preferred DM (e.g., LightDM, SDDM) using the arrow keys and pressing **Enter**.
+2.  **Reboot** the system for the change to take effect:
+    ```bash
+    sudo reboot
+    ```
+
+#### B. Systemd-based Systems (using `systemctl` for generic DMs)
+
+On distributions that primarily rely on systemd services (like Arch, Fedora, etc.), you manage the default DM by **disabling** the old service and **enabling** the new one. This assumes the new DM is already installed.
+
+1.  **Disable** the currently enabled DM service (e.g., GDM):
+    ```bash
+    sudo systemctl disable gdm.service
+    ```
+2.  **Enable** the new DM service (e.g., LightDM or SDDM):
+    ```bash
+    sudo systemctl enable lightdm.service 
+    # OR
+    sudo systemctl enable sddm.service
+    ```
+      * You might need to use the `--force` flag if an existing `display-manager.service` symlink needs to be overridden.
+3.  **Start** the new DM, or **reboot** the system:
+    ```bash
+    sudo systemctl start lightdm.service
+    # OR
+    sudo reboot
+    ```
+
+The Display Manager you choose will typically be responsible for presenting the graphical login screen and launching the selected **Desktop Environment (DE)**, which is why the terms are sometimes confused. Common DMs include **GDM** (for GNOME), **LightDM** (for Xfce, LXDE, Unity), and **SDDM** (for KDE Plasma, LXQt).
+
 
