@@ -10,7 +10,7 @@ tags:
 description: Install XFCE, LXQt, MATE, Cinnamon, Enlightenment, Gnome, KDE Plasma Desktop Environment with XRDP for Remote Desltop Access on a single Ubuntu Server.
 ---
 
-# Install the 7 different Desktop Environment with XRDP for Blazing-Fast Remote Access
+# Install the 7 different Desktop Environment with XRDP in single ubuntu server.
 
 
 ## Prerequisites
@@ -19,6 +19,30 @@ Before you begin, ensure you have:
 
 1.  An **Ubuntu Server** instance (e.g., Ubuntu 20.04 LTS or 22.04 LTS) running in the cloud.
 2.  **SSH access** to the server with a user that has `sudo` privileges.
+
+-----
+
+
+## The Linux GUI Landscape—Desktop Environments
+
+Linux DEs cater to every taste, whether you prioritize eye-candy, low resource usage, or a classic, familiar layout. Below are the top contenders, including the popular **KDE Plasma** (which Kubuntu uses) and many others.
+
+### The Big Four: Power, Style, and Efficiency
+
+| Desktop Environment | Focus & Key Feature | Best Suited For |
+| :--- | :--- | :--- |
+| **KDE Plasma** | **Power & Customization.** Highly modern, feature-rich, and visually stunning. Offers deep control over every aspect of the desktop. | Power users, Windows switchers, and anyone who loves to **tinker** and customize their UI. |
+| **GNOME** | **Simplicity & Modernity.** A clean, minimalist interface focused on keyboard shortcuts and the "Activities" overview. | Users seeking a modern, distraction-free workflow, often found as the default on Ubuntu and Fedora. |
+| **Cinnamon** | **Traditional Layout & Stability.** A classic, comfortable desktop that closely mimics the Windows 7/XP experience. | Beginners and Windows switchers who want a familiar, immediate, and highly stable experience (default on Linux Mint). |
+| **XFCE** | **Lightweight & Fast.** Extremely resource-friendly and highly stable. It sacrifices some modern visual flair for pure speed. | Older hardware, virtual machines (VMs), or users prioritizing speed and low RAM/CPU usage. |
+
+### The Specialized & Lightweight Options
+
+  * **MATE:** A continuation of the classic **GNOME 2** desktop. It's stable, traditional, and lightweight, ideal for users nostalgic for older Linux versions.
+  * **LXQt:** The combination of the lightweight **LXDE** and the **Qt** framework. It is one of the absolute lightest DEs, perfect for very low-power devices.
+  * **Pantheon:** The elegant desktop environment from Elementary OS. Known for its curated, macOS-like aesthetic and focus on polished, integrated applications.
+  * **Budgie:** Developed by the Solus project, it balances elegance and modern features with a focus on simplicity. It features a unique sidebar called **Raven** for notifications and settings.
+  * **Deepin Desktop Environment (DDE):** Highly praised for its stunning, animated design and unique control center sidebar, often compared to macOS in terms of visual polish.
 
 -----
 
@@ -148,13 +172,37 @@ echo startplasma-x11 > ~/.xsession
 
     ```bash
     sudo chown -R $USER:$USER /home/$USER/.xsession
+    chmod +x ~/.xsession
     ```
 
-3.  **Restart the XRDP service** to load the new configuration:
+3.  **Add the XRDP user to the `ssl-cert` group** (essential for secure operation):
+    ```bash
+    sudo adduser xrdp ssl-cert
+    ```
+
+4.  **Restart the XRDP service** to load the new configuration:
 
     ```bash
     sudo systemctl restart xrdp
     ```
+
+5. Check the Status of `display-manager.service`
+
+    Systemd uses a generic service unit named `display-manager.service` which is a symbolic link to the actual Display Manager service installed (e.g., `gdm.service`, `lightdm.service`, or `sddm.service`).
+
+    Run this command to see which DM is active:
+
+    ```bash
+    systemctl status display-manager.service
+    pgrep -l -f "(gdm|lightdm|sddm|kdm|lxdm)"
+ 
+ 6. Set the system to boot into graphical mode by default
+
+After installation, your server is still set to boot into command-line mode (`multi-user.target`). We need to switch it to boot into the graphical mode (`graphical.target`).
+
+```bash
+sudo systemctl set-default graphical.target
+```
 
 -----
 
@@ -188,8 +236,9 @@ You are now ready to connect\! Use your favorite **RDP client** on your local ma
 
 You should now be presented with a responsive, high-performance XFCE desktop, giving you a full graphical interface on your cloud server without the resource overhead\!
 
+----
 
-## Reference 
+# Reference 
 
 - Desktop Environment Installation and Session Commands (Ubuntu/Debian)
 
@@ -214,7 +263,9 @@ You should now be presented with a responsive, high-performance XFCE desktop, gi
 | `sudo apt install i3` | **i3** (Tiling Window Manager) | `exec i3` | A very popular manual window manager (not a full DE). |
 | `sudo apt install openbox` | **Openbox** (Stacking Window Manager) | `exec openbox-session` | A highly configurable, minimal stacking window manager. |
 
-## Learn More:
+-----
+
+# Learn More:
 
 ## 💻 `~/.xinitrc` (X-Init RC)
 
@@ -314,3 +365,69 @@ On distributions that primarily rely on systemd services (like Arch, Fedora, etc
 The Display Manager you choose will typically be responsible for presenting the graphical login screen and launching the selected **Desktop Environment (DE)**, which is why the terms are sometimes confused. Common DMs include **GDM** (for GNOME), **LightDM** (for Xfce, LXDE, Unity), and **SDDM** (for KDE Plasma, LXQt).
 
 
+----
+
+##  Comprehensive List of Linux GUI Desktop Environments
+
+| Desktop Environment | Primary Focus | Best For | Typical Look/Feel |
+| :--- | :--- | :--- | :--- |
+| **KDE Plasma** (e.g., Kubuntu) | **Customization & Features** | Users who want maximum control, a modern feel, and a massive feature set. | Highly modern, Windows-like, with advanced widgets and visual effects. |
+| **GNOME** (e.g., Ubuntu, Fedora) | **Modern Simplicity & Productivity** | Users seeking a clean, uncluttered, and modern workflow with minimal distractions. | Clean, touch-friendly, uses a unique "Activities" screen for window management. |
+| **XFCE** (e.g., Xubuntu) | **Lightweight & Stable** | Older hardware, virtual machines, or users prioritizing speed and low resource use. | Traditional (panel, menu), but highly efficient and theme-able. |
+| **Cinnamon** (e.g., Linux Mint) | **Traditional & User-Friendly** | Windows switchers who want a familiar, classic desktop metaphor that is stable. | Classic Windows-like panel at the bottom with a familiar menu structure. |
+| **MATE** (e.g., Ubuntu MATE) | **Traditional GNOME 2 Fork** | Users who prefer the older, more efficient, and classic desktop layout of GNOME 2. | Classic panel structure, focus on stability and lower resource usage than GNOME 3. |
+| **LXQt** (e.g., Lubuntu) | **Ultra-Lightweight** | Very low-spec systems, netbooks, or users who need the absolute minimum of resources. | Basic, fast, and simple layout built on the Qt framework. |
+| **Budgie** (e.g., Ubuntu Budgie) | **Modern Simplicity & Elegance** | Users who want a clean, simple, and aesthetically pleasing desktop with a unique sidebar (`Raven`). | Modern, simple, and minimalist design; highly focused on user experience. |
+| **Pantheon** (e.g., Elementary OS) | **Aesthetics & Simplicity** | Users seeking a highly curated, macOS-like experience with a focus on simple apps. | Extremely elegant, clean, and opinionated design; not highly customizable. |
+| **Deepin Desktop Environment (DDE)** | **Visual Appeal** | Users prioritizing a highly modern, polished, and animated user interface. | Stunning visuals, unique control center sidebar, and a prominent dock. |
+| **Enlightenment (E)** | **Speed & Minimalism** | Power users and those on extremely limited hardware who still want some visual flair. | Minimalist, but highly configurable with unique animations and effects. |
+
+-----
+
+Changing the default **Display Manager (DM)** in Linux, such as switching from GDM to LightDM or SDDM, is typically done via the command line, especially on systems using **systemd** or those based on **Debian/Ubuntu**.
+
+-----
+
+### Change the Default Display Manager
+
+The method for changing the DM depends on your Linux distribution:
+
+#### A. Debian/Ubuntu-based Systems (using `dpkg-reconfigure`)
+
+If you have multiple DMs installed (e.g., `gdm3`, `lightdm`, `sddm`), you can use the `dpkg-reconfigure` utility, which will prompt you to select the default one from a list:
+
+1.  Run the command, replacing `gdm3` with the name of any installed Display Manager package:
+    ```bash
+    sudo dpkg-reconfigure gdm3 
+    ```
+      * This will bring up a configuration screen where you can select your preferred DM (e.g., LightDM, SDDM) using the arrow keys and pressing **Enter**.
+2.  **Reboot** the system for the change to take effect:
+    ```bash
+    sudo reboot
+    ```
+
+#### B. Systemd-based Systems (using `systemctl` for generic DMs)
+
+On distributions that primarily rely on systemd services (like Arch, Fedora, etc.), you manage the default DM by **disabling** the old service and **enabling** the new one. This assumes the new DM is already installed.
+
+1.  **Disable** the currently enabled DM service (e.g., GDM):
+    ```bash
+    sudo systemctl disable gdm.service
+    ```
+2.  **Enable** the new DM service (e.g., LightDM or SDDM):
+    ```bash
+    sudo systemctl enable lightdm.service 
+    # OR
+    sudo systemctl enable sddm.service
+    ```
+      * You might need to use the `--force` flag if an existing `display-manager.service` symlink needs to be overridden.
+3.  **Start** the new DM, or **reboot** the system:
+    ```bash
+    sudo systemctl start lightdm.service
+    # OR
+    sudo reboot
+    ```
+
+The Display Manager you choose will typically be responsible for presenting the graphical login screen and launching the selected **Desktop Environment (DE)**, which is why the terms are sometimes confused. Common DMs include **GDM** (for GNOME), **LightDM** (for Xfce, LXDE, Unity), and **SDDM** (for KDE Plasma, LXQt).
+
+-----
