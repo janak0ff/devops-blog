@@ -12,20 +12,3 @@ description: Configure Bind as a Caching or Forwarding DNS Server on Ubuntu.
 ![output](@/assets/images/Screenshot_20251007_053150.png)
 
 
-
------
-
-
------
-
-
-
----
-
-----
-
-
-# On the Client Machine (Keep this terminal open)
-/usr/local/bin/cloudflared access tcp --hostname desktop.janakkumarshrestha0.com.np --url 127.0.0.1:33389
-
-
