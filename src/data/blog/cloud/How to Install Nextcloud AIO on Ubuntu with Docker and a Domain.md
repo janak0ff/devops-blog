@@ -148,6 +148,21 @@ Open your web browser and navigate to the AIO interface using your server's publ
 1.  Select the desired **Optional containers**, such as **Collabora (Nextcloud Office)**.
 2.  Click **Download and start containers**.
 
+
+### Nextcloud AIO Optional Containers
+
+| Container Option | Purpose | Key Benefit | Resource Requirement |
+| :--- | :--- | :--- | :--- |
+| **Nextcloud Office (Collabora/OnlyOffice)** | Provides a high-performance backend for collaborative document editing. This is what allows you to open, view, and jointly edit Word, Excel, and PowerPoint files directly in your browser. | Enables full-featured, real-time **document collaboration** that is fully self-hosted. | **High.** This is one of the most resource-intensive containers and requires significant CPU and RAM, especially with multiple simultaneous users. |
+| **Nextcloud Talk** | Provides the backend for Nextcloud Talk, including the necessary **TURN server**. The TURN server is essential for handling video calls and screen sharing when devices are behind restrictive firewalls (NAT traversal). | Guarantees reliable, peer-to-peer **video conferencing** and secure chat. | **Medium.** Requires specific ports to be open (3478/TCP and 3478/UDP). |
+| **Imaginary** | A containerized tool that generates previews and thumbnails for specialized file types. This includes formats like HEIC, HEIF, Illustrator, PDF, SVG, TIFF, and WebP. | Ensures that specialized image and document formats display thumbnails correctly in your file browser. | **Low to Medium.** Used on-demand when files are uploaded or accessed. |
+| **ClamAV** | An **Antivirus backend** for Nextcloud. When enabled, files uploaded to your instance are automatically scanned for malware before being stored. | Improves the **security** of your instance by preventing the storage and spread of malicious files. | **Medium.** Requires resources for continuous virus definition updates and file scanning. |
+| **Fulltextsearch** | Installs a dedicated engine (like Solr or Elasticsearch) to enable **full-text searching**. This allows users to search *inside* the content of various file types (like PDFs, Word documents, text files), not just by file name. | Highly increases the **usability** and speed of finding content across your large file collection. | **Medium to High.** The engine requires dedicated resources and time to index your data. |
+| **Whiteboard** | Adds the ability to create and collaborate on simple, shared drawing canvases directly within Nextcloud. | Provides a quick tool for visual brainstorming and drawing during calls or meetings. | **Low.** |
+| **Docker Socket Proxy** | A necessary container that acts as a secure intermediary. It is required for the proper functioning of the Nextcloud **App API**. | Ensures internal container communication and management features work securely. | **Very Low.** |
+
+> **Recommendation:** For a standard setup, it is highly recommended to enable **Nextcloud Office**, **Nextcloud Talk**, and **Imaginary** for the best user experience. Only enable **ClamAV** and **Fulltextsearch** if you have sufficient RAM and CPU power (8GB+ RAM recommended) and plan on managing a large amount of data or users.
+
 ![output](@/assets/images/Screenshot_20251028_153536.png)
 
 
