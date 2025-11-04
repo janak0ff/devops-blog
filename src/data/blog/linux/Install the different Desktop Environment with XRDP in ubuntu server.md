@@ -224,7 +224,7 @@ sudo ufw reload
 
 ## Connect with an RDP Client
 
-You are now ready to connect\! Use your favorite **RDP client** on your local machine (Windows Remote Desktop Connection, Remmina, Microsoft Remote Desktop for Mac, etc.).
+You are now ready to connect\! Use your favorite **RDP client** on your local machine (Windows Remote Desktop Connection, Remmina, KRDC,  Microsoft Remote Desktop for Mac, etc.).
 
 | Setting | Value |
 | :--- | :--- |

@@ -538,7 +538,7 @@ WantedBy=multi-user.target
 
 Save the file and exit the editor.
 
-### 4\. Enable and Start the Service
+### 4\. Manage the cloudflared-remote Service
 
 Now, tell `systemd` about the new service file, enable it for boot, and start it.
 
