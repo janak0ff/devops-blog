@@ -293,7 +293,7 @@ sudo systemctl restart ssh
 
 This configuration is for Debian 13 on KDE/Plasma environments.
 
-1.  **Modify the xRDP Startup Script:** This tells xRDP exactly which desktop environment to launch.
+<!-- 1.  **Modify the xRDP Startup Script:** This tells xRDP exactly which desktop environment to launch.
     ```bash
     sudo nano /etc/xrdp/startwm.sh
     ```
@@ -313,7 +313,28 @@ This configuration is for Debian 13 on KDE/Plasma environments.
     ```bash
     #!/bin/sh
     exec startplasma-x11
+    ``` -->
+
+1.  **Create/Edit `~/.xsession`:**
+
+    ```bash
+    nano ~/.xsession
     ```
+
+2.  **Add the KDE/Plasma startup command:**
+
+    ```bash
+    #!/bin/sh
+    # Explicitly start the KDE Plasma session
+    exec /usr/bin/startplasma-x11
+    ```
+
+3.  **Make it Executable:** This is essential for the script to run.
+
+    ```bash
+    chmod +x ~/.xsession
+    ```
+
 4.  **Restart xRDP Service:** Apply the session changes.
     ```bash
     sudo systemctl restart xrdp
@@ -324,7 +345,9 @@ This configuration is for Debian 13 on KDE/Plasma environments.
     2.  Connect your RDP client to `rdp://janak@127.0.0.1:33389`.
     3.  Enter your username and password.
 
-    This combination of the explicit `startplasma-x11` command in both `startwm.sh` and the newly created `~/.xinitrc` is the most reliable way to force `xrdp` to launch a functional KDE session.
+    <!-- This combination of the explicit `startplasma-x11` command in both `startwm.sh` and the newly created `~/.xinitrc` is the most reliable way to force `xrdp` to launch a functional KDE session. -->
+
+    The RDP client will connect to xrdp, which will run startwm.sh. The startwm.sh script will then execute /etc/X11/Xsession, which, in turn, reads your new executable ~/.xsession file and correctly launches the KDE Plasma desktop. This is the cleaner, multi-user way to configure sessions on many Linux distributions.
 
 ---
 
