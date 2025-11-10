@@ -28,11 +28,9 @@ Cloudflare Tunnel is a secure way to connect your local server or device to the 
 
 -----
 
-## Host Setup – The Local Linux Server
-
 The Host Machine is your local PC that you want to access remotely.
 
-### Install Cloudflare Tunnel (`cloudflared`) on you local/host server
+## HOST/CLIENT : Install Cloudflare Tunnel (`cloudflared`) on both local/host server and clients linux PCs
 
 The `cloudflared` daemon is the service that creates the secure tunnel.
 
@@ -40,56 +38,35 @@ The `cloudflared` daemon is the service that creates the secure tunnel.
     ```bash
     wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
     sudo dpkg -i cloudflared-linux-amd64.deb
-    ```
-2.  **Verify Path:** Confirm the installation path.
-    ```bash
     which cloudflared
     ```
-  - Expected output: /usr/local/bin/cloudflared
 
-### Install and Verify Services (SSH & RDP) on you local/host server
+  - Confirm the cloudflared installation path - `/usr/local/bin/cloudflared` if different customize you path in config file.
+
+
+## HOST: Install and Verify Services (SSH & RDP) on you local/host server
 
 We must ensure the services are installed and listening locally before the tunnel can expose them.
 
 #### OpenSSH Server
 
-1. Install OpenSSH server:
    ```
    sudo apt update
    sudo apt install openssh-server -y
-   ```
-2. Enable and start the SSH service:
-   ```
    sudo systemctl enable --now ssh
-   ```
-3. Verify SSH service status:
-   ```bash
    sudo systemctl restart ssh
-   # OR
-   sudo systemctl restart sshd
+   sudo systemctl status ssh 
    ```
-   You should see the service as active (running).
 
 #### XRDP - for remote desktop access
 
-1. Install xrdp:
    ```
    sudo apt update
    sudo apt install xrdp -y
-   ```
-2. Add xrdp user to ssl-cert group for certificate access:
-   ```
    sudo adduser xrdp ssl-cert
-   ```
-3. Enable and start the xrdp service:
-   ```
    sudo systemctl enable --now xrdp
-   ```
-4. Verify xrdp service status:
-   ```
    sudo systemctl status xrdp
    ```
-   You should see it active (running).
 
 This will set up SSH server for remote terminal access on port 22 and xrdp for remote desktop protocol (RDP) access on port 3389 on your linux machine. Both services will be enabled to start automatically on system boot.|
 
@@ -101,26 +78,26 @@ sudo ss -tuln | grep 22
 ```
 
 
-### Create the Named Tunnel and Configuration**
+## HOST: Create the Named Tunnel and Configuration
 
 1.  **Authenticate Cloudflared:**
     This opens a browser. Log in to your Cloudflare account, authorize and save cert.pem.
     ```bash
     cloudflared tunnel login
     ```
-2.  **Create a new tunnel. You can name it whatever you like (`remote-ssh`):**
+2.  **Create a new tunnel. You can name it whatever you like (`remote-acc`):**
     ```bash
-    cloudflared tunnel create remote-ssh
+    cloudflared tunnel create remote-acc
     ```
    This generates your UUID (tunnel ID) (e.g., bbfb870f-c972-...) and JSON credentials inside /home/USERNAME/.cloudflared/.
 
 
 
-3.  **Create/Edit `config.yml`:** Define the hostnames and the services they map to.
+3.  **Create/Edit `config.yml`:** Define the hostnames and the services they map to. Use your own domain name
     ```bash
     nano ~/.cloudflared/config.yml
     ```
-    *Paste your configuration (substituting your UUID):*
+   
     ```yaml
     #tunnel: YOUR_TUNNEL_ID
     tunnel: bbfb870f-c972-4653-97af-41667bd5cb71  # Your Tunnel UUID
@@ -139,67 +116,45 @@ sudo ss -tuln | grep 22
 
 ----
 
-### DNS Configuration - **Create DNS Records (Cloudflare)**
+## HOST: DNS Configuration - **Create DNS Records (Cloudflare)** 
 
-You need to tell Cloudflare to route traffic from your chosen hostname to the tunnel.
+You need to tell Cloudflare to route traffic from your chosen hostname to the tunnel. Use your own tunnel and domain name
 
-- ##### Using the cloudflared CLI (Recommended) - The easiest way to create the correct DNS record is by running the command from your terminal
 ```bash
-cloudflared tunnel route dns remote-ssh ssh.janakkumarshrestha0.com.np # for ssh server
-cloudflared tunnel route dns remote-ssh desktop.janakkumarshrestha0.com.np # For remote desktop
-cloudflared tunnel route dns remote-ssh localnode.janakkumarshrestha0.com.np # For node app
+cloudflared tunnel route dns remote-acc ssh.janakkumarshrestha0.com.np
+cloudflared tunnel route dns remote-acc desktop.janakkumarshrestha0.com.np
+cloudflared tunnel route dns remote-acc localnode.janakkumarshrestha0.com.np
 ```
-This command automatically creates the correct CNAME record in your Cloudflare DNS, pointing your all hostname to the tunnel named remote-ssh.
-
-### OR
-
-- ##### Alternatively - Adding dns record manually 
-Go to your Cloudflare DNS settings and add the CNAME records.
-
-1.  **Add CNAME for SSH:**
-      * **Name:** `ssh`
-      * **Target:** `[YOUR-TUNNEL-UUID].cfargotunnel.com`
-      * **Proxy Status:** **Proxied (Orange Cloud)**
-2.  **Add CNAME for RDP:**
-      * **Name:** `desktop`
-      * **Target:** `[YOUR-TUNNEL-UUID].cfargotunnel.com`
-      * **Proxy Status:** **Proxied (Orange Cloud)**
-3.  **Add CNAME for local node app:**
-      * **Name:** `localnode`
-      * **Target:** `[YOUR-TUNNEL-UUID].cfargotunnel.com`
-      * **Proxy Status:** **Proxied (Orange Cloud)**
+This command automatically creates the correct CNAME record in your Cloudflare DNS, pointing your all hostname to the tunnel named remote-acc.
 
 ----
 
-### Run the Tunnel
-Start the tunnel service so it can connect to the Cloudflare network and begin listening for traffic:
+## HOST: Run the Tunnel
+Start the tunnel service so it can connect to the Cloudflare network and begin listening for traffic: Replace with your tunnel name
 
-```bash
-cloudflared tunnel run remote-ssh # Replace with you tunnel name
-```
+  ```bash
+  cloudflared tunnel run remote-acc
+  ```
 
   * Keep this process running, as it maintains the connection between your local PC and the Cloudflare edge.
+  * We"ll discuss later to run tunnel on background, Permanent/auto start on boot as a demon service.
 
---- 
+----
 
-### After you run the cloudflared tunnel the you can immedaiately 
+## CLIENT : After you run the cloudflared tunnel the you can immedaiately 
 Access your node app running on 3000 port is accessible form the internet / any networks
 ```
 localnode.janakkumarshrestha0.com.np
 ```
 
+![output](@/assets/images/Screenshot_20251108_113237.png)
+
 ----
 
-### Client Configuration the SSH Client (Client Machine on different network)
+## CLIENT : Configuration the SSH Client (Client Machine on any network)
 
 On the PC you're connecting **from** (your remote client or there pc on different networks), you need to install `cloudflared` and configure your SSH client to use it as a proxy.
 
-```bash
-sudo apt update
-wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-sudo dpkg -i cloudflared-linux-amd64.deb
-which cloudflared
-```
  **Edit your SSH configuration file** (on Linux/macOS, or a similar configuration on Windows tools like PuTTY).
 1.  **Edit `~/.ssh/config`:**
     ```bash
@@ -207,16 +162,18 @@ which cloudflared
     ```
 2.  **Add SSH Configuration:**
     ```ini
-    Host remote-ssh-janak # Give host name you like
+    Host remote-acc-janak # Give host name you like
       Hostname ssh.janakkumarshrestha0.com.np   # Replace with you actual host name.
-      # The key line that uses cloudflared to proxy the connection
+      # The key line that uses cloudflared to proxy the connection and adjust path if different
       ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h
-      User janak  # Replace with the username on the local server / host machine.
+      # Replace with the username on the local server / host machine.
+      User jack  
 
       # (Optional) Use a specific port if your server isn't on default port, otherwise, this line isn't necessary
       # Port 22
     ```
-    * The `ProxyCommand` tells the SSH client to route the connection through `cloudflared`, which handles the tunnel authentication. Replace or match the ouptput form `which cloudflared` command in `/usr/local/bin/cloudflared` path.
+    * The `ProxyCommand` tells the SSH client to route the connection through `cloudflared`, which handles the tunnel authentication.
+    
     Note: Make sure the path to cloudflared (`/usr/local/bin/cloudflared`) is correct for your client machine's installation. Check using this command `which cloudflared` and match.
 
 3.  **Connect via SSH**
@@ -224,23 +181,25 @@ which cloudflared
 You can now connect to your local PC from anywhere on the internet using the simplified SSH command from the client machine:
 
 ```bash
-ssh remote-ssh-janak
+ssh remote-acc-janak
 # or
-ssh -vvv remote-ssh-janak # for more details
+ssh -vvv remote-acc-janak # for more details
 ```
 
   * The first time, you may be prompted to authenticate with Cloudflare Access (e.g., a browser login). After that, you will be prompted for your local PC's SSH password or key.
 
+![output](@/assets/images/Screenshot_20251108_121528.png)
+
 ----
 
-### SSH connect directly using a single command without having to rely on the configuration block in your `~/.ssh/config` file.
+## CLIENT: SSH connect directly using a single command without having to rely on the configuration block in your `~/.ssh/config` file.
 
 To connect directly while still using the Cloudflare Tunnel as a proxy, you need to embed the `ProxyCommand` directly into the `ssh` command using the **`-o` (Option)** flag.
 
 Here is the format you would use:
 
 ```bash
-ssh janak@ssh.janakkumarshrestha0.com.np \
+ssh jack@ssh.janakkumarshrestha0.com.np \
     -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"
 ```
 
@@ -248,37 +207,28 @@ ssh janak@ssh.janakkumarshrestha0.com.np \
 
 | Part of Command | Purpose |
 | :--- | :--- |
-| `ssh janak@...` | Specifies the user (`janak`) and the destination host (`ssh.janakkumarshrestha0.com.np`). |
+| `ssh jack@...` | Specifies the user (`jack`) and the destination host (`ssh.janakkumarshrestha0.com.np`). |
 | `-o ProxyCommand="..."` | The `-o` flag overrides or sets an option usually found in `~/.ssh/config`. |
 | `"/usr/local/bin/cloudflared access ssh --hostname %h"` | This is the command that initiates the tunnel connection. |
 | `%h` | This is a placeholder that is replaced by the actual hostname (`ssh.janakkumarshrestha0.com.np`) at runtime. |
 
-- Security Note
-
-Since you have set up **Cloudflare Access** and **disabled password login**, the connection sequence will be:
-
-1.  The command runs the `ProxyCommand`.
-2.  Your browser opens to verify your identity (Cloudflare Access).
-3.  Once verified, the SSH client uses your private key (`~/.ssh/id_ed25519` or similar) to complete the login without asking for a password.
-
 - Alternative: Simplify the Command
 
 If you want to make this long command easier to type repeatedly without using your `~/.ssh/config` file, you could create a **shell alias** in your shell startup file (`~/.bashrc` or `~/.zshrc`):
-
+-  Run this command to add alias and reload `.bashrc`
 ```bash
-# Add this line to ~/.bashrc or ~/.zshrc
-alias remote-ssh='ssh janak@ssh.janakkumarshrestha0.com.np -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"'
+echo "alias remote-acc='ssh jack@ssh.janakkumarshrestha0.com.np -o ProxyCommand=\"/usr/local/bin/cloudflared access ssh --hostname %h\"'" >> ~/.bashrc && source ~/.bashrc
 ```
 
-After reloading your shell (`source ~/.bashrc`), you could simply type:
+Now, you could simply type:
 
 ```bash
-remote-ssh
+remote-acc
 ```
 
 ----
 
-### Stronger Authentication (SSH Keys)
+## CLIENT: Stronger Authentication (SSH Keys)
 
 Relying on a password is less secure than using SSH keys. Since your SSH server is now running, you should configure key-based authentication.
 
@@ -293,16 +243,16 @@ Relying on a password is less secure than using SSH keys. Since your SSH server 
 2.  **Copy the public key** to your remote server:
 
     ```bash
-    ssh-copy-id remote-ssh-janak
+    ssh-copy-id remote-acc-janak
     ```
 
-    *This command will prompt for your server password one last time and then install your public key (`~/.ssh/id_ed25519.pub`) into the `~/.ssh/authorized_keys` file on the remote server.*
+    *This command will prompt for your Local host/server password one last time and then insert your public key (`~/.ssh/id_ed25519.pub`) into the `~/.ssh/authorized_keys` file on the remote server / local host.*
 
-After this, when you run `ssh remote-ssh-janak`, you will no longer be asked for a password, as your secure SSH key will handle the final authentication step automatically.
+After this, when you run `ssh remote-acc-janak`, you will no longer be asked for a password, as your secure SSH key will handle the final authentication step automatically.
 
 ----
 
-###  Disabling Password-Based SSH Login
+## HOST: Disabling Password-Based SSH Login
 
 You need to edit the configuration file for the SSH server (`sshd`) on your **host machine**.
 
@@ -323,15 +273,12 @@ Scroll through the file (or use Ctrl+W to search) and ensure the following two d
 
 ```bash
 sudo systemctl restart ssh
-# OR
-sudo systemctl restart sshd
 ```
 - Confirm Security Settings **On your Local PC (the Host/Server):**
-
-```bash
-# Verify password authentication is disabled
-grep -E 'PasswordAuthentication|PubkeyAuthentication' /etc/ssh/sshd_config
-```
+  Verify password authentication is disabled
+  ```bash
+  grep -E 'PasswordAuthentication|PubkeyAuthentication' /etc/ssh/sshd_config
+  ```
 
   * **Expected Output:**
     ```
@@ -342,9 +289,9 @@ grep -E 'PasswordAuthentication|PubkeyAuthentication' /etc/ssh/sshd_config
 -----
 
 
-### Prepare your host Deskop for remote desktop (RDP)
+## HOST: Prepare your host Deskop for remote desktop (RDP)
 
-This step fixes the common issue where RDP connects but immediately closes or shows a blank screen on KDE/Plasma environments.
+This configuration is for Debian 13 on KDE/Plasma environments.
 
 1.  **Modify the xRDP Startup Script:** This tells xRDP exactly which desktop environment to launch.
     ```bash
@@ -509,7 +456,7 @@ Paste the following configuration into the file. **This file is configured speci
 
   * It uses your username (`janak`).
   * It points directly to your configuration file (`/home/janak/.cloudflared/config.yml`).
-  * It uses the correct tunnel name (`remote-ssh`).
+  * It uses the correct tunnel name (`remote-acc`).
 
 <!-- end list -->
 
@@ -522,7 +469,7 @@ After=network.target
 # Set the user and group to run the tunnel as
 User=janak #Your hostmachine's username
 # The main executable. We use 'tunnel run' with the name of your tunnel.
-ExecStart=/usr/local/bin/cloudflared tunnel run remote-ssh
+ExecStart=/usr/local/bin/cloudflared tunnel run remote-acc
 # Ensure the service restarts if it fails
 Restart=always
 # Point the service to your existing config file
