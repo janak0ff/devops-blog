@@ -30,7 +30,7 @@ Cloudflare Tunnel is a secure way to connect your local server or device to the 
 
 The Host Machine is your local PC that you want to access remotely.
 
-## HOST/CLIENT : Install Cloudflare Tunnel (`cloudflared`) on both local/host server and clients linux PCs
+## SERVER/CLIENT Setup : Install Cloudflare Tunnel (`cloudflared`) on both local/host server and clients linux PCs
 
 The `cloudflared` daemon is the service that creates the secure tunnel.
 
@@ -44,7 +44,7 @@ The `cloudflared` daemon is the service that creates the secure tunnel.
   - Confirm the cloudflared installation path - `/usr/local/bin/cloudflared` if different customize you path in config file.
 
 
-## HOST: Install and Verify Services (SSH & RDP) on you local/host server
+## Server Setup: Install and Verify Services (SSH & RDP) on you local/host server
 
 We must ensure the services are installed and listening locally before the tunnel can expose them.
 
@@ -78,7 +78,7 @@ sudo ss -tuln | grep 22
 ```
 
 
-## HOST: Create the Named Tunnel and Configuration
+## Server Setup: Create the Named Tunnel and Configuration
 
 1.  **Authenticate Cloudflared:**
     This opens a browser. Log in to your Cloudflare account, authorize and save cert.pem.
@@ -116,7 +116,7 @@ sudo ss -tuln | grep 22
 
 ----
 
-## HOST: DNS Configuration - **Create DNS Records (Cloudflare)** 
+## Server Setup: DNS Configuration - **Create DNS Records (Cloudflare)** 
 
 You need to tell Cloudflare to route traffic from your chosen hostname to the tunnel. Use your own tunnel and domain name
 
@@ -129,7 +129,7 @@ This command automatically creates the correct CNAME record in your Cloudflare D
 
 ----
 
-## HOST: Run the Tunnel
+## Server Setup: Run the Tunnel
 Start the tunnel service so it can connect to the Cloudflare network and begin listening for traffic: Replace with your tunnel name
 
   ```bash
@@ -141,7 +141,7 @@ Start the tunnel service so it can connect to the Cloudflare network and begin l
 
 ----
 
-## CLIENT : After you run the cloudflared tunnel the you can immedaiately 
+## Client Setup: After you run the cloudflared tunnel the you can immedaiately 
 Access your node app running on 3000 port is accessible form the internet / any networks
 ```
 localnode.janakkumarshrestha0.com.np
@@ -151,7 +151,7 @@ localnode.janakkumarshrestha0.com.np
 
 ----
 
-## CLIENT : Configuration the SSH Client (Client Machine on any network)
+## Client Setup: Configuration the SSH Client (Client Machine on any network)
 
 On the PC you're connecting **from** (your remote client or there pc on different networks), you need to install `cloudflared` and configure your SSH client to use it as a proxy.
 
@@ -192,7 +192,7 @@ ssh -vvv remote-acc-janak # for more details
 
 ----
 
-## CLIENT: SSH connect directly using a single command without having to rely on the configuration block in your `~/.ssh/config` file.
+## Client Setup: SSH connect directly using a single command without having to rely on the configuration block in your `~/.ssh/config` file.
 
 To connect directly while still using the Cloudflare Tunnel as a proxy, you need to embed the `ProxyCommand` directly into the `ssh` command using the **`-o` (Option)** flag.
 
@@ -228,7 +228,7 @@ remote-acc
 
 ----
 
-## CLIENT: Stronger Authentication (SSH Keys)
+## Client Setup: Stronger Authentication (SSH Keys)
 
 Relying on a password is less secure than using SSH keys. Since your SSH server is now running, you should configure key-based authentication.
 
@@ -252,7 +252,7 @@ After this, when you run `ssh remote-acc-janak`, you will no longer be asked for
 
 ----
 
-## HOST: Disabling Password-Based SSH Login
+## Server Setup: Disabling Password-Based SSH Login
 
 You need to edit the configuration file for the SSH server (`sshd`) on your **host machine**.
 
@@ -289,7 +289,7 @@ sudo systemctl restart ssh
 -----
 
 
-## HOST: Prepare your host Deskop for remote desktop (RDP)
+## Server Setup: Prepare your host Deskop for remote desktop (RDP)
 
 This configuration is for Debian 13 on KDE/Plasma environments.
 
@@ -339,11 +339,6 @@ This configuration is for Debian 13 on KDE/Plasma environments.
     ```bash
     sudo systemctl restart xrdp
     ```
-5.  Reconnect
-
-    1.  Ensure the `cloudflared access tcp` proxy is running on your client.
-    2.  Connect your RDP client to `rdp://janak@127.0.0.1:33389`.
-    3.  Enter your username and password.
 
     <!-- This combination of the explicit `startplasma-x11` command in both `startwm.sh` and the newly created `~/.xinitrc` is the most reliable way to force `xrdp` to launch a functional KDE session. -->
 
@@ -352,9 +347,11 @@ This configuration is for Debian 13 on KDE/Plasma environments.
 ---
 
 
-### Run the Cloudflared Client in TCP Mode (Client Machine)
+## Client Setup: Run the Cloudflared Client in TCP Mode - for linux
 
 You need to run a separate `cloudflared` command on the **client machine** that listens on a local port (e.g., `33389`), performs the Cloudflare Access handshake, and forwards all traffic to your tunnel hostname.
+
+Note: Same user account can't access form 2 devices, sp make 2 or more account
 
 1.  **Open a New Terminal** on your **Client Machine**.
 
@@ -369,7 +366,7 @@ You need to run a separate `cloudflared` command on the **client machine** that 
       * **`--url 127.0.0.1:33389`**: Tells `cloudflared` to listen on your local machine at port `33389` and forward any traffic it receives.
 
 
-### Connect the RDP Client
+## Client Setup: Connect the RDP Client
 
 Once the browser authentication is complete, your local proxy is running\!
 
@@ -379,18 +376,15 @@ Once the browser authentication is complete, your local proxy is running\!
       * **Port:** `33389` (The local port specified in the `cloudflared` command)
 
 Your RDP client connects locally to `33389`, `cloudflared` forwards the traffic securely through the tunnel, and you should see the RDP login screen for your host machine.
-- On the host machine, you have atleast 2 user one for current login session and other for remote desktop, because same luser cat login in 2 platform.
-Local user is still logged in, creating a conflict.
-Log out of your current session on the physical host machine. Do not just lock the screen—log out completely.
 
 - Enter your login credential: username and password
 
 ---
 
-## If you are Windows OS user:
+## Client Setup: If you are Windows OS user:
 -----
 
-### 💻 Phase 1: Windows Client Setup
+###  Phase 1: Windows Client Setup
 
 #### 1\. Install Cloudflared on Windows
 
@@ -402,7 +396,7 @@ You need the `cloudflared` client on your Windows machine to handle the secure t
 
 -----
 
-### 🔒 Phase 2: SSH Access (Using PowerShell/CMD)
+###  Phase 2: SSH Access (Using PowerShell/CMD)
 
 For SSH, you'll use the built-in **OpenSSH Client** in Windows (or PuTTY/Git Bash).
 
@@ -424,7 +418,7 @@ ssh janak@ssh.janakkumarshrestha0.com.np -o ProxyCommand="C:\Cloudflared\cloudfl
 
 -----
 
-### 🖥️ Phase 3: RDP Access (Using Remote Desktop Client)
+### Phase 3: RDP Access (Using Remote Desktop Client)
 
 For RDP, you must use the same **local proxy method** used on your Linux client, as the RDP client cannot run the authentication command itself.
 
@@ -452,7 +446,7 @@ You need to run the `cloudflared` command in a separate, dedicated terminal wind
 ---
 
 
-## **If you want to  Make the Tunnel Permanent/auto start on boot (Host Machine)**
+## Server setup: **If you want to  Make the Tunnel Permanent/auto start on boot (Host Machine)**
 
 
 ### Manual Systemd Service Creation
