@@ -1,12 +1,12 @@
 ---
 title: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your local linux PC and accessible from Anywhere Using Cloudflare Tunnel
 pubDatetime: 2025-11-02
-featured: false
+featured: true
 tags:
   - Hands On Lab
   - Linux
   - local ssh server
-  - cloudflare
+  - cloudflared tunnel
 description: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your local linux PC and accessible from Anywhere Using Cloudflare Tunnel
 ---
 
