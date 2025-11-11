@@ -10,15 +10,12 @@ tags:
 description: Multi-Protocol Remote Access – SSH, RDP & node app hosting to Your local linux PC and accessible from Anywhere Using Cloudflare Tunnel
 ---
 
-## 💻 Prerequisites
+## Prerequisites
 
 Before you start, make sure you have:
 
-  * A **Cloudflare account**.
-  * A **domain name** added to your Cloudflare account and using Cloudflare's nameservers.
-  * **SSH server running** on your local PC (e.g., OpenSSH on Linux/macOS, or an SSH server on Windows) on the default port **22** (or your custom port).
-  * On my local/host server firewall is inactive, if you have enable then add rules for tcp(22,3389 and 3000) ports.
-  * Running Node app locally on 3000 port.
+  * A **Cloudflare account** and **domain name** added to your Cloudflare account and using Cloudflare's nameservers.
+  * Running Node app locally on 3000 port. for testing `localnode.janakkumarshrestha0.com.np`
 
 
 # I am gonna do ssh, access remote desktop (RDP) and access localhost:3000 app on my local pc form anywhere on internet (different network).
@@ -28,7 +25,29 @@ Cloudflare Tunnel is a secure way to connect your local server or device to the 
 
 -----
 
-The Host Machine is your local PC that you want to access remotely.
+## SERVER/HOST Setup (Debian Linux PC)
+
+This is your local machine, made available remotely.
+
+* **Role:** The host running the services and the tunnel daemon.
+* **Key Components:**
+    * **Services:** `sshd` (Port 22), `xrdp` (Port 3389, and `localhost:3000` (NodeJS app) configured for KDE Plasma).
+    * **Tunnel Daemon:** `cloudflared-remote.service` (Systemd service) running persistently to expose services via your configured domain names (`ssh.*`, `desktop.*`, `localnode`).
+    * **Security:** Password login **disabled**; relies on SSH Keys and the Access policy.
+
+---
+
+## CLIENT Setup (Remote Linux/Windows PC)
+
+This is the remote machine you use to access your host.
+
+* **Role:** The machine initiating the secure connection.
+* **Key Components:**
+    * **Tunnel Client:** `cloudflared` executable (used for authentication).
+    * **SSH Access:** Uses the native SSH client (`ssh`) combined with the **`ProxyCommand`** to handle Cloudflare Access authentication.
+    * **RDP Access:** Uses the `cloudflared access tcp` command to create a **local proxy listener** (`127.0.0.1:33389`), which handles authentication and forwards the session to the RDP client (e.g., KRDC/Remmina).
+
+----
 
 ## SERVER/CLIENT Setup : Install Cloudflare Tunnel (`cloudflared`) on both local/host server and clients linux PCs
 
@@ -379,6 +398,8 @@ Your RDP client connects locally to `33389`, `cloudflared` forwards the traffic 
 
 - Enter your login credential: username and password
 
+![output](@/assets/images/Screenshot_20251111_171155.png)
+
 ---
 
 ## Client Setup: If you are Windows OS user:
@@ -407,7 +428,7 @@ Since Windows SSH clients don't use the simple `~/.ssh/config` file in the same 
 **In PowerShell or Command Prompt:** Run this command to SSH:
 
 ```powershell
-ssh janak@ssh.janakkumarshrestha0.com.np -o ProxyCommand="C:\Cloudflared\cloudflared.exe access ssh --hostname %h"
+ssh jack@ssh.janakkumarshrestha0.com.np -o ProxyCommand="C:\Cloudflared\cloudflared.exe access ssh --hostname %h"
 ```
 
 #### Connection Flow:
@@ -415,6 +436,8 @@ ssh janak@ssh.janakkumarshrestha0.com.np -o ProxyCommand="C:\Cloudflared\cloudfl
 1.  The command runs, executing the `ProxyCommand`.
 2.  A browser window opens, prompting you to log in for **Cloudflare Access authentication**.
 3.  Once authenticated, the terminal prompts you to accept the host key, and then logs you in using your **SSH Key** (if previously set up).
+
+![output](@/assets/images/Screenshot_20251111_165826.png)
 
 -----
 
@@ -442,6 +465,8 @@ You need to run the `cloudflared` command in a separate, dedicated terminal wind
 2.  **Connect to the local proxy address:**
       * **Computer/Host:** `127.0.0.1:33389`
 3.  Once the connection establishes, the RDP client will show the login prompt for your remote Linux host machine.
+
+![output](@/assets/images/Screenshot_20251111_164619.png)
 
 ---
 
@@ -471,34 +496,40 @@ sudo nano /etc/systemd/system/cloudflared-remote.service
 
 Paste the following configuration into the file. **This file is configured specifically for your setup:**
 
-  * It uses your username (`janak`).
-  * It points directly to your configuration file (`/home/janak/.cloudflared/config.yml`).
+  * It uses your username (`jack`).
+  * It points directly to your configuration file (`/home/jack/.cloudflared/config.yml`).
   * It uses the correct tunnel name (`remote-acc`).
 
 <!-- end list -->
 
 ```ini
 [Unit]
-Description=Cloudflare Tunnel Remote SSH Service
+Description=Cloudflare Tunnel Remote Access Service
 After=network.target
 
 [Service]
-# Set the user and group to run the tunnel as
-User=janak #Your hostmachine's username
-# The main executable. We use 'tunnel run' with the name of your tunnel.
-ExecStart=/usr/local/bin/cloudflared tunnel run remote-acc
+# CRITICAL: Set the user and group to run the tunnel as. 
+# This MUST be the user who ran 'cloudflared tunnel login' (e.g., 'jack').
+User=jack 
+Group=jack
+
+# The main executable. Replace it 'remote-ssh' your tunnel name.
+ExecStart=/usr/local/bin/cloudflared tunnel run remote-ssh
+
 # Ensure the service restarts if it fails
 Restart=always
-# Point the service to your existing config file
-Environment="CLOUDFLARED_OPTS=--config /home/janak/.cloudflared/config.yml"
-# Give up waiting if start takes too long
+
+# Point the service to the config.yml file located in the user's home directory.
+Environment="CLOUDFLARED_OPTS=--config /home/jack/.cloudflared/config.yml"
+
+# Give up waiting if shutdown takes too long
 TimeoutStopSec=5
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-*Note: Make sure to verify the username `janak` is correct.*
+*Note: Make sure to verify the username `jack` is correct.*
 
 Save the file and exit the editor.
 
@@ -512,26 +543,26 @@ Now, tell `systemd` about the new service file, enable it for boot, and start it
 # Reload the systemd manager configuration
 sudo systemctl daemon-reload
 
-# Enable the service to start automatically on boot
-sudo systemctl enable cloudflared-remote.service
-
 # Start the tunnel service
 sudo systemctl start cloudflared-remote.service
+
+# Check the status
+sudo systemctl status cloudflared-remote.service
+
+# Enable the service to start automatically on boot
+sudo systemctl enable cloudflared-remote.service
 
 # Stop the tunnel service
 sudo systemctl stop cloudflared-remote.service
 
 # Disable this service on startup
 sudo systemctl disable cloudflared-remote.service
-
-# Check the status
-sudo systemctl status cloudflared-remote.service
 ```
 
 You should see **"Active: active (running)"**. You can now `close your host terminal`, and the tunnel will remain active.
 
 
-### Apply Zero Trust Access Policies
+### Cloudflare setup: Apply Zero Trust Access Policies
 
 You must secure both new hostnames in your Cloudflare Zero Trust Dashboard $\to$ **Access** $\to$ **Applications**, creating a separate **Self-hosted Application** for:
 
