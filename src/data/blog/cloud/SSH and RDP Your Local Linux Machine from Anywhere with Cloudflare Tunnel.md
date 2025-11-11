@@ -121,7 +121,7 @@ sudo ss -tuln | grep 22
     #tunnel: YOUR_TUNNEL_ID
     tunnel: bbfb870f-c972-4653-97af-41667bd5cb71  # Your Tunnel UUID
     #credentials-file: /home/YOUR_USERNAME/.cloudflared/YOUR_TUNNEL_ID.json
-    credentials-file: /home/janak/.cloudflared/bbfb870f-c972-4653-97af-41667bd5cb71.json # Give path acccording to yours  
+    credentials-file: /home/jack/.cloudflared/bbfb870f-c972-4653-97af-41667bd5cb71.json # Give path acccording to yours  
     ingress:
       - hostname: ssh.janakkumarshrestha0.com.np # for ssh server
         service: ssh://localhost:22
