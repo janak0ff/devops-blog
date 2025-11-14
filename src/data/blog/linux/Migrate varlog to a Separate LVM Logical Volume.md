@@ -13,9 +13,9 @@ description: Migrate /var/log to a Separate LVM Logical Volume on Linux
 
 Managing log files is critical for server health. If the `/var/log` directory remains on the root partition, unchecked log growth can quickly fill up your main filesystem and bring the server to a halt.
 
-This guide provides a step-by-step walkthrough on how to move `/var/log` to a dedicated, separate **LVM (Logical Volume Management) Logical Volume** using a new disk (in this example, $\mathbf{/dev/xvdb}$).
+This guide provides a step-by-step walkthrough on how to move `/var/log` to a dedicated, separate **LVM (Logical Volume Management) Logical Volume** using a new disk (in this example, /dev/xvdb).
 
-**Prerequisites:** You must have a new, unpartitioned disk ($\mathbf{/dev/xvdb}$ in this guide) attached to your Linux server, and you must have `sudo` (root) privileges.
+**Prerequisites:** You must have a new, unpartitioned disk (/dev/xvdb in this guide) attached to your Linux server, and you must have `sudo` (root) privileges.
 
 ## The Environment (Reference)
 
@@ -23,12 +23,12 @@ For this guide, we assume the following initial state:
 
 | Device | Size | Type | Purpose |
 | :--- | :--- | :--- | :--- |
-| $\mathbf{/dev/xvda}$ | 10G | disk | System disk (Root, $\mathbf{/}$) |
-| $\mathbf{/dev/xvdb}$ | 10G | disk | **New disk for logs** |
+| /dev/xvda | 10G | disk | System disk (Root, /) |
+| /dev/xvdb | 10G | disk | **New disk for logs** |
 
 ## Step 1: Initialize LVM Structure on the New Disk
 
-We will convert the new disk ($\mathbf{/dev/xvdb}$) into an LVM structure.
+We will convert the new disk (/dev/xvdb) into an LVM structure.
 
 ### 1.1 Create the Physical Volume (PV)
 
@@ -55,7 +55,7 @@ Create the Logical Volume for the logs, named `lv_var_log`, consuming 100% of th
 sudo lvcreate -l 100%FREE -n lv_var_log vg_log
 ```
 
-The new device is now ready at $\mathbf{/dev/vg\_log/lv\_var\_log}$.
+The new device is now ready at `/dev/vg_log/lv_var_log`.
 
 ## Step 2: Format and Prepare the Logical Volume
 
@@ -175,5 +175,19 @@ Once you are satisfied that the system is running correctly and logs are being w
 # *** ONLY run this command when you are 100% sure the new setup is working ***
 sudo rm -rf /var/log_old
 ```
+
+
+
+##  Verify the Mount Point and Size
+
+The most important step is confirming the logical volume is correctly attached to the directory.
+
+| Command | Purpose | Expected Output Snippet |
+| :--- | :--- | :--- |
+| `df -h /var/log` | Shows the disk space usage and confirms the device mapped to the directory. | `/dev/mapper/vg_log-lv_var_log 9.8G 660M 8.6G 7% /var/log` |
+| `lsblk /dev/xvdb` | Shows the block device and its mount point. | `└─vg_log-lv_var_log 252:0 0 10G 0 lvm /var/log` |
+| `mountpoint /var/log` | Confirms that `/var/log` is, in fact, a separate mount point. | `/var/log is a mountpoint` |
+
+-----
 
 You have successfully migrated your `/var/log` directory to a dedicated LVM Logical Volume, protecting your root partition from log file overflow\!
