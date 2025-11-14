@@ -26,6 +26,8 @@ For this guide, we assume the following initial state:
 | /dev/xvda | 10G | disk | System disk (Root, /) |
 | /dev/xvdb | 10G | disk | **New disk for logs** |
 
+![output](@/assets/images/Screenshot_20251114_123150.png)
+
 ## Step 1: Initialize LVM Structure on the New Disk
 
 We will convert the new disk (/dev/xvdb) into an LVM structure.

@@ -9,7 +9,7 @@ tags:
 description: Configure Bind as a Caching or Forwarding DNS Server on Ubuntu.
 ---
 
-![output](@/assets/images/Screenshot_20251007_053150.png)
+![output](@/assets/images/Screenshot_20251114_123150.png)
 
 -----
 
