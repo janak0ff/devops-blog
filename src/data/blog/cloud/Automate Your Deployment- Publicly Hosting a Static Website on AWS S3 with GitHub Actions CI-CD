@@ -4,15 +4,10 @@ pubDatetime: 2025-10-18
 featured: true
 tags:
   - Hands On Lab
-  - S3
-  - CICD
+  - S3 CICD
   - AWS
 description: Automate Your Deployment- Publicly Hosting a Static Website on AWS S3 with GitHub Actions CI-CD
 ---
-
-![output](@/assets/images/Screenshot_20251114_123150.png)
-
------
 
 ## Automate Your Deployment: Publicly Hosting a Static Website on AWS S3 with GitHub Actions CI/CD 
 
