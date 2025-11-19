@@ -1,6 +1,6 @@
 ---
 title: Automate Your Deployment- Publicly Hosting a Static Website on AWS S3 with GitHub Actions CI-CD
-pubDatetime: 2025-11-10
+pubDatetime: 2025-11-18
 featured: true
 tags:
   - Hands On Lab
