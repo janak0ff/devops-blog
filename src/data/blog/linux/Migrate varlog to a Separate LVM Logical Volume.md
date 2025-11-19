@@ -50,14 +50,14 @@ sudo vgcreate vg_log /dev/xvdb
 
 ### 1.3 Create the Logical Volume (LV)
 
-Create the Logical Volume for the logs, named `lv_var_log`, consuming 100% of the space in the new Volume Group.
+Create the Logical Volume for the logs, named `lv_varlog`, consuming 100% of the space in the new Volume Group.
 
 ```bash
-# Create a 100% free Logical Volume named 'lv_var_log' in 'vg_log'
-sudo lvcreate -l 100%FREE -n lv_var_log vg_log
+# Create a 100% free Logical Volume named 'lv_varlog' in 'vg_log'
+sudo lvcreate -l 100%FREE -n lv_varlog vg_log
 ```
 
-The new device is now ready at `/dev/vg_log/lv_var_log`.
+The new device is now ready at `/dev/vg_log/lv_varlog`.
 
 ## Step 2: Format and Prepare the Logical Volume
 
@@ -68,7 +68,7 @@ The LV needs a filesystem before it can store data.
 Format the new LV with the `ext4` filesystem.
 
 ```bash
-sudo mkfs.ext4 /dev/vg_log/lv_var_log
+sudo mkfs.ext4 /dev/vg_log/lv_varlog
 ```
 
 ### 2.2 Verify the LVM Creation
@@ -79,47 +79,35 @@ Use `lsblk` to confirm the LVM layer is visible.
 lsblk
 ```
 
-You should see the logical volume linked to $\mathbf{/dev/xvdb}$ (e.g., `vg_log-lv_var_log`).
+You should see the logical volume linked to $\mathbf{/dev/xvdb}$ (e.g., `vg_log-lv_varlog`).
 
 ## Step 3: Migrate Existing Log Data
 
-This is the most critical stage, where you temporarily mount the new volume, copy the data, and switch the mount points.
+This is the most critical stage, where you temporarily copy the data.
 
-### 3.1 Mount the New Volume Temporarily
-
-```bash
-sudo mkdir /mnt/new_var_log
-sudo mount /dev/vg_log/lv_var_log /mnt/new_var_log
-```
-
-### 3.2 Copy the Existing Logs
+### 3.1 Copy the Existing Logs
 
 Use `rsync` to copy all contents from the current `/var/log` to the new mount point, ensuring all permissions and file attributes are preserved.
 
   * The `-a` flag preserves permissions, ownership, and timestamps.
   * The `-x` flag ensures `rsync` does not cross filesystem boundaries (e.g., into `/var/log/journal`).
 
-<!-- end list -->
 
 ```bash
-sudo rsync -ax /var/log/ /mnt/new_var_log
+sudo mkdir -p /var/log_old
+sudo rsync -ax /var/log/ /var/log_old
 ```
 
-### 3.3 Switch the Mount Points
+### 3.2 Switch the Mount Points
+1.  **mount it permanently**
+    ```bash
+    sudo mount /dev/vg_varlog/lv_varlog /var/log
+    ```
+2. Copy you existing `/var/log_old/` data into new logical volume `lv_varlog` in `/var/log/`
+    ```bash
+    sudo rsync -ax /var/log_old/ /var/log
+    ```
 
-1.  **Rename the old log directory** as a backup (do not delete it yet\!):
-    ```bash
-    sudo mv /var/log /var/log_old
-    ```
-2.  **Create a new, empty mount point** at `/var/log`:
-    ```bash
-    sudo mkdir /var/log
-    ```
-3.  **Unmount the temporary volume** and **mount it permanently** at the new location:
-    ```bash
-    sudo umount /mnt/new_var_log
-    sudo mount /dev/vg_log/lv_var_log /var/log
-    ```
 
 ## Step 4: Make the Mount Permanent with `/etc/fstab`
 
@@ -136,7 +124,7 @@ sudo nano /etc/fstab
 Add the following line to the end of the file. Using the LVM device path is reliable for Logical Volumes.
 
 ```fstab
-/dev/vg_log/lv_var_log /var/log ext4 defaults 0 2
+/dev/vg_log/lv_varlog /var/log ext4 defaults 0 2
 ```
 
 ### 4.3 Verify the fstab Entry
@@ -152,7 +140,7 @@ The output should confirm the volume is mounted:
 
 ```
 Filesystem                      Size Used Avail Use% Mounted on
-/dev/mapper/vg_log-lv_var_log  9.8G 660M  8.6G  7% /var/log
+/dev/mapper/vg_log-lv_varlog  9.8G 660M  8.6G  7% /var/log
 ```
 
 ## Step 5: Final Verification and Cleanup
@@ -161,11 +149,11 @@ The migration is complete\! Now you just need a final check and cleanup.
 
 ### 5.1 Final System Check
 
-Confirm the mount point is active and logs are being written:
+Confirm the mount point is active and logs are being written: Check real-time log activity
 
 ```bash
 lsblk
-# Check real-time log activity
+
 sudo tail -f /var/log/syslog
 ```
 
@@ -186,8 +174,8 @@ The most important step is confirming the logical volume is correctly attached t
 
 | Command | Purpose | Expected Output Snippet |
 | :--- | :--- | :--- |
-| `df -h /var/log` | Shows the disk space usage and confirms the device mapped to the directory. | `/dev/mapper/vg_log-lv_var_log 9.8G 660M 8.6G 7% /var/log` |
-| `lsblk /dev/xvdb` | Shows the block device and its mount point. | `└─vg_log-lv_var_log 252:0 0 10G 0 lvm /var/log` |
+| `df -h /var/log` | Shows the disk space usage and confirms the device mapped to the directory. | `/dev/mapper/vg_log-lv_varlog 9.8G 660M 8.6G 7% /var/log` |
+| `lsblk /dev/xvdb` | Shows the block device and its mount point. | `└─vg_log-lv_varlog 252:0 0 10G 0 lvm /var/log` |
 | `mountpoint /var/log` | Confirms that `/var/log` is, in fact, a separate mount point. | `/var/log is a mountpoint` |
 
 -----
