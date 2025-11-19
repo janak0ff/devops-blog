@@ -1,6 +1,6 @@
 ---
 title: Automate Your Deployment- Publicly Hosting a Static Website on AWS S3 with GitHub Actions CI-CD
-pubDatetime: 2025-11-15
+pubDatetime: 2025-10-18
 featured: true
 tags:
   - Hands On Lab
@@ -138,5 +138,7 @@ Commit and push your new `.github/workflows/main.yml` file to the `main` branch.
 
 
 Your static website is now live\! Every subsequent `git push` will automatically trigger this pipeline, keeping your site perpetually synchronized.
+
+- [Github Repo](https://github.com/janak0ff/CI-CD-AWS-S3)
 
 ![output](@/assets/images/Screenshot_20251119_163545.png)
