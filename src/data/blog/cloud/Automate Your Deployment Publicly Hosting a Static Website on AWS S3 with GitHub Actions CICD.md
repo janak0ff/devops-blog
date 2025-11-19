@@ -13,6 +13,8 @@ description: Automate Your Deployment- Publicly Hosting a Static Website on AWS 
 
 Deploying a website shouldn't be a tedious manual task. By setting up a Continuous Integration/Continuous Deployment (CI/CD) pipeline using **GitHub Actions** and **AWS S3**, you can automate the entire process, pushing changes live whenever you commit code.
 
+- [Project Repo](https://github.com/janak0ff/CI-CD-AWS-S3)
+
 -----
 
 ## Step 1: Your Project Structure and Repository Setup
@@ -133,7 +135,5 @@ Commit and push your new `.github/workflows/main.yml` file to the `main` branch.
 
 
 Your static website is now live\! Every subsequent `git push` will automatically trigger this pipeline, keeping your site perpetually synchronized.
-
-- [Github Repo](https://github.com/janak0ff/CI-CD-AWS-S3)
 
 ![output](@/assets/images/Screenshot_20251119_163545.png)
