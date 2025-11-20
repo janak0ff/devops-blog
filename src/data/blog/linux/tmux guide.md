@@ -97,7 +97,8 @@ Panes split a single window into multiple independent terminal views (e.g., view
 
 | Task | Shortcut (After `Ctrl + b`) | Description |
 | :--- | :--- | :--- |
-| **Split Vertically** | **`%`** (Percent) | Splits the current pane into two side-by-side (left/right). |
+| **Split Vertically** | **`%`** (Percent) | Splits the current pane into two side-by-side (left/right). An older way |
+| **Split Vertically** | **`v`** (v) | Divides the current pane into two panes side-by-side. (left/right). |
 | **Split Horizontally** | **`"`** (Double Quote) | Splits the current pane into a top and bottom pane. |
 | **Switch Panes** | **`<Arrow Key>`** | Changes focus to the adjacent pane. |
 | **Zoom Pane** | **`z`** | Toggles the active pane to fill the entire window temporarily. |
