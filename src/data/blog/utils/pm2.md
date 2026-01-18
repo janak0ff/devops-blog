@@ -1,11 +1,11 @@
 ---
-title: "PM2 Complete Guide to Theory, Installation & Essential Commands (2025)"
-pubDatetime: 2025-09-29T00:00:00Z
+title: PM2 Complete Guide to Theory, Installation & Essential Commands (2025)
+pubDatetime: 2025-12-22
 featured: false
 tags:
   - Node.js
   - PM2
-description: "PM2 Complete Guide to Theory, Installation & Essential Commands (2025)."
+description: PM2 Complete Guide to Theory, Installation & Essential Commands (2025).
 ---
 
 # 🚀 Complete Guide to PM2: Theory, Installation & Essential Commands (2025)
