@@ -1,7 +1,7 @@
 ---
 title: Deploying Your PHP and MySQL App on AWS EC2 with Docker, Nginx, SSL and a Custom Domain
 pubDatetime: 2025-06-13
-featured: false
+featured: true
 tags:
   - aws
   - Docker
