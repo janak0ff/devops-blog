@@ -21,6 +21,25 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
     `${breadcrumbList[1]} ${Number(breadcrumbList[2]) === 1 ? "" : "(page " + breadcrumbList[2] + ")"}`
   );
 }
+
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: `${Astro.url.origin}/`,
+    },
+    ...breadcrumbList.map((breadcrumb, index) => ({
+      "@type": "ListItem",
+      position: index + 2,
+      name: breadcrumb,
+      item: `${Astro.url.origin}/${breadcrumbList.slice(0, index + 1).join("/")}`,
+    })),
+  ],
+};
 ---
 
 <nav class="mx-auto mt-8 mb-1 w-full max-w-3xl px-4" aria-label="breadcrumb">
@@ -55,3 +74,9 @@ if (breadcrumbList[0] === "tags" && !isNaN(Number(breadcrumbList[2]))) {
     }
   </ul>
 </nav>
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(breadcrumbStructuredData)}
+  is:inline
+/>
