@@ -193,9 +193,9 @@ This is where you tell Cloudflare to direct traffic for your domain to your Netl
 
    | Type  | Name | Target                  | TTL  | Proxy |
    | ----- | ---- | ----------------------- | ---- | ----- |
-   | CNAME | ai | `object-detection-0ff.netlify.app` | Auto | ✅ ON |
+   | CNAME | ai | `object-detection-0ff.netlify.app.` | Auto | ✅ ON |
 
-   - Replace `object-detection-0ff.netlify.app` with your actual Netlify subdomain (found on your Netlify dashboard).
+   - Replace `object-detection-0ff.netlify.app.` with your actual Netlify subdomain (found on your Netlify dashboard).
    - `Name` is `ai`, not the full domain.
 
 ---
