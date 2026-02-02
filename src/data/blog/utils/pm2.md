@@ -8,7 +8,7 @@ tags:
 description: PM2 Complete Guide to Theory, Installation & Essential Commands (2025).
 ---
 
-# 🚀 Complete Guide to PM2: Theory, Installation & Essential Commands (2025)
+# Complete Guide to PM2: Theory, Installation & Essential Commands (2025)
 
 If you run Node.js applications on a Linux server, you need a process manager that keeps your app running 24/7, restarts automatically on crashes, handles logs, and survives system reboots.
 **PM2** is the most popular tool for that.
@@ -22,7 +22,7 @@ This guide covers everything:
 
 ---
 
-## ⭐ What is PM2?
+##  What is PM2?
 
 **PM2 (Process Manager 2)** is a production-grade process manager for Node.js applications. It ensures your app:
 
