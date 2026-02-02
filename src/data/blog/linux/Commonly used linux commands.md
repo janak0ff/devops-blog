@@ -8,7 +8,7 @@ description: Introduction to Linux Commands -   Informational, Navigational, & M
 
 ---
 
-# 📄 **Cheat Sheet: Introduction to Linux Commands and Shell Scripting**
+# **Cheat Sheet: Introduction to Linux Commands and Shell Scripting**
 
 This cheat sheet provides a quick reference for the most commonly used Linux commands and shell scripting concepts covered in this course.
 

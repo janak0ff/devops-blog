@@ -1,7 +1,7 @@
-@import "tailwindcss";
-@import "./typography.css";
 /* Import Outfit font */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "./typography.css";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -15,7 +15,8 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-  --background: #232136; /* Slightly lighter dark mode bg */
+  --background: #232136;
+  /* Slightly lighter dark mode bg */
   --foreground: #e0def4;
   --accent: #eb6f92;
   --muted: #6e6a86;
@@ -36,20 +37,25 @@ html[data-theme="dark"] {
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
   }
+
   html {
     @apply overflow-y-scroll scroll-smooth;
   }
+
   body {
-    @apply flex min-h-svh flex-col bg-background font-['Outfit',sans-serif] text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-['Outfit', sans-serif] text-foreground selection:bg-accent/75 selection:text-background;
   }
+
   a,
   button {
     @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dotted;
   }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
   section,
   footer {
     @apply mx-auto max-w-3xl px-4;
