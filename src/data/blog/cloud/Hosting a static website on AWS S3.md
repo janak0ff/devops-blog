@@ -1,7 +1,7 @@
 ---
 title: Hosting a static website on AWS S3
 pubDatetime: 2025-06-27
-featured: true
+featured: false
 tags:
   - aws
   - Hands On Lab
