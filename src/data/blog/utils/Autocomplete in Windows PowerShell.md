@@ -1,10 +1,11 @@
 ---
 title: Enable bash-like Autocompletion, Autosuggestions, and Predictive IntelliSense in Windows PowerShell
-pubDatetime: 2025-12-22
+pubDatetime: 2026-02-02
 featured: false
 tags:
   - PowerShell
   - Windows
+  - PSReadLine
 description: Enable bash-like Autocompletion, Autosuggestions, and Predictive IntelliSense in Windows PowerShell.
 ---
 
